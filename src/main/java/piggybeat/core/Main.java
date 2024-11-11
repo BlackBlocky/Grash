@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import piggybeat.events.EventBus;
+import piggybeat.events.Event_GameInit;
 
 import java.net.URL;
 
@@ -12,11 +14,20 @@ public class Main extends Application {
 
     private static final String workingDirectory = System.getProperty("user.dir");
 
+    public static String getWorkingDirectory() {
+        return workingDirectory;
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
 
     public void start(Stage primaryStage) throws Exception {
+        EventBus eventBus = new EventBus();
+        GameController controller = new GameController(eventBus);
+
+        eventBus.triggerEvent(new Event_GameInit("Hello World!!!"));
+
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(new URL("file:///" + workingDirectory + "\\assets\\fxml\\hello-world.fxml"));
         VBox vbox = loader.<VBox>load();
