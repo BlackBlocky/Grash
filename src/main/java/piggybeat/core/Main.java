@@ -23,6 +23,10 @@ public class Main extends Application {
 
         Scene scene = new Scene(vbox);
         primaryStage.setScene(scene);
+        primaryStage.setWidth(300);
+        primaryStage.setHeight(200);
+        primaryStage.setTitle("I like Cookies!");
+        primaryStage.setResizable(false);
         primaryStage.show();
     }
 }
