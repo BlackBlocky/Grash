@@ -1,21 +1,28 @@
 package piggybeat.core;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
+
+import java.net.URL;
 
 public class Main extends Application {
+
+    private static final String workingDirectory = System.getProperty("user.dir");
+
     public static void main(String[] args) {
         launch(args);
     }
 
     public void start(Stage primaryStage) throws Exception {
-        StackPane root = new StackPane();
-        Scene mainScene = new Scene(root, 300, 200);
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(new URL("file:///" + workingDirectory + "\\assets\\fxml\\hello-world.fxml"));
+        VBox vbox = loader.<VBox>load();
 
-        primaryStage.setTitle("Some Testing");
-        primaryStage.setScene(mainScene);
+        Scene scene = new Scene(vbox);
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 }
