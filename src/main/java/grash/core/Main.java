@@ -12,11 +12,7 @@ import java.net.URL;
 
 public class Main extends Application {
 
-    private static final String workingDirectory = System.getProperty("user.dir");
-
-    public static String getWorkingDirectory() {
-        return workingDirectory;
-    }
+    public static final String WORKING_DIRECTORY = System.getProperty("user.dir");
 
     public static void main(String[] args) {
         launch(args);
@@ -29,7 +25,7 @@ public class Main extends Application {
         eventBus.triggerEvent(new Event_Initialize("Hello World!!!"));
 
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(new URL("file:///" + workingDirectory + "\\assets\\fxml\\hello-world.fxml"));
+        loader.setLocation(new URL("file:///" + WORKING_DIRECTORY + "\\assets\\fxml\\hello-world.fxml"));
         VBox vbox = loader.<VBox>load();
 
         Scene scene = new Scene(vbox);
