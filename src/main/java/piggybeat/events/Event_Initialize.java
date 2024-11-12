@@ -1,8 +1,8 @@
 package piggybeat.events;
 
-public class Event_GameInit extends Event {
+public class Event_Initialize extends Event {
     public String test = "";
-    public Event_GameInit(String t) {
+    public Event_Initialize(String t) {
         this.test = t;
     }
 }

@@ -6,7 +6,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import piggybeat.events.EventBus;
-import piggybeat.events.Event_GameInit;
+import piggybeat.events.Event_Initialize;
 
 import java.net.URL;
 
@@ -26,7 +26,7 @@ public class Main extends Application {
         EventBus eventBus = new EventBus();
         GameController controller = new GameController(eventBus);
 
-        eventBus.triggerEvent(new Event_GameInit("Hello World!!!"));
+        eventBus.triggerEvent(new Event_Initialize("Hello World!!!"));
 
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(new URL("file:///" + workingDirectory + "\\assets\\fxml\\hello-world.fxml"));
