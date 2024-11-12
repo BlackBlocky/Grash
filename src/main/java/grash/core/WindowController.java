@@ -1,4 +1,4 @@
-package piggybeat.core;
+package grash.core;
 
 public class WindowController {
 

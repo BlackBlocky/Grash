@@ -1,12 +1,12 @@
-package piggybeat.core;
+package grash.core;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import piggybeat.events.EventBus;
-import piggybeat.events.Event_Initialize;
+import grash.events.EventBus;
+import grash.events.Event_Initialize;
 
 import java.net.URL;
 

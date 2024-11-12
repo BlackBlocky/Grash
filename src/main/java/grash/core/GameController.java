@@ -1,6 +1,6 @@
-package piggybeat.core;
+package grash.core;
 
-import piggybeat.events.*;
+import grash.events.*;
 
 public class GameController implements EventListener<Event_Initialize> {
 

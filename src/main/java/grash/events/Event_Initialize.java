@@ -1,4 +1,4 @@
-package piggybeat.events;
+package grash.events;
 
 public class Event_Initialize extends Event {
     public String test = "";
