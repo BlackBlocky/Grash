@@ -3,19 +3,22 @@ package grash.core;
 import grash.events.*;
 
 import java.util.HashSet;
+import javafx.stage.Stage;
 
 public class GameController implements EventListener<Event_Initialize> {
 
     private final long initTimestampMillis;
     private final EventBus eventBus;
+    private final Stage primaryStage;
 
     private final HashSet<GrashComponent> grashComponents = new HashSet<>();
 
     private int idCounter = 0;
 
-    public GameController(EventBus eventBus) {
+    public GameController(EventBus eventBus, Stage primaryStage) {
         this.initTimestampMillis = System.currentTimeMillis();
         this.eventBus = eventBus;
+        this.primaryStage = primaryStage;
 
         eventBus.registerListener(Event_Initialize.class, this);
 
@@ -30,6 +33,9 @@ public class GameController implements EventListener<Event_Initialize> {
     }
     public EventBus getEventBus() {
         return this.eventBus;
+    }
+    public Stage getPrimaryStage() {
+        return this.primaryStage;
     }
 
     public int generateUniqueID() {
