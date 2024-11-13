@@ -1,16 +1,10 @@
 package grash.core;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.scene.Scene;
-import grash.events.EventBus;
-import grash.events.Event_Initialize;
+import grash.events.GrashEventBus;
+import grash.events.GrashEvent_Initialize;
 import javafx.stage.StageStyle;
-
-import java.net.URL;
 
 public class Main extends Application {
 
@@ -29,10 +23,8 @@ public class Main extends Application {
         primaryStage.setTitle("Grash");
         //primaryStage.show();
 
-        EventBus eventBus = new EventBus();
+        GrashEventBus eventBus = new GrashEventBus();
         GameController controller = new GameController(eventBus, primaryStage);
-
-        eventBus.triggerEvent(new Event_Initialize("Hello World!!!"));
 
 //        FXMLLoader loader = new FXMLLoader();
 //        loader.setLocation(new URL("file:///" + WORKING_DIRECTORY + "\\assets\\fxml\\hello-world.fxml"));

@@ -1,20 +1,18 @@
 package grash.core;
 
-import grash.events.EventListener;
-import grash.events.Event_Initialize;
+import grash.events.GrashEvent;
+import grash.events.GrashEventListener;
+import grash.events.GrashEvent_InitializationDone;
+import grash.events.GrashEvent_Initialize;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
-import java.net.URL;
-
-public class WindowController implements EventListener<Event_Initialize> {
+public class WindowController implements GrashEventListener {
 
     public final GameController game;
 
@@ -22,11 +20,25 @@ public class WindowController implements EventListener<Event_Initialize> {
 
     public WindowController(GameController gameController) {
         this.game = gameController;
-        game.getEventBus().registerListener(Event_Initialize.class, this);
+        game.getEventBus().registerListener(GrashEvent_Initialize.class, this);
+        game.getEventBus().registerListener(GrashEvent_InitializationDone.class, this);
     }
 
     @Override
-    public void onEvent(Event_Initialize event) {
+    public void onEvent(GrashEvent event) {
+        switch (event.getEventKey()) {
+            case "Initialize": {
+                onEvent_Initialize((GrashEvent_Initialize) event);
+                break;
+            }
+            case "InitializationDone": {
+                onEvent_InitializeDone((GrashEvent_InitializationDone) event);
+                break;
+            }
+        }
+    }
+
+    private void onEvent_Initialize(GrashEvent_Initialize event) {
         game.getPrimaryStage().hide();
 
         this.splashscreen = new Stage();
@@ -47,5 +59,11 @@ public class WindowController implements EventListener<Event_Initialize> {
         }
 
         this.splashscreen.show();
+
+        game.getEventBus().triggerEvent(new GrashEvent_InitializationDone());
+    }
+
+    private void onEvent_InitializeDone(GrashEvent_InitializationDone event) {
+        System.out.println("second: " + event.getClass().getName());
     }
 }

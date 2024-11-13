@@ -5,22 +5,22 @@ import grash.events.*;
 import java.util.HashSet;
 import javafx.stage.Stage;
 
-public class GameController implements EventListener<Event_Initialize> {
+public class GameController implements GrashEventListener {
 
     private final long initTimestampMillis;
-    private final EventBus eventBus;
+    private final GrashEventBus eventBus;
     private final Stage primaryStage;
 
     private final HashSet<GrashComponent> grashComponents = new HashSet<>();
 
     private int idCounter = 0;
 
-    public GameController(EventBus eventBus, Stage primaryStage) {
+    public GameController(GrashEventBus eventBus, Stage primaryStage) {
         this.initTimestampMillis = System.currentTimeMillis();
         this.eventBus = eventBus;
         this.primaryStage = primaryStage;
 
-        eventBus.registerListener(Event_Initialize.class, this);
+        eventBus.registerListener(GrashEvent_InitializationDone.class, this);
 
         new WindowController(this);
     }
@@ -31,7 +31,7 @@ public class GameController implements EventListener<Event_Initialize> {
     public long getInitTimestampMillis() {
         return this.initTimestampMillis;
     }
-    public EventBus getEventBus() {
+    public GrashEventBus getEventBus() {
         return this.eventBus;
     }
     public Stage getPrimaryStage() {
@@ -57,7 +57,17 @@ public class GameController implements EventListener<Event_Initialize> {
     }
 
     @Override
-    public void onEvent(Event_Initialize event) {
-        System.out.println(event.test);
+    public void onEvent(GrashEvent event) {
+        switch (event.getEventKey()) {
+            case "InitializationDone": {
+                onEvent_InitializeDone((GrashEvent_InitializationDone) event);
+                break;
+            }
+        }
     }
+
+    private void onEvent_InitializeDone(GrashEvent_InitializationDone event) {
+        System.out.println("second: " + event.getClass().getName());
+    }
+
 }
