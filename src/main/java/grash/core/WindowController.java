@@ -1,9 +1,6 @@
 package grash.core;
 
-import grash.events.GrashEvent;
-import grash.events.GrashEventListener;
-import grash.events.GrashEvent_InitializationDone;
-import grash.events.GrashEvent_Initialize;
+import grash.events.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
@@ -33,6 +30,9 @@ public class WindowController implements GrashEventListener {
             }
             case "InitializationDone": {
                 onEvent_InitializeDone((GrashEvent_InitializationDone) event);
+                break;
+            }
+            case "SplashscreenCreated": {
                 break;
             }
         }
@@ -65,5 +65,9 @@ public class WindowController implements GrashEventListener {
 
     private void onEvent_InitializeDone(GrashEvent_InitializationDone event) {
         System.out.println("second: " + event.getClass().getName());
+    }
+
+    private void onEvent_SplashscreenCreated(GrashEvent_SplashscreenCreated event) {
+
     }
 }

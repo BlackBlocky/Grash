@@ -21,8 +21,11 @@ public class GameController implements GrashEventListener {
         this.primaryStage = primaryStage;
 
         eventBus.registerListener(GrashEvent_InitializationDone.class, this);
+        eventBus.registerListener(GrashEvent_SplashscreenCreated.class, this);
+
 
         new WindowController(this);
+        getEventBus().triggerEvent(new GrashEvent_Initialize(""));
     }
 
     public String getWorkingDirectory() {
