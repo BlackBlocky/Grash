@@ -1,5 +1,6 @@
 package grash.core;
 
+import com.sun.management.internal.GarbageCollectorExtImpl;
 import grash.events.*;
 
 import java.util.HashSet;
@@ -15,6 +16,8 @@ public class GameController implements GrashEventListener {
 
     private int idCounter = 0;
 
+    private GameState gameState = GameState.UnInit;
+
     public GameController(GrashEventBus eventBus, Stage primaryStage) {
         this.initTimestampMillis = System.currentTimeMillis();
         this.eventBus = eventBus;
@@ -25,6 +28,7 @@ public class GameController implements GrashEventListener {
 
 
         new WindowController(this);
+        gameState = GameState.Init;
         getEventBus().triggerEvent(new GrashEvent_Initialize(""));
     }
 
@@ -39,6 +43,9 @@ public class GameController implements GrashEventListener {
     }
     public Stage getPrimaryStage() {
         return this.primaryStage;
+    }
+    public GameState getGameState() {
+        return this.gameState;
     }
 
     public int generateUniqueID() {
@@ -66,11 +73,22 @@ public class GameController implements GrashEventListener {
                 onEvent_InitializeDone((GrashEvent_InitializationDone) event);
                 break;
             }
+            case "SplashscreenCreated": {
+                onEvent_SplashscreenCreated((GrashEvent_SplashscreenCreated) event);
+                break;
+            }
         }
     }
 
     private void onEvent_InitializeDone(GrashEvent_InitializationDone event) {
         System.out.println("second: " + event.getClass().getName());
+        this.gameState = GameState.StartScreen;
+    }
+
+    private void onEvent_SplashscreenCreated(GrashEvent_SplashscreenCreated event) {
+
+
+        getEventBus().triggerEvent(new GrashEvent_LoadResources());
     }
 
 }

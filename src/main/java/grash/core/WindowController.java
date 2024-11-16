@@ -15,10 +15,16 @@ public class WindowController implements GrashEventListener {
 
     private Stage splashscreen = null;
 
+    private WindowState windowState;
+
     public WindowController(GameController gameController) {
         this.game = gameController;
         game.getEventBus().registerListener(GrashEvent_Initialize.class, this);
         game.getEventBus().registerListener(GrashEvent_InitializationDone.class, this);
+    }
+
+    public WindowState getWindowState() {
+        return this.windowState;
     }
 
     @Override
@@ -60,14 +66,11 @@ public class WindowController implements GrashEventListener {
 
         this.splashscreen.show();
 
-        game.getEventBus().triggerEvent(new GrashEvent_InitializationDone());
+        this.windowState = WindowState.Splashscreen;
+        game.getEventBus().triggerEvent(new GrashEvent_SplashscreenCreated());
     }
 
     private void onEvent_InitializeDone(GrashEvent_InitializationDone event) {
         System.out.println("second: " + event.getClass().getName());
-    }
-
-    private void onEvent_SplashscreenCreated(GrashEvent_SplashscreenCreated event) {
-
     }
 }
