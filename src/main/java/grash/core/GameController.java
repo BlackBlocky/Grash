@@ -1,6 +1,6 @@
 package grash.core;
 
-import com.sun.management.internal.GarbageCollectorExtImpl;
+import grash.assets.ResourceLoader;
 import grash.events.*;
 
 import java.util.HashSet;
@@ -8,8 +8,11 @@ import javafx.stage.Stage;
 
 public class GameController implements GrashEventListener {
 
-    private final long initTimestampMillis;
     private final GrashEventBus eventBus;
+    private final ResourceLoader resourceLoader;
+    private final WindowController windowController;
+
+    private final long initTimestampMillis;
     private final Stage primaryStage;
 
     private final HashSet<GrashComponent> grashComponents = new HashSet<>();
@@ -18,16 +21,16 @@ public class GameController implements GrashEventListener {
 
     private GameState gameState = GameState.UnInit;
 
-    public GameController(GrashEventBus eventBus, Stage primaryStage) {
+    public GameController(Stage primaryStage) {
         this.initTimestampMillis = System.currentTimeMillis();
-        this.eventBus = eventBus;
         this.primaryStage = primaryStage;
+        this.eventBus = new GrashEventBus();
+        this.resourceLoader = new ResourceLoader(this);
+        this.windowController = new WindowController(this);
 
         eventBus.registerListener(GrashEvent_InitializationDone.class, this);
         eventBus.registerListener(GrashEvent_SplashscreenCreated.class, this);
 
-
-        new WindowController(this);
         gameState = GameState.Init;
         getEventBus().triggerEvent(new GrashEvent_Initialize(""));
     }
@@ -89,6 +92,8 @@ public class GameController implements GrashEventListener {
 
 
         getEventBus().triggerEvent(new GrashEvent_LoadResources());
+        getEventBus().triggerEvent(new GrashEvent_InitializationDone());
+        getEventBus().triggerEvent(new GrashEvent_LoadLevel("BlackBlocky:Test"));
     }
 
 }

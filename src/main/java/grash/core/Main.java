@@ -23,8 +23,7 @@ public class Main extends Application {
         primaryStage.setTitle("Grash");
         //primaryStage.show();
 
-        GrashEventBus eventBus = new GrashEventBus();
-        GameController controller = new GameController(eventBus, primaryStage);
+        GameController controller = new GameController(primaryStage);
 
 //        FXMLLoader loader = new FXMLLoader();
 //        loader.setLocation(new URL("file:///" + WORKING_DIRECTORY + "\\assets\\fxml\\hello-world.fxml"));

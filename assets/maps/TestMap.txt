@@ -1,0 +1,12 @@
+[loader]
+  {(v1)},
+    [mapname]
+
+        { My_Cool_M ap }  , [autho r]  {So me_Pers on},
+
+
+[songname]{(Cool_Song)}
+                        ,
+
+            [version] { (V e rs io  n_1 )}
+
