@@ -6,13 +6,15 @@ import grash.events.GrashEventListener;
 import grash.events.GrashEvent_LoadResources;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ResourceLoader implements GrashEventListener {
 
     private GameController game;
 
-    private HashMap<String, Path> mapPaths = new HashMap<>();
+    private HashMap<String, Path> mapMetdatasMap = new HashMap<>();
     private String[] allMapKeys;
 
     public ResourceLoader (GameController gameController) {
@@ -21,8 +23,8 @@ public class ResourceLoader implements GrashEventListener {
         game.getEventBus().registerListener(GrashEvent_LoadResources.class, this);
     }
 
-    public Path getMapPath(String mapKey) {
-        return mapPaths.get(mapKey);
+    public Path getMapMetdata(String mapKey) {
+        return mapMetdatasMap.get(mapKey);
     }
 
     public String[] getAllMapKeys() {
@@ -44,6 +46,13 @@ public class ResourceLoader implements GrashEventListener {
     }
 
     private void loadAllMaps() {
+        ArrayList<Path> foundGrashMaps = new ArrayList<>();
+
+
+
+        MapMetadata mapMetadata = game.getMapLoader().loadMapMetadata(Paths.get(game.getWorkingDirectory() + "\\assets\\maps\\TestMap"), "TestMap.grashMap");
+
+        System.out.println();
 
     }
 }

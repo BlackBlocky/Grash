@@ -2,8 +2,6 @@ File Extension: .grashMap
 Keyword: []
 Params: {}
 Element: ()
-New Element/Keyword: ,
-When no ',' found, reading ends
 '_' will be replaced with ' '
 No Whitespaces allowed! (Being ignored)
 Obviously '{,[,(,),],}' is also not allowed in Strings etc.
@@ -13,32 +11,32 @@ Obviously '{,[,(,),],}' is also not allowed in Strings etc.
 
 Every Keyword with Examples:
 
-[loader]{(v1)},                  // grashMap Loader Version (for loader)
+[loader]{(v1)}                   // grashMap Loader Version (for loader)
 
-[mapname]{(Map_Name)},            // Name of the Map
-[author]{(Some_Person)},          // Name of the Author
-[songname]{(Songname_by_Person)}, // The Name of the Song
-[version]{(Version_1)},           // The Version on the Map
-[speed]{(7.2)},                   // Player Speed
-[growspeed]{(0.8)},               // Time in Seconds before a Grownnote needs to be clicked
-[startcolor]{(255, 255, 255)},    // Start Color of the Map
-[startfovscale]{(1.0)},           // The Start FOV
-[startrotation]{(0)},             // The Start Rotation in degrees
+[mapname]{(Map_Name)}            // Name of the Map
+[mapauthor]{(Some_Person)}        // Name of the Author
+[songname]{(Songname_by_Person)} // The Name of the Song
+[mapversion]{(Version_1)}           // The Version on the Map
+[speed]{(7.2)}                   // Player Speed
+[growspeed]{(0.8)}               // Time in Seconds before a Grownnote needs to be clicked
+[startcolor]{(255, 255, 255)}    // Start Color of the Map
+[startfovscale]{(1.0)}           // The Start FOV
+[startrotation]{(0)}             // The Start Rotation in degrees
 
-[spike]{(true, 3.5, 5.0),(...)...}, // isUp, start(sec), end(sec)
-[slide]{(false,6.0,7.5),...},       // isUp, start, end
-[wall]{(true, 9.0),...},            // isUp, time
-[doublejump]{(0.5, 7.2),...},       // heightY(normalized), time
-[rope]{(0.3, 3.5, 4.2),...},        // heightY, time, end
+[spike]{(true, 3.5, 5.0)(...)...} // isUp, start(sec), end(sec)
+[slide]{(false,6.0,7.5)...}       // isUp, start, end
+[wall]{(true, 9.0)...}            // isUp, time
+[doublejump]{(0.5, 7.2)...}       // heightY(normalized), time
+[rope]{(0.3, 3.5, 4.2)...}        // heightY, time, end
 
-[tapnote]{(0..2),...},             // y-type = 0=down;1=middle;2=up, time
-[grownnote]{(true, 3.5),...},      // isLeft, time
-[slidenote]{(0..2, 5.5, 6.5),...}, // y-type, start, end
+[tapnote]{(0..2)...}             // y-type = 0=down;1=middle;2=up, time
+[grownnote]{(true, 3.5)...}      // isLeft, time
+[slidenote]{(0..2, 5.5, 6.5)...} // y-type, start, end
 
-[color]{(255, 255, 255, 1.5),...},  // r, g, b, time
-[fovscale]{(1.1, 5.5),...},         // scale, time
-[rotate]{(70, 5.5),...},            // rotation, time
+[color]{(255, 255, 255, 1.5)...}  // r, g, b, time
+[fovscale]{(1.1, 5.5)...}         // scale, time
+[rotate]{(70, 5.5)...}            // rotation, time
 
-[bimage]{(5, 0.8, 7.5),...},  // orderInLayer, ParallaxValue, time
-[lasershow]{(0.7, 13.5),...}  // intensity, time
+[bimage]{(5, 0.8, 7.5)...}  // orderInLayer, ParallaxValue, time
+[lasershow]{(0.7, 13.5)...}  // intensity, time
 

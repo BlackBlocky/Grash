@@ -1,5 +1,6 @@
 package grash.core;
 
+import grash.assets.MapLoader;
 import grash.assets.ResourceLoader;
 import grash.events.*;
 
@@ -11,6 +12,7 @@ public class GameController implements GrashEventListener {
     private final GrashEventBus eventBus;
     private final ResourceLoader resourceLoader;
     private final WindowController windowController;
+    private final MapLoader mapLoader;
 
     private final long initTimestampMillis;
     private final Stage primaryStage;
@@ -27,6 +29,7 @@ public class GameController implements GrashEventListener {
         this.eventBus = new GrashEventBus();
         this.resourceLoader = new ResourceLoader(this);
         this.windowController = new WindowController(this);
+        this.mapLoader = new MapLoader();
 
         eventBus.registerListener(GrashEvent_InitializationDone.class, this);
         eventBus.registerListener(GrashEvent_SplashscreenCreated.class, this);
@@ -49,6 +52,9 @@ public class GameController implements GrashEventListener {
     }
     public GameState getGameState() {
         return this.gameState;
+    }
+    public MapLoader getMapLoader() {
+        return this.mapLoader;
     }
 
     public int generateUniqueID() {
