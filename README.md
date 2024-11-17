@@ -16,6 +16,7 @@ Dazu muss man die gaze Zeit die Pfeiltsaten passend zur Musik drücken, je nachd
 #
 ### Roadmap
 ![Grash Roadmap](https://github.com/user-attachments/assets/f5920172-21b3-4b70-a025-e62b90545804)
+^- Momentaner Stand: "Basis"
 
 #
 ### Technologie und Frameworks
