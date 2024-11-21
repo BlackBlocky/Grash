@@ -3,21 +3,26 @@ package grash.assets;
 import java.nio.file.Path;
 
 public class MapMetadata {
-    private String mapName;
-    private String mapAuthor;
-    private String mapVersion;
-    private String songName;
+    private final String mapName;
+    private final String mapAuthor;
+    private final String mapVersion;
+    private final String songName;
 
-    private Path folderPath;
-    private String fileName;
+    private final Path folderPath;
+    private final String fileName;
 
-    public MapMetadata(String mapName, String mapAuthor, String mapVersion, String songName, Path folderPath, String fileName) {
+    private final String mapKey;
+
+    public MapMetadata(String mapName, String mapAuthor, String mapVersion,
+                       String songName, Path folderPath, String fileName) {
         this.mapName = mapName;
         this.mapAuthor = mapAuthor;
         this.mapVersion = mapVersion;
         this.songName = songName;
         this.folderPath = folderPath;
         this.fileName = fileName;
+
+        this.mapKey = mapAuthor + "::" + mapName + "::" + mapVersion;
     }
 
     public String getSongName() {

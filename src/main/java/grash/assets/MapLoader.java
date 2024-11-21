@@ -15,15 +15,15 @@ public class MapLoader {
 
     }
 
-    public MapMetadata loadMapMetadata(Path folderPath, String grashMapName) {
-        String mapMl = generateMapML(Paths.get(folderPath.toAbsolutePath() + "\\" + grashMapName));
+    public MapMetadata loadMapMetadata(Path folderPath, String grashMapFileName) {
+        String mapMl = generateMapML(Paths.get(folderPath.toAbsolutePath() + "\\" + grashMapFileName));
 
         String[][] mapName = extractParamsFromMapML(mapMl, "mapname");
         String[][] mapAuthor = extractParamsFromMapML(mapMl, "mapauthor");
         String[][] songName = extractParamsFromMapML(mapMl, "songname");
         String[][] mapVersion = extractParamsFromMapML(mapMl, "mapversion");
 
-        return new MapMetadata(mapName[0][0], mapAuthor[0][0], mapVersion[0][0], songName[0][0], folderPath, grashMapName);
+        return new MapMetadata(mapName[0][0], mapAuthor[0][0], mapVersion[0][0], songName[0][0], folderPath, grashMapFileName);
     }
 
     private String[][] extractParamsFromMapML(String mapML, String keyword) {
