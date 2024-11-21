@@ -1,6 +1,6 @@
 package grash.events;
 
-public class GrashEvent_LoadLevel extends GrashEvent {
+public final class GrashEvent_LoadLevel extends GrashEvent {
 
     String levelKey;
 

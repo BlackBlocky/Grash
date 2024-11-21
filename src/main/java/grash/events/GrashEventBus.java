@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 
-public class GrashEventBus {
+public final class GrashEventBus {
     private final HashMap<Class<? extends GrashEvent>, HashSet<GrashEventListener>> listeners = new HashMap<>();
 
     private final LinkedList<GrashEvent> eventQueue = new LinkedList<>();

@@ -10,7 +10,7 @@ package grash.events;
  *
  */
 
-public class GrashEvent_LoadResources extends GrashEvent {
+public final class GrashEvent_LoadResources extends GrashEvent {
     public GrashEvent_LoadResources() {
         super("LoadResources");
     }

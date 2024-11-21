@@ -7,7 +7,7 @@ import grash.events.*;
 import java.util.HashSet;
 import javafx.stage.Stage;
 
-public class GameController implements GrashEventListener {
+public final class GameController implements GrashEventListener {
 
     private final GrashEventBus eventBus;
     private final ResourceLoader resourceLoader;

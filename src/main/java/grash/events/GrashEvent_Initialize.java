@@ -9,7 +9,7 @@ package grash.events;
  * {@link grash.core.WindowController}
  *
  */
-public class GrashEvent_Initialize extends GrashEvent {
+public final class GrashEvent_Initialize extends GrashEvent {
     public String test = "";
     public GrashEvent_Initialize(String t) {
         super("Initialize");

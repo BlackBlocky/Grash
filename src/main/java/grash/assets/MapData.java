@@ -1,5 +1,5 @@
 package grash.assets;
 
-public class MapData {
+public final class MapData {
 
 }

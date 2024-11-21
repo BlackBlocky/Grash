@@ -2,7 +2,7 @@ package grash.assets;
 
 import java.nio.file.Path;
 
-public class MapMetadata {
+public final class MapMetadata {
     private final String mapName;
     private final String mapAuthor;
     private final String mapVersion;

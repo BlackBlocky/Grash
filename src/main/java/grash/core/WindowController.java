@@ -9,7 +9,7 @@ import javafx.stage.StageStyle;
 
 import java.net.URL;
 
-public class WindowController implements GrashEventListener {
+public final class WindowController implements GrashEventListener {
 
     public final GameController game;
 

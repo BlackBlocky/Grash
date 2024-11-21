@@ -6,7 +6,7 @@ import grash.events.GrashEventBus;
 import grash.events.GrashEvent_Initialize;
 import javafx.stage.StageStyle;
 
-public class Main extends Application {
+public final class Main extends Application {
 
     public static final String WORKING_DIRECTORY = System.getProperty("user.dir");
 

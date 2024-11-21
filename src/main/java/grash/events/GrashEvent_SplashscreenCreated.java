@@ -11,7 +11,7 @@ import grash.events.GrashEvent;
  * {@link grash.core.GameController}
  *
  */
-public class GrashEvent_SplashscreenCreated extends GrashEvent {
+public final class GrashEvent_SplashscreenCreated extends GrashEvent {
 
     public GrashEvent_SplashscreenCreated() {
         super("SplashscreenCreated");

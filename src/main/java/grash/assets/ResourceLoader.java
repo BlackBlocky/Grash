@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ResourceLoader implements GrashEventListener {
+public final class ResourceLoader implements GrashEventListener {
 
     private GameController game;
 
