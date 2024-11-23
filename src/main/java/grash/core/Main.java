@@ -6,6 +6,8 @@ import grash.events.GrashEventBus;
 import grash.events.GrashEvent_Initialize;
 import javafx.stage.StageStyle;
 
+// VM Options: --module-path [FX-PATH] --add-modules javafx.controls,javafx.fxml,javafx.graphics
+
 public final class Main extends Application {
 
     public static final String WORKING_DIRECTORY = System.getProperty("user.dir");

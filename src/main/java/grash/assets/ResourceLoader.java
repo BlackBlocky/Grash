@@ -6,18 +6,15 @@ import grash.events.GrashEventListener;
 import grash.events.GrashEvent_LoadResources;
 
 import java.io.File;
-import java.lang.reflect.Array;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public final class ResourceLoader implements GrashEventListener {
 
-    private GameController game;
+    private final GameController game;
 
-    private HashMap<String, Path> mapMetdatasMap = new HashMap<>();
-    private String[] allMapKeys;
+    private HashMap<String, MapMetadata> mapMetdatasMap = new HashMap<>();
+    private String[] allMapKeys = new String[0];
 
     public ResourceLoader (GameController gameController) {
         this.game = gameController;
@@ -25,7 +22,7 @@ public final class ResourceLoader implements GrashEventListener {
         game.getEventBus().registerListener(GrashEvent_LoadResources.class, this);
     }
 
-    public Path getMapMetdata(String mapKey) {
+    public MapMetadata getMapMetadata(String mapKey) {
         return mapMetdatasMap.get(mapKey);
     }
 
@@ -43,9 +40,21 @@ public final class ResourceLoader implements GrashEventListener {
         }
     }
 
+    /**
+     * Loading all the MapMetadata (Not the Actual Map) and adding everything loaded to the Resource-Data
+     */
     private void onEvent_LoadResources(GrashEvent_LoadResources event) {
         MapMetadata[] loadedMapMetadatas = loadAllMaps();
-        System.out.println();
+        ArrayList<String> allLoadedMapKeys = new ArrayList<>();
+
+        if(loadedMapMetadatas == null) return;
+
+        for(MapMetadata mapMD : loadedMapMetadatas) {
+            allLoadedMapKeys.add(mapMD.getMapKey());
+            mapMetdatasMap.put(mapMD.getMapKey(), mapMD);
+        }
+
+        allMapKeys = allLoadedMapKeys.toArray(new String[0]);
     }
 
     private MapMetadata[] loadAllMaps() {

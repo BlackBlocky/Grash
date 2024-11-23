@@ -6,7 +6,7 @@ package grash.events;
  * {@link grash.core.GameController}
  *
  *  <br>Received by:
- *
+ *  {@link grash.assets.ResourceLoader}
  *
  */
 

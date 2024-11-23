@@ -43,4 +43,5 @@ public final class MapMetadata {
     public String getFileName() {
         return this.fileName;
     }
+    public String getMapKey() { return this.mapKey; }
 }

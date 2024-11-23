@@ -94,12 +94,13 @@ public final class GameController implements GrashEventListener {
         this.gameState = GameState.StartScreen;
     }
 
+    /**
+     * When this Event happens, ...
+     */
     private void onEvent_SplashscreenCreated(GrashEvent_SplashscreenCreated event) {
-
-
         getEventBus().triggerEvent(new GrashEvent_LoadResources());
         getEventBus().triggerEvent(new GrashEvent_InitializationDone());
-        getEventBus().triggerEvent(new GrashEvent_LoadLevel("BlackBlocky:Test"));
+        getEventBus().triggerEvent(new GrashEvent_LoadLevel("BlackBlocky::Test"));
     }
 
 }
