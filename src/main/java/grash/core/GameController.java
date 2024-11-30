@@ -32,9 +32,10 @@ public final class GameController implements GrashEventListener {
         this.mapLoader = new MapLoader();
 
         eventBus.registerListener(GrashEvent_InitializationDone.class, this);
-        eventBus.registerListener(GrashEvent_SplashscreenCreated.class, this);
+        eventBus.registerListener(GrashEvent_SceneSwitched.class, this);
 
         gameState = GameState.Init;
+        getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.Splashscreen));
         getEventBus().triggerEvent(new GrashEvent_Initialize(""));
     }
 
@@ -82,8 +83,8 @@ public final class GameController implements GrashEventListener {
                 onEvent_InitializeDone((GrashEvent_InitializationDone) event);
                 break;
             }
-            case "SplashscreenCreated": {
-                onEvent_SplashscreenCreated((GrashEvent_SplashscreenCreated) event);
+            case "SceneSwitched": {
+                onEvent_SceneSwitched((GrashEvent_SceneSwitched) event);
                 break;
             }
         }
@@ -94,13 +95,14 @@ public final class GameController implements GrashEventListener {
         this.gameState = GameState.StartScreen;
     }
 
-    /**
-     * When this Event happens, ...
-     */
-    private void onEvent_SplashscreenCreated(GrashEvent_SplashscreenCreated event) {
-        getEventBus().triggerEvent(new GrashEvent_LoadResources());
-        getEventBus().triggerEvent(new GrashEvent_InitializationDone());
-        getEventBus().triggerEvent(new GrashEvent_LoadLevel("BlackBlocky::Test"));
+    private void onEvent_SceneSwitched(GrashEvent_SceneSwitched event) {
+        switch (event.getSwitchedWindowState()) {
+            case Splashscreen: {
+                getEventBus().triggerEvent(new GrashEvent_LoadResources());
+                getEventBus().triggerEvent(new GrashEvent_InitializationDone());
+                getEventBus().triggerEvent(new GrashEvent_LoadLevel("BlackBlocky::Test"));
+            }
+        }
     }
 
 }

@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.net.URL;
+import java.util.HashMap;
 
 public final class WindowController implements GrashEventListener {
 
@@ -16,6 +17,10 @@ public final class WindowController implements GrashEventListener {
     private Stage splashscreen = null;
 
     private WindowState windowState = WindowState.None;
+
+    private HashMap<WindowState, String> fxmlFileNamesByWindowState = new HashMap<WindowState, String>() {{
+        put(WindowState.Splashscreen, "initScene.fxml");
+    }};
 
     public WindowController(GameController gameController) {
         this.game = gameController;
@@ -31,10 +36,6 @@ public final class WindowController implements GrashEventListener {
     @Override
     public void onEvent(GrashEvent event) {
         switch (event.getEventKey()) {
-            case "Initialize": {
-                onEvent_Initialize((GrashEvent_Initialize) event);
-                break;
-            }
             case "InitializationDone": {
                 onEvent_InitializeDone((GrashEvent_InitializationDone) event);
                 break;
@@ -46,7 +47,29 @@ public final class WindowController implements GrashEventListener {
         }
     }
 
-    private void onEvent_Initialize(GrashEvent_Initialize event) {
+    private void onEvent_InitializeDone(GrashEvent_InitializationDone event) {
+        System.out.println("second: " + event.getClass().getName());
+    }
+
+    private void onEvent_SwitchScene(GrashEvent_SwitchScene event) {
+
+        // noinspection EnumSwitchStatementWhichMissesCases,SwitchStatementWithTooFewBranches
+        switch(event.getTargetWindowState()) {
+            case Splashscreen: {
+                showSplashScreen(event);
+                break;
+            }
+            default: {
+                switchToScene(event);
+                break;
+            }
+        }
+
+        this.windowState = event.getTargetWindowState();
+        game.getEventBus().triggerEvent(new GrashEvent_SceneSwitched(event.getTargetWindowState()));
+    }
+
+    private void showSplashScreen(GrashEvent_SwitchScene event) {
         game.getPrimaryStage().hide();
 
         this.splashscreen = new Stage();
@@ -67,18 +90,16 @@ public final class WindowController implements GrashEventListener {
         }
 
         this.splashscreen.show();
-
-        this.windowState = WindowState.Splashscreen;
-        game.getEventBus().triggerEvent(new GrashEvent_SplashscreenCreated());
     }
 
-    private void onEvent_InitializeDone(GrashEvent_InitializationDone event) {
-        System.out.println("second: " + event.getClass().getName());
-    }
+    private void switchToScene(GrashEvent_SwitchScene event) {
+        if(splashscreen != null) splashscreen.hide();
 
-    private void onEvent_SwitchScene(GrashEvent_SwitchScene event) {
+        // try to Load the Scene
+        FXMLLoader loader = new FXMLLoader() {
 
+        };
 
-        game.getEventBus().triggerEvent(new GrashEvent_SceneSwitched(event.getTargetWindowState()));
+        game.getPrimaryStage().show();
     }
 }
