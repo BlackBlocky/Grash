@@ -1,6 +1,8 @@
 package grash.core;
 
 import grash.events.*;
+import grash.ui.ScreenController;
+import grash.ui.WelcomeScreenController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -24,6 +26,8 @@ public final class WindowController implements GrashEventListener {
         put(WindowState.WelcomeScreen, "welcomeScreen.fxml");
     }};
 
+    private HashMap<WindowState, ScreenController> fxmlControllerByWindowState = new HashMap<>();
+
     public WindowController(GameController gameController) {
         this.game = gameController;
         game.getEventBus().registerListener(GrashEvent_Initialize.class, this);
@@ -38,6 +42,10 @@ public final class WindowController implements GrashEventListener {
     @Override
     public void onEvent(GrashEvent event) {
         switch (event.getEventKey()) {
+            case "Initialize": {
+                onEvent_Initialize((GrashEvent_Initialize) event);
+                break;
+            }
             case "InitializationDone": {
                 onEvent_InitializeDone((GrashEvent_InitializationDone) event);
                 break;
@@ -47,6 +55,11 @@ public final class WindowController implements GrashEventListener {
                 break;
             }
         }
+    }
+
+    private void onEvent_Initialize(GrashEvent_Initialize event) {
+        fxmlControllerByWindowState.put(WindowState.Splashscreen, null);
+        fxmlControllerByWindowState.put(WindowState.WelcomeScreen, new WelcomeScreenController(this.game));
     }
 
     private void onEvent_InitializeDone(GrashEvent_InitializationDone event) {
@@ -101,6 +114,8 @@ public final class WindowController implements GrashEventListener {
         Pane pane = null;
         FXMLLoader loader = new FXMLLoader();
         try {
+            ScreenController screenController = fxmlControllerByWindowState.get(event.getTargetWindowState());
+            if(screenController != null) loader.setController(screenController.getClass());
             loader.setLocation(new URL("file:///" + game.getWorkingDirectory() + "/assets/fxml/" + fxmlFileNamesByWindowState.get(event.getTargetWindowState())));
             pane = loader.load();
         } catch (Exception e) {
