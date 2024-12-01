@@ -7,6 +7,7 @@ import grash.events.GrashEvent_Initialize;
 import javafx.stage.StageStyle;
 
 // VM Options: --module-path [FX-PATH] --add-modules javafx.controls,javafx.fxml,javafx.graphics
+// GitHub Repo: https://github.com/BlackBlocky/Grash
 
 public final class Main extends Application {
 
