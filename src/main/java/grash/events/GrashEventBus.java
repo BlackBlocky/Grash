@@ -23,10 +23,14 @@ public final class GrashEventBus {
             GrashEvent activeEvent = eventQueue.getFirst();
 
             HashSet<GrashEventListener> eventListeners = listeners.get(activeEvent.getClass());
-            if(eventListeners == null) return;
-
-            processEvent(activeEvent, eventListeners);
-            eventQueue.remove(activeEvent);
+            if(eventListeners != null) {
+                processEvent(activeEvent, eventListeners);
+                eventQueue.remove(activeEvent);
+            }
+            else {
+                eventQueue.remove(activeEvent);
+                continue;
+            }
 
             if(eventQueue.isEmpty()) isAlreadyProcessing = false;
 

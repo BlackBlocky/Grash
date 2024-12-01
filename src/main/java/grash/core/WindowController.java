@@ -3,6 +3,7 @@ package grash.core;
 import grash.events.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -20,6 +21,7 @@ public final class WindowController implements GrashEventListener {
 
     private HashMap<WindowState, String> fxmlFileNamesByWindowState = new HashMap<WindowState, String>() {{
         put(WindowState.Splashscreen, "initScene.fxml");
+        put(WindowState.WelcomeScreen, "welcomeScreen.fxml");
     }};
 
     public WindowController(GameController gameController) {
@@ -82,7 +84,7 @@ public final class WindowController implements GrashEventListener {
         FXMLLoader loader = new FXMLLoader();
         try{
             loader.setLocation(new URL("file:///" + game.getWorkingDirectory() + "/assets/fxml/initScene.fxml"));
-            StackPane vbox = loader.<StackPane>load();
+            StackPane vbox = loader.load();
             Scene initScene = new Scene(vbox);
             this.splashscreen.setScene(initScene);
         } catch (Exception e) {
@@ -96,10 +98,19 @@ public final class WindowController implements GrashEventListener {
         if(splashscreen != null) splashscreen.hide();
 
         // try to Load the Scene
-        FXMLLoader loader = new FXMLLoader() {
+        Pane pane = null;
+        FXMLLoader loader = new FXMLLoader();
+        try {
+            loader.setLocation(new URL("file:///" + game.getWorkingDirectory() + "/assets/fxml/" + fxmlFileNamesByWindowState.get(event.getTargetWindowState())));
+            pane = loader.load();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        };
+        if(pane == null) return;
 
+        Scene scene = new Scene(pane);
+        game.getPrimaryStage().setScene(scene);
         game.getPrimaryStage().show();
     }
 }
