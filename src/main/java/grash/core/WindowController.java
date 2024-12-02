@@ -126,6 +126,10 @@ public final class WindowController implements GrashEventListener {
 
         Scene scene = new Scene(pane);
         game.getPrimaryStage().setScene(scene);
+
+        // Call the init Function of the Event and Show the Scene
+        if(fxmlControllerByWindowState.get(event.getTargetWindowState()) != null)
+            fxmlControllerByWindowState.get(event.getTargetWindowState()).init();
         game.getPrimaryStage().show();
     }
 }

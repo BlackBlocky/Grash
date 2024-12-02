@@ -35,8 +35,8 @@ public final class GameController implements GrashEventListener {
         eventBus.registerListener(GrashEvent_SceneSwitched.class, this);
 
         gameState = GameState.Init;
-        getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.Splashscreen));
         getEventBus().triggerEvent(new GrashEvent_Initialize(""));
+        getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.Splashscreen));
     }
 
     public String getWorkingDirectory() {

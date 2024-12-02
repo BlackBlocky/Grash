@@ -4,7 +4,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_CENTER" stylesheets="@../css/welcomeScreenStyle.css" styleClass="vbox-style">
-    <Text text="Grash" styleClass="title-text" />
-    <Button text="Start Game" styleClass="start-button"/>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+        alignment="TOP_CENTER" stylesheets="@../css/welcomeScreenStyle.css" styleClass="vbox-style">
+    <Text text="Grash" fx:id="titleText" styleClass="title-text" />
+    <Button text="Start Game" fx:id="startButton" styleClass="start-button" />
 </VBox>
