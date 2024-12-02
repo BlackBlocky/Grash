@@ -2,10 +2,18 @@ package grash.ui;
 
 import grash.core.GameController;
 import grash.events.*;
+import javafx.animation.AnimationTimer;
 import javafx.animation.KeyFrame;
 import javafx.animation.ScaleTransition;
 import javafx.animation.Timeline;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.*;
 import javafx.util.Duration;
 
 public final class WelcomeScreenController extends ScreenController {
@@ -18,6 +26,7 @@ public final class WelcomeScreenController extends ScreenController {
     @Override
     public void init() {
         setupStartButton();
+        setupBackground();
     }
 
     private void setupStartButton() {
@@ -49,6 +58,54 @@ public final class WelcomeScreenController extends ScreenController {
         });
 
         startButton.setOnMousePressed(event -> startGameButton_Handler());
+    }
+
+    private void setupBackground() {
+        Pane welcomeScreenPane = (Pane) game.getPrimaryStage().getScene().getRoot();
+
+        AnimationTimer timer = new AnimationTimer() {
+            private double angle = 0;
+            private long lastTick = 0;
+            private final double nanosecondsInSecond = 1000000000;
+            private final double animSpeed = 600;
+
+
+            @Override
+            public void handle(long l) {
+                if(lastTick == 0) {
+                    lastTick = l;
+                    return;
+                }
+
+                double deltaTimeSeconds = (double)(l - lastTick) / nanosecondsInSecond;
+                lastTick = l;
+
+                // Increase Angle
+                angle = (angle + 1.0 * deltaTimeSeconds * animSpeed) % 360.0;
+
+                // Calculate start and end Points by the angle
+                double startX = 0.5 + 0.5 * Math.cos(Math.toRadians(angle));
+                double startY = 0.5 + 0.5 * Math.sin(Math.toRadians(angle));
+                double endX = 0.5 - 0.5 * Math.cos(Math.toRadians(angle));
+                double endY = 0.5 - 0.5 * Math.sin(Math.toRadians(angle));
+
+                LinearGradient gradient = new LinearGradient(
+                        startX, startY, endX, endY,
+                        true,
+                        CycleMethod.NO_CYCLE,
+                        new Stop(0, Color.web("#751d8b")),
+                        new Stop(1, Color.web("#011655"))
+                );
+
+                // Update Background
+                welcomeScreenPane.setBackground(new Background(new BackgroundFill(
+                        Paint.valueOf(gradient.toString()),
+                        CornerRadii.EMPTY,
+                        Insets.EMPTY
+                )));
+            }
+        };
+        timer.start();
     }
 
     public void startGameButton_Handler() {
