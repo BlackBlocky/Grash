@@ -1,0 +1,24 @@
+.vbox-style {
+    -fx-background-color: linear-gradient(to bottom right, #751d8b, #011655);
+    -fx-padding: 200 0 0 0;
+}
+
+.start-button {
+    -fx-pref-width: 400px;
+    -fx-pref-height: 50px;
+
+    -fx-font-size: 20px;
+    -fx-background-color: #FFB347;
+    -fx-background-radius: 50;
+    -fx-border-color: white;
+    -fx-border-radius: 50;
+    -fx-border-width: 4px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.title-text {
+    -fx-fill: #FFB347;
+    -fx-font-size: 230px;
+    -fx-font-weight: bold;
+}
