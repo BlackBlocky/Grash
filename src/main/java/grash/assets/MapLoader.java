@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class MapLoader {
+final class MapLoader {
 
     public MapLoader() {
 
@@ -24,6 +24,14 @@ public final class MapLoader {
         String[][] mapVersion = extractParamsFromMapML(mapMl, "mapversion");
 
         return new MapMetadata(mapName[0][0], mapAuthor[0][0], mapVersion[0][0], songName[0][0], folderPath, grashMapFileName);
+    }
+
+    public MapData loadMap(MapMetadata mapMetadata) {
+        String mapMl = generateMapML(Paths.get(mapMetadata.getFolderPath() + "\\" + mapMetadata.getFileName()));
+
+
+
+        return new MapData();
     }
 
     private String[][] extractParamsFromMapML(String mapML, String keyword) {
@@ -45,6 +53,7 @@ public final class MapLoader {
         String searchedKeyword = "[" + keyword + "]";
 
         int keywordIndex = mapML.indexOf(searchedKeyword);
+        if(keywordIndex == -1) return null;
         int paramsStartIndex = mapML.indexOf('{', keywordIndex);
         int paramsEndIndex = mapML.indexOf('}', paramsStartIndex);
 
@@ -52,6 +61,8 @@ public final class MapLoader {
     }
 
     private String[][] extractMapMLParamsFromElements(String mlElementList) {
+        if(mlElementList == null) return null;
+
         ArrayList<String[]> paramList = new ArrayList<>();
 
         String[] elements = mlElementList.replace(")", "").split("\\(");

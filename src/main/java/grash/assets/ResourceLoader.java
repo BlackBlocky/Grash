@@ -3,6 +3,7 @@ package grash.assets;
 import grash.core.GameController;
 import grash.events.GrashEvent;
 import grash.events.GrashEventListener;
+import grash.events.GrashEvent_LoadLevel;
 import grash.events.GrashEvent_LoadResources;
 
 import java.io.File;
@@ -13,13 +14,17 @@ public final class ResourceLoader implements GrashEventListener {
 
     private final GameController game;
 
+    private final MapLoader mapLoader;
+
     private HashMap<String, MapMetadata> mapMetdatasMap = new HashMap<>();
     private String[] allMapKeys = new String[0];
 
     public ResourceLoader (GameController gameController) {
         this.game = gameController;
+        this.mapLoader = new MapLoader();
 
         game.getEventBus().registerListener(GrashEvent_LoadResources.class, this);
+        game.getEventBus().registerListener(GrashEvent_LoadLevel.class, this);
     }
 
     public MapMetadata getMapMetadata(String mapKey) {
@@ -30,11 +35,19 @@ public final class ResourceLoader implements GrashEventListener {
         return allMapKeys;
     }
 
+    public MapData loadMap(String mapKey) {
+        return mapLoader.loadMap(mapMetdatasMap.get(mapKey));
+    }
+
     @Override
     public void onEvent(GrashEvent event) {
         switch(event.getEventKey()) {
             case "LoadResources": {
                 onEvent_LoadResources((GrashEvent_LoadResources) event);
+                break;
+            }
+            case "LoadLevel": {
+                onEvent_LoadLevel((GrashEvent_LoadLevel) event);
                 break;
             }
         }
@@ -57,6 +70,10 @@ public final class ResourceLoader implements GrashEventListener {
         allMapKeys = allLoadedMapKeys.toArray(new String[0]);
     }
 
+    private void onEvent_LoadLevel(GrashEvent_LoadLevel event) {
+        MapData loadedTargetMap = loadMap(event.getLevelKey());
+    }
+
     private MapMetadata[] loadAllMaps() {
         // Load the Folder which contains all Maps
         File mapsFolder = new File(game.getWorkingDirectory() + "\\assets\\maps");
@@ -73,7 +90,7 @@ public final class ResourceLoader implements GrashEventListener {
             File grashMapFile = getDotGrashMapFileInMapFolder(mapFolder);
             if(grashMapFile == null) continue;
 
-            loadedMapMetadatas.add(game.getMapLoader().loadMapMetadata(mapFolder.toPath(), grashMapFile.getName()));
+            loadedMapMetadatas.add(mapLoader.loadMapMetadata(mapFolder.toPath(), grashMapFile.getName()));
         }
 
         System.out.println();

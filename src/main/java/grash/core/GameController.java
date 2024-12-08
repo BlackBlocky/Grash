@@ -1,6 +1,5 @@
 package grash.core;
 
-import grash.assets.MapLoader;
 import grash.assets.ResourceLoader;
 import grash.events.*;
 
@@ -12,7 +11,6 @@ public final class GameController implements GrashEventListener {
     private final GrashEventBus eventBus;
     private final ResourceLoader resourceLoader;
     private final WindowController windowController;
-    private final MapLoader mapLoader;
 
     private final long initTimestampMillis;
     private final Stage primaryStage;
@@ -29,7 +27,6 @@ public final class GameController implements GrashEventListener {
         this.eventBus = new GrashEventBus();
         this.resourceLoader = new ResourceLoader(this);
         this.windowController = new WindowController(this);
-        this.mapLoader = new MapLoader();
 
         eventBus.registerListener(GrashEvent_InitializationDone.class, this);
         eventBus.registerListener(GrashEvent_SceneSwitched.class, this);
@@ -53,9 +50,6 @@ public final class GameController implements GrashEventListener {
     }
     public GameState getGameState() {
         return this.gameState;
-    }
-    public MapLoader getMapLoader() {
-        return this.mapLoader;
     }
 
     public int generateUniqueID() {
@@ -100,8 +94,9 @@ public final class GameController implements GrashEventListener {
             case Splashscreen: {
                 getEventBus().triggerEvent(new GrashEvent_LoadResources());
                 getEventBus().triggerEvent(new GrashEvent_InitializationDone());
-                getEventBus().triggerEvent(new GrashEvent_LoadLevel("BlackBlocky::Test"));
+                //getEventBus().triggerEvent(new GrashEvent_LoadLevel("BlackBlocky::Test"));
                 getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.WelcomeScreen));
+                getEventBus().triggerEvent(new GrashEvent_LoadLevel("Some_Person::My_Cool_Map::Version_1"));
             }
         }
     }
