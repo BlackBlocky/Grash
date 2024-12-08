@@ -29,9 +29,52 @@ final class MapLoader {
     public MapData loadMap(MapMetadata mapMetadata) {
         String mapMl = generateMapML(Paths.get(mapMetadata.getFolderPath() + "\\" + mapMetadata.getFileName()));
 
+        String[][] mapSpeed = extractParamsFromMapML(mapMl, "speed");
+        String[][] mapGrowspeed = extractParamsFromMapML(mapMl, "growspeed");
+        String[][] mapStartcolor = extractParamsFromMapML(mapMl, "startcolor");
+        String[][] mapStartfovscale = extractParamsFromMapML(mapMl, "startfovscale");
+        String[][] mapStartrotation = extractParamsFromMapML(mapMl, "startrotation");
 
+        String[][] mapSpike = extractParamsFromMapML(mapMl, "spike");
+        String[][] mapSlide = extractParamsFromMapML(mapMl, "slide");
+        String[][] mapWall = extractParamsFromMapML(mapMl, "wall");
+        String[][] mapDoublejump = extractParamsFromMapML(mapMl, "doublejump");
+        String[][] mapRope = extractParamsFromMapML(mapMl, "rope");
 
-        return new MapData();
+        String[][] mapTapnote = extractParamsFromMapML(mapMl, "tapnote");
+        String[][] mapGrownnote = extractParamsFromMapML(mapMl, "grownnote");
+        String[][] mapSlidenote = extractParamsFromMapML(mapMl, "slidenote");
+
+        String[][] mapColor = extractParamsFromMapML(mapMl, "color");
+        String[][] mapFovscale = extractParamsFromMapML(mapMl, "fovscale");
+        String[][] mapRotate = extractParamsFromMapML(mapMl, "rotate");
+
+        String[][] mapBimage = extractParamsFromMapML(mapMl, "bimage");
+        String[][] mapLasershow = extractParamsFromMapML(mapMl, "lasershow");
+
+        return new MapData(mapMetadata,
+                mapSpeed,
+                mapGrowspeed,
+                mapStartcolor,
+                mapStartfovscale,
+                mapStartrotation,
+
+                mapSpike,
+                mapSlide,
+                mapWall,
+                mapDoublejump,
+                mapRope,
+
+                mapTapnote,
+                mapGrownnote,
+                mapSlidenote,
+
+                mapColor,
+                mapFovscale,
+                mapRotate,
+
+                mapBimage,
+                mapLasershow);
     }
 
     private String[][] extractParamsFromMapML(String mapML, String keyword) {
