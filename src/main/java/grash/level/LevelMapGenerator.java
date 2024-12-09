@@ -52,7 +52,7 @@ public class LevelMapGenerator implements GrashEventListener {
                     Double.parseDouble(mapData.getStartrotation()[0][0]),
 
                     convertSpikes(mapData.getSpike()),
-                    null,
+                    convertSlides(mapData.getSlide()),
                     null,
                     null,
                     null,
@@ -79,6 +79,7 @@ public class LevelMapGenerator implements GrashEventListener {
      * Converts the "spikes" String to a {@link grash.level.LevelMapElement} Array
      */
     private LevelMapElement[] convertSpikes(String[][] spikesString) throws NumberFormatException {
+        if(spikesString == null) return new LevelMapElement[0];
         LevelMapElement[] convertedSpikes = new LevelMapElement[spikesString.length];
 
         for(int i = 0; i < spikesString.length; i++) {
@@ -89,6 +90,20 @@ public class LevelMapGenerator implements GrashEventListener {
         }
 
         return convertedSpikes;
+    }
+
+    private LevelMapElement[] convertSlides(String[][] slidesString) throws NumberFormatException {
+        if(slidesString == null) return new LevelMapElement[0];
+        LevelMapElement[] convertedSlides = new LevelMapElement[slidesString.length];
+
+        for(int i = 0; i < slidesString.length; i++) {
+            convertedSlides[i] = new LevelMapElement();
+            convertedSlides[i].setIsUp(Boolean.parseBoolean(slidesString[i][0]));
+            convertedSlides[i].setTimeStart(Double.parseDouble(slidesString[i][1]));
+            convertedSlides[i].setTimeEnd(Double.parseDouble(slidesString[i][2]));
+        }
+
+        return convertedSlides;
     }
 
 }
