@@ -6,22 +6,23 @@ Element: ()
 No Whitespaces allowed! (Being ignored)
 Obviously '{,[,(,),],}' is also not allowed in Strings etc.
 [false = 0, true = 1]
+!!! = must have
 
 ------------------------------------------------------------
 
 Every Keyword with Examples:
 
-[loader]{(v1)}                   // grashMap Loader Version (for loader)
+[loader]{(v1)}                   // grashMap Loader Version (for loader)  !!!
 
-[mapname]{(Map_Name)}            // Name of the Map
-[mapauthor]{(Some_Person)}        // Name of the Author
-[songname]{(Songname_by_Person)} // The Name of the Song
-[mapversion]{(Version_1)}           // The Version on the Map
-[speed]{(7.2)}                   // Player Speed
-[growspeed]{(0.8)}               // Time in Seconds before a Grownnote needs to be clicked
-[startcolor]{(255, 255, 255)}    // Start Color of the Map
-[startfovscale]{(1.0)}           // The Start FOV
-[startrotation]{(0)}             // The Start Rotation in degrees
+[mapname]{(Map_Name)}            // Name of the Map  !!!
+[mapauthor]{(Some_Person)}        // Name of the Author  !!!
+[songname]{(Songname_by_Person)} // The Name of the Song  !!!
+[mapversion]{(Version_1)}           // The Version on the Map  !!!
+[speed]{(7.2)}                   // Player Speed  !!!
+[growspeed]{(0.8)}               // Time in Seconds before a Grownnote needs to be clicked  !!!
+[startcolor]{(255, 255, 255)}    // Start Color of the Map  !!!
+[startfovscale]{(1.0)}           // The Start FOV  !!!
+[startrotation]{(0)}             // The Start Rotation in degrees  !!!
 
 [spike]{(true, 3.5, 5.0)(...)...} // isUp, start(sec), end(sec)
 [slide]{(false,6.0,7.5)...}       // isUp, start, end

@@ -11,6 +11,7 @@ public final class LevelMap {
     private final Color startColor;
     private final double startFOVScale;
     private final double startRotation;
+    //System.out.println(Evergreen X Daniel);
 
     private final LevelMapElement[] spikes;
     private final LevelMapElement[] slides;

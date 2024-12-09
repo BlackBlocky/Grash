@@ -1,5 +1,6 @@
 package grash.level;
 
+import grash.assets.MapData;
 import grash.core.GameController;
 import grash.events.GrashEvent;
 import grash.events.GrashEventListener;
@@ -28,8 +29,66 @@ public class LevelMapGenerator implements GrashEventListener {
         }
     }
 
+    /**
+     * Generating the {@link grash.level.LevelMap} from the MapData, or in other words, make dumb strings to cool stuff
+     */
     private void onEvent_LevelLoaded(GrashEvent_LevelLoaded event) {
         System.out.println("LevelLoaded event came to LevelMapGenerator");
+
+        LevelMap generatedLevelMap = generatedLevelMapFromMapData(event.getMapData());
+
+
+    }
+
+    private LevelMap generatedLevelMapFromMapData(MapData mapData) {
+        try {
+             return new LevelMap(
+                    mapData.getMapMetadata(),
+
+                    Double.parseDouble(mapData.getSpeed()[0][0]),
+                    Double.parseDouble(mapData.getGrowspeed()[0][0]),
+                    null,
+                    Double.parseDouble(mapData.getStartfovscale()[0][0]),
+                    Double.parseDouble(mapData.getStartrotation()[0][0]),
+
+                    convertSpikes(mapData.getSpike()),
+                    null,
+                    null,
+                    null,
+                    null,
+
+                    null,
+                    null,
+                    null,
+
+                    null,
+                    null,
+                    null,
+
+                    null,
+                    null
+            );
+        } catch(NumberFormatException numberFormatException) {
+            System.out.println("The Map \"" + mapData.getMapMetadata().getMapKey() + "\" contains errors");
+        }
+
+        return null;
+    }
+
+    /**
+     * Converts the "spikes" String to a {@link grash.level.LevelMapElement} Array
+     */
+    private LevelMapElement[] convertSpikes(String[][] spikesString) throws NumberFormatException {
+        LevelMapElement[] convertedSpikes = new LevelMapElement[spikesString.length];
+
+        for(int i = 0; i < spikesString.length; i++) {
+            convertedSpikes[i] = new LevelMapElement();
+            convertedSpikes[i].setIsUp(Boolean.parseBoolean(spikesString[i][0]));
+            convertedSpikes[i].setTimeStart(Double.parseDouble(spikesString[i][1]));
+            convertedSpikes[i].setTimeEnd(Double.parseDouble(spikesString[i][2]));
+        }
+
+        return convertedSpikes;
     }
 
 }
