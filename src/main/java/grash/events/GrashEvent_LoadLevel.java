@@ -1,7 +1,7 @@
 package grash.events;
 
 /**
- * This Event is Triggered when the Game Starts
+ * This Event is triggered to start the loading process fro starting the Level
  * <br>Triggered by:
  * {@link grash.ui.WelcomeScreenController}
  *

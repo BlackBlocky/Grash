@@ -1,10 +1,7 @@
 package grash.assets;
 
 import grash.core.GameController;
-import grash.events.GrashEvent;
-import grash.events.GrashEventListener;
-import grash.events.GrashEvent_LoadLevel;
-import grash.events.GrashEvent_LoadResources;
+import grash.events.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -72,6 +69,7 @@ public final class ResourceLoader implements GrashEventListener {
 
     private void onEvent_LoadLevel(GrashEvent_LoadLevel event) {
         MapData loadedTargetMap = loadMap(event.getLevelKey());
+        game.getEventBus().triggerEvent(new GrashEvent_LevelLoaded(loadedTargetMap));
     }
 
     private MapMetadata[] loadAllMaps() {

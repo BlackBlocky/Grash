@@ -4,6 +4,8 @@ import grash.assets.ResourceLoader;
 import grash.events.*;
 
 import java.util.HashSet;
+
+import grash.level.LevelController;
 import javafx.stage.Stage;
 
 public final class GameController implements GrashEventListener {
@@ -11,6 +13,7 @@ public final class GameController implements GrashEventListener {
     private final GrashEventBus eventBus;
     private final ResourceLoader resourceLoader;
     private final WindowController windowController;
+    private final LevelController levelController;
 
     private final long initTimestampMillis;
     private final Stage primaryStage;
@@ -27,6 +30,7 @@ public final class GameController implements GrashEventListener {
         this.eventBus = new GrashEventBus();
         this.resourceLoader = new ResourceLoader(this);
         this.windowController = new WindowController(this);
+        this.levelController = new LevelController(this);
 
         eventBus.registerListener(GrashEvent_InitializationDone.class, this);
         eventBus.registerListener(GrashEvent_SceneSwitched.class, this);
