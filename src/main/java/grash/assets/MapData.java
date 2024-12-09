@@ -2,30 +2,30 @@ package grash.assets;
 
 public final class MapData {
 
-    private MapMetadata mapMetadata;
+    private final MapMetadata mapMetadata;
 
-    private String[][] speed;
-    private String[][] growspeed;
-    private String[][] startcolor;
-    private String[][] startfovscale;
-    private String[][] startrotation;
+    private final String[][] speed;
+    private final String[][] growspeed;
+    private final String[][] startcolor;
+    private final String[][] startfovscale;
+    private final String[][] startrotation;
 
-    private String[][] spike;
-    private String[][] slide;
-    private String[][] wall;
-    private String[][] doublejump;
-    private String[][] rope;
+    private final String[][] spike;
+    private final String[][] slide;
+    private final String[][] wall;
+    private final String[][] doublejump;
+    private final String[][] rope;
 
-    private String[][] tapnote;
-    private String[][] grownnote;
-    private String[][] slidenote;
+    private final String[][] tapnote;
+    private final String[][] grownnote;
+    private final String[][] slidenote;
 
-    private String[][] color;
-    private String[][] fovscale;
-    private String[][] rotate;
+    private final String[][] color;
+    private final String[][] fovscale;
+    private final String[][] rotate;
 
-    private String[][] bimage;
-    private String[][] lasershow;
+    private final String[][] bimage;
+    private final String[][] lasershow;
 
     public MapData(MapMetadata mapMetadata,
                    String[][] speed,

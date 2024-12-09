@@ -9,7 +9,7 @@ import grash.assets.MapData;
  * {@link grash.assets.ResourceLoader}
  *
  *  <br>Received by:
- * {@link grash.assets.ResourceLoader}
+ * {@link grash.level.LevelMapGenerator}
  *
  */
 
