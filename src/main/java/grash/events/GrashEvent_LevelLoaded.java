@@ -1,6 +1,7 @@
 package grash.events;
 
 import grash.assets.MapData;
+import grash.level.map.LevelMapGenerator;
 
 /**
  * This Event is triggered after the {@link grash.events.GrashEvent_LoadLevel} Event. Its doing Stuff like
@@ -9,7 +10,7 @@ import grash.assets.MapData;
  * {@link grash.assets.ResourceLoader}
  *
  *  <br>Received by:
- * {@link grash.level.LevelMapGenerator}
+ * {@link LevelMapGenerator}
  *
  */
 

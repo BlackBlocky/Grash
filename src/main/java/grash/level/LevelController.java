@@ -4,6 +4,7 @@ import grash.core.GameController;
 import grash.events.GrashEvent;
 import grash.events.GrashEventListener;
 import grash.events.GrashEvent_Initialize;
+import grash.level.map.LevelMapGenerator;
 
 public class LevelController implements GrashEventListener {
 

@@ -1,4 +1,4 @@
-package grash.level;
+package grash.level.map;
 
 import javafx.scene.paint.Color;
 

@@ -1,4 +1,4 @@
-package grash.level;
+package grash.level.map;
 
 public abstract class LevelMapThing {
     private double timeStart;

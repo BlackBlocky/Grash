@@ -1,4 +1,4 @@
-package grash.level;
+package grash.level.map;
 
 public class LevelMapElement extends LevelMapThing {
     private boolean isUp;

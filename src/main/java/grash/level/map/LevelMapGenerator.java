@@ -1,4 +1,4 @@
-package grash.level;
+package grash.level.map;
 
 import grash.assets.MapData;
 import grash.core.GameController;
@@ -7,7 +7,7 @@ import grash.events.GrashEventListener;
 import grash.events.GrashEvent_LevelLoaded;
 
 /**
- * This class is made for generating the {@link grash.level.LevelMap} Class, or in other words
+ * This class is made for generating the {@link LevelMap} Class, or in other words
  * converting the loaded Strings to an actual Level
  */
 public class LevelMapGenerator implements GrashEventListener {
@@ -30,7 +30,7 @@ public class LevelMapGenerator implements GrashEventListener {
     }
 
     /**
-     * Generating the {@link grash.level.LevelMap} from the MapData, or in other words, make dumb strings to cool stuff
+     * Generating the {@link LevelMap} from the MapData, or in other words, make dumb strings to cool stuff
      */
     private void onEvent_LevelLoaded(GrashEvent_LevelLoaded event) {
         System.out.println("LevelLoaded event came to LevelMapGenerator");
@@ -76,7 +76,7 @@ public class LevelMapGenerator implements GrashEventListener {
     }
 
     /**
-     * Converts the "spikes" String to a {@link grash.level.LevelMapElement} Array
+     * Converts the "spikes" String to a {@link LevelMapElement} Array
      */
     private LevelMapElement[] convertSpikes(String[][] spikesString) throws NumberFormatException {
         if(spikesString == null) return new LevelMapElement[0];
