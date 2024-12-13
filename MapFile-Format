@@ -26,7 +26,7 @@ Every Keyword with Examples:
 
 [spike]{(true, 3.5, 5.0)(...)...} // isUp, start(sec), end(sec)
 [slide]{(false,6.0,7.5)...}       // isUp, start, end
-[wall]{(true, 9.0)...}            // isUp, time
+[wall]{(true, 9.0)...}     ß       // isUp, time
 [doublejump]{(0.5, 7.2)...}       // heightY(normalized), time
 [rope]{(0.3, 3.5, 4.2)...}        // heightY, time, end
 

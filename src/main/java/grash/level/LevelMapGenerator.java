@@ -53,9 +53,9 @@ public class LevelMapGenerator implements GrashEventListener {
 
                     convertSpikes(mapData.getSpike()),
                     convertSlides(mapData.getSlide()),
-                    null,
-                    null,
-                    null,
+                    convertWalls(mapData.getWall()),
+                    convertDoubleJumps(mapData.getDoublejump()),
+                    convertRopes(mapData.getRope()),
 
                     null,
                     null,
@@ -104,6 +104,46 @@ public class LevelMapGenerator implements GrashEventListener {
         }
 
         return convertedSlides;
+    }
+
+    private LevelMapElement[] convertWalls(String[][] wallsString) throws NumberFormatException {
+        if(wallsString == null) return new LevelMapElement[0];
+        LevelMapElement[] convertedWalls = new LevelMapElement[wallsString.length];
+
+        for(int i = 0; i < wallsString.length; i++) {
+            convertedWalls[i] = new LevelMapElement();
+            convertedWalls[i].setIsUp(Boolean.parseBoolean(wallsString[i][0]));
+            convertedWalls[i].setTimeStart(Double.parseDouble(wallsString[i][1]));
+        }
+
+        return convertedWalls;
+    }
+
+    private LevelMapElement[] convertDoubleJumps(String[][] doubleJumpsString) throws NumberFormatException {
+        if(doubleJumpsString == null) return new LevelMapElement[0];
+        LevelMapElement[] convertedDoubleJumps = new LevelMapElement[doubleJumpsString.length];
+
+        for(int i = 0; i < doubleJumpsString.length; i++) {
+            convertedDoubleJumps[i] = new LevelMapElement();
+            convertedDoubleJumps[i].setHeightNormalized(Double.parseDouble(doubleJumpsString[i][0]));
+            convertedDoubleJumps[i].setTimeStart(Double.parseDouble(doubleJumpsString[i][1]));
+        }
+
+        return convertedDoubleJumps;
+    }
+
+    private LevelMapElement[] convertRopes(String[][] ropesString) throws NumberFormatException {
+        if(ropesString == null) return new LevelMapElement[0];
+        LevelMapElement[] convertedRopes = new LevelMapElement[ropesString.length];
+
+        for(int i = 0; i < ropesString.length; i++) {
+            convertedRopes[i] = new LevelMapElement();
+            convertedRopes[i].setHeightNormalized(Double.parseDouble(ropesString[i][0]));
+            convertedRopes[i].setTimeStart(Double.parseDouble(ropesString[i][1]));
+            convertedRopes[i].setTimeEnd(Double.parseDouble(ropesString[i][2]));
+        }
+
+        return convertedRopes;
     }
 
 }
