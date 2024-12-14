@@ -129,6 +129,7 @@ public final class GameController implements GrashEventListener {
 
     private void onEvent_LevelReadyToInit(GrashEvent_LevelReadyToInit event) {
         System.out.println("Level " + event.getLevelMap().getMapMetadata().getMapName() + " is ready!");
+        getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.LevelAction));
     }
 
 }

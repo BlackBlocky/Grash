@@ -1,6 +1,7 @@
 package grash.events;
 
 import grash.core.WindowState;
+import grash.ui.ScreenController;
 
 /**
  * This Event is Triggered only once, and it loads all necessary assets on init
@@ -14,13 +15,19 @@ import grash.core.WindowState;
 
 public final class GrashEvent_SceneSwitched extends GrashEvent {
     private final WindowState switchedWindowState;
+    private final ScreenController screenController;
 
-    public GrashEvent_SceneSwitched(WindowState switchedWindowState) {
+    public GrashEvent_SceneSwitched(WindowState switchedWindowState, ScreenController screenController) {
         super("SceneSwitched");
         this.switchedWindowState = switchedWindowState;
+        this.screenController = screenController;
     }
 
     public WindowState getSwitchedWindowState() {
         return switchedWindowState;
+    }
+
+    public ScreenController getScreenController() {
+        return this.screenController;
     }
 }

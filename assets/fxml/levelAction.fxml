@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<?import javafx.scene.control.ProgressBar?>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171"
+            stylesheets="@../css/levelActionStyle.css" styleClass="pane-style">
+    <Canvas fx:id="gameCanvas" styleClass="game-canvas" width="1600" height="900"/>
+
+    <Label fx:id="scoreText" text="000000000" layoutX="1290" layoutY="10" styleClass="score-text"/>
+    <Label fx:id="accuracyText" text="100%" layoutX="1470" layoutY="65" styleClass="accuracy-text"/>
+
+    <ProgressBar fx:id="levelProgressBar" progress="0.5" styleClass="level-progress-bar" layoutX="35" layoutY="835"/>
+    <ProgressBar fx:id="healthBar" progress="0.5" styleClass="health-bar" layoutX="35" layoutY="33"/>
+</AnchorPane>

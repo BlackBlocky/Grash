@@ -1,6 +1,7 @@
 package grash.core;
 
 import grash.events.*;
+import grash.ui.LevelActionScreenController;
 import grash.ui.ScreenController;
 import grash.ui.WelcomeScreenController;
 import javafx.fxml.FXMLLoader;
@@ -27,6 +28,7 @@ public final class WindowController implements GrashEventListener {
     private final HashMap<WindowState, String> fxmlFileNamesByWindowState = new HashMap<WindowState, String>() {{
         put(WindowState.Splashscreen, "initScene.fxml");
         put(WindowState.WelcomeScreen, "welcomeScreen.fxml");
+        put(WindowState.LevelAction, "levelAction.fxml");
     }};
 
     /**
@@ -69,6 +71,7 @@ public final class WindowController implements GrashEventListener {
     private void onEvent_Initialize(GrashEvent_Initialize event) {
         fxmlControllerByWindowState.put(WindowState.Splashscreen, null);
         fxmlControllerByWindowState.put(WindowState.WelcomeScreen, new WelcomeScreenController(this.game));
+        fxmlControllerByWindowState.put(WindowState.LevelAction, new LevelActionScreenController(this.game));
     }
 
     private void onEvent_InitializeDone(GrashEvent_InitializationDone event) {
@@ -93,7 +96,12 @@ public final class WindowController implements GrashEventListener {
         }
 
         this.windowState = event.getTargetWindowState();
-        game.getEventBus().triggerEvent(new GrashEvent_SceneSwitched(event.getTargetWindowState()));
+        game.getEventBus().triggerEvent(
+                new GrashEvent_SceneSwitched(
+                    event.getTargetWindowState(),
+                    fxmlControllerByWindowState.get(event.getTargetWindowState()
+                )
+        ));
     }
 
     private void showSplashScreen(GrashEvent_SwitchScene event) {

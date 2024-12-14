@@ -1,0 +1,41 @@
+.pane-style {
+    
+}
+
+.score-text {
+    -fx-text-fill: rgb(255, 255, 255);
+    -fx-font-size: 50px;
+    -fx-font-weight: bold;
+}
+
+.accuracy-text {
+    -fx-text-fill: rgb(255, 255, 255);
+    -fx-font-size: 25px;
+    -fx-font-weight: bold;
+}
+
+.level-progress-bar {
+    -fx-pref-height: 15px;
+    -fx-pref-width: 1515px;
+    
+    -fx-accent: green;
+    -fx-control-inner-background: black;
+    -fx-text-box-border: black;
+
+    -fx-shadow-highlight-color: transparent;
+}
+
+.health-bar {
+    -fx-pref-height: 40px;
+    -fx-pref-width: 600px;
+    
+    -fx-accent: white;
+    -fx-control-inner-background: black;
+    -fx-text-box-border: black;
+
+    -fx-shadow-highlight-color: transparent;
+}
+
+.game-canvas {
+    
+}
