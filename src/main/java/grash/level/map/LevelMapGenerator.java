@@ -5,6 +5,7 @@ import grash.core.GameController;
 import grash.events.GrashEvent;
 import grash.events.GrashEventListener;
 import grash.events.GrashEvent_LevelLoaded;
+import grash.events.GrashEvent_LevelReadyToInit;
 
 /**
  * This class is made for generating the {@link LevelMap} Class, or in other words
@@ -37,7 +38,7 @@ public class LevelMapGenerator implements GrashEventListener {
 
         LevelMap generatedLevelMap = generatedLevelMapFromMapData(event.getMapData());
 
-
+        game.getEventBus().triggerEvent(new GrashEvent_LevelReadyToInit(generatedLevelMap));
     }
 
     private LevelMap generatedLevelMapFromMapData(MapData mapData) {

@@ -34,6 +34,7 @@ public final class GameController implements GrashEventListener {
 
         eventBus.registerListener(GrashEvent_InitializationDone.class, this);
         eventBus.registerListener(GrashEvent_SceneSwitched.class, this);
+        eventBus.registerListener(GrashEvent_LevelReadyToInit.class, this);
 
         gameState = GameState.Init;
         getEventBus().triggerEvent(new GrashEvent_Initialize(""));
@@ -85,6 +86,10 @@ public final class GameController implements GrashEventListener {
                 onEvent_SceneSwitched((GrashEvent_SceneSwitched) event);
                 break;
             }
+            case "LevelReadyToInit": {
+                onEvent_LevelReadyToInit((GrashEvent_LevelReadyToInit) event);
+                break;
+            }
         }
     }
 
@@ -103,6 +108,10 @@ public final class GameController implements GrashEventListener {
                 getEventBus().triggerEvent(new GrashEvent_LoadLevel("Some_Person::My_Cool_Map::Version_1"));
             }
         }
+    }
+
+    private void onEvent_LevelReadyToInit(GrashEvent_LevelReadyToInit event) {
+        System.out.println("Level " + event.getLevelMap().getMapMetadata().getMapName() + " is ready!");
     }
 
 }
