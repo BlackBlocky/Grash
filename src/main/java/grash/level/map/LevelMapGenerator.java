@@ -11,7 +11,7 @@ import grash.events.GrashEvent_LevelReadyToInit;
  * This class is made for generating the {@link LevelMap} Class, or in other words
  * converting the loaded Strings to an actual Level
  */
-public class LevelMapGenerator implements GrashEventListener {
+public final class LevelMapGenerator implements GrashEventListener {
 
     private final GameController game;
 

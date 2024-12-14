@@ -21,12 +21,18 @@ public final class WindowController implements GrashEventListener {
 
     private WindowState windowState = WindowState.None;
 
-    private HashMap<WindowState, String> fxmlFileNamesByWindowState = new HashMap<WindowState, String>() {{
+    /**
+     * Here is every filename of the .fxml files hardcoded, which can accessed via a WindowState Key
+     */
+    private final HashMap<WindowState, String> fxmlFileNamesByWindowState = new HashMap<WindowState, String>() {{
         put(WindowState.Splashscreen, "initScene.fxml");
         put(WindowState.WelcomeScreen, "welcomeScreen.fxml");
     }};
 
-    private HashMap<WindowState, ScreenController> fxmlControllerByWindowState = new HashMap<>();
+    /**
+     * This HashMap stores a ScreenController reference for every Screen aka. WindowState
+     */
+    private final HashMap<WindowState, ScreenController> fxmlControllerByWindowState = new HashMap<>();
 
     public WindowController(GameController gameController) {
         this.game = gameController;
@@ -57,6 +63,9 @@ public final class WindowController implements GrashEventListener {
         }
     }
 
+    /**
+     * Just initializes all the ScreenControllers and adding them into the fxmlControllerByWindowState HashMap
+     */
     private void onEvent_Initialize(GrashEvent_Initialize event) {
         fxmlControllerByWindowState.put(WindowState.Splashscreen, null);
         fxmlControllerByWindowState.put(WindowState.WelcomeScreen, new WelcomeScreenController(this.game));
@@ -66,8 +75,11 @@ public final class WindowController implements GrashEventListener {
         System.out.println("second: " + event.getClass().getName());
     }
 
+    /**
+     * This Method decides what logic should be called when the Scene is switched
+     */
     private void onEvent_SwitchScene(GrashEvent_SwitchScene event) {
-
+        // The switch is for special loading stuff like the SplashScreen, if it is just a normal Scene, then the default option is called
         // noinspection EnumSwitchStatementWhichMissesCases,SwitchStatementWithTooFewBranches
         switch(event.getTargetWindowState()) {
             case Splashscreen: {
@@ -108,8 +120,8 @@ public final class WindowController implements GrashEventListener {
     }
 
     private void switchToScene(GrashEvent_SwitchScene event) {
-        if(splashscreen != null) splashscreen.hide();
-
+        if(splashscreen != null && splashscreen.isShowing()) splashscreen.hide(); // && stops when the first is false,
+                                                                                  // so we have null pointer problems
         // try to Load the Scene
         Pane pane = null;
         FXMLLoader loader = new FXMLLoader();
@@ -127,7 +139,8 @@ public final class WindowController implements GrashEventListener {
         Scene scene = new Scene(pane);
         game.getPrimaryStage().setScene(scene);
 
-        // Call the init Function of the Event and Show the Scene
+        // Get the ScreenController that belongs to the current Scene, and call the init() Function
+        // (The ScreenController can be null, because stuff like the SplashScreen do not have a ScreenController)
         if(fxmlControllerByWindowState.get(event.getTargetWindowState()) != null)
             fxmlControllerByWindowState.get(event.getTargetWindowState()).init();
         game.getPrimaryStage().show();

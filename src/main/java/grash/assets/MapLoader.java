@@ -15,6 +15,9 @@ final class MapLoader {
 
     }
 
+    /**
+     * This Method the MapMetadata on the specific Path.
+     */
     public MapMetadata loadMapMetadata(Path folderPath, String grashMapFileName) {
         String mapMl = generateMapML(Paths.get(folderPath.toAbsolutePath() + "\\" + grashMapFileName));
 
@@ -26,6 +29,10 @@ final class MapLoader {
         return new MapMetadata(mapName[0][0], mapAuthor[0][0], mapVersion[0][0], songName[0][0], folderPath, grashMapFileName);
     }
 
+    /**
+     * This Method loads all the MapData that still need to be loaded.
+     * It does not need a Path because the Path if already stored in the MapMetaData
+     */
     public MapData loadMap(MapMetadata mapMetadata) {
         String mapMl = generateMapML(Paths.get(mapMetadata.getFolderPath() + "\\" + mapMetadata.getFileName()));
 
@@ -77,6 +84,8 @@ final class MapLoader {
                 mapLasershow);
     }
 
+    // TODO: All of this should be in another class on day,
+    //  if I do not forget (I will xD) The File-Extension should also be .grashML
     private String[][] extractParamsFromMapML(String mapML, String keyword) {
         return extractMapMLParamsFromElements(extractMapMLKeywordElements(mapML, keyword));
     }

@@ -32,6 +32,10 @@ public final class ResourceLoader implements GrashEventListener {
         return allMapKeys;
     }
 
+    /**
+     * Uses the {@link MapLoader} to load the Matching Map to MapKey.
+     * If a Map with the Map does not exist, it will return null
+     */
     public MapData loadMap(String mapKey) {
         return mapLoader.loadMap(mapMetdatasMap.get(mapKey));
     }
@@ -67,11 +71,18 @@ public final class ResourceLoader implements GrashEventListener {
         allMapKeys = allLoadedMapKeys.toArray(new String[0]);
     }
 
+    /**
+     * Starts the process of loading a Level by loading the MapData as Strings
+     */
     private void onEvent_LoadLevel(GrashEvent_LoadLevel event) {
         MapData loadedTargetMap = loadMap(event.getLevelKey());
         game.getEventBus().triggerEvent(new GrashEvent_LevelLoaded(loadedTargetMap));
     }
 
+    /**
+     *  Loops thought the "assets/maps" folder,
+     *  and creates a MapMetadata for every Map that is in the Folder (or subfolders)
+     */
     private MapMetadata[] loadAllMaps() {
         // Load the Folder which contains all Maps
         File mapsFolder = new File(game.getWorkingDirectory() + "\\assets\\maps");

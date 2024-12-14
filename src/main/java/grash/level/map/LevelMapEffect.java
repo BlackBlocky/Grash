@@ -2,7 +2,7 @@ package grash.level.map;
 
 import javafx.scene.paint.Color;
 
-public class LevelMapEffect extends LevelMapThing {
+public final class LevelMapEffect extends LevelMapThing {
     private double valueDouble;
     private int valueInteger;
 

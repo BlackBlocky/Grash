@@ -14,7 +14,7 @@ import grash.level.map.LevelMapGenerator;
  *
  */
 
-public class GrashEvent_LevelLoaded extends GrashEvent {
+public final class GrashEvent_LevelLoaded extends GrashEvent {
 
     private MapData mapData;
 

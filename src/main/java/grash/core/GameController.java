@@ -24,6 +24,10 @@ public final class GameController implements GrashEventListener {
 
     private GameState gameState = GameState.UnInit;
 
+    /**
+     * The Main Constructor of the Game. By Calling the Constructor, every Component in the Game is going the Initialized.
+     * The Game also immediately switched to the Splashscreen, for loading the resources after it.
+     */
     public GameController(Stage primaryStage) {
         this.initTimestampMillis = System.currentTimeMillis();
         this.primaryStage = primaryStage;
@@ -57,11 +61,18 @@ public final class GameController implements GrashEventListener {
         return this.gameState;
     }
 
+    /**
+     * This Method will ever return a unique ID, it will NEVER return the same (only after 4.294.967.296 calls :P)
+     * @return Returns a unique ID
+     */
     public int generateUniqueID() {
         idCounter++;
         return idCounter;
     }
 
+    /**
+     * This Method adds a grashComponent to the Game, and also calls the start Methode
+     */
     public void registerGrashComponent(GrashComponent grashComponent) {
         if(!this.grashComponents.contains(grashComponent)) {
             grashComponents.add(grashComponent);
@@ -69,6 +80,9 @@ public final class GameController implements GrashEventListener {
         }
     }
 
+    /**
+     * This Method calls the Update for every GrashComponent
+     */
     private void callUpdate() {
         for(GrashComponent g : grashComponents) {
             g.update();
@@ -93,6 +107,9 @@ public final class GameController implements GrashEventListener {
         }
     }
 
+    /**
+     * Literally doing nothing but yeah
+     */
     private void onEvent_InitializeDone(GrashEvent_InitializationDone event) {
         System.out.println("second: " + event.getClass().getName());
         this.gameState = GameState.StartScreen;

@@ -1,6 +1,6 @@
 package grash.level.map;
 
-public class LevelMapNote extends LevelMapThing {
+public final class LevelMapNote extends LevelMapThing {
     private boolean isLeft;
     private byte yType;
     private double timeEnd;

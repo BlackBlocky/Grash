@@ -23,12 +23,18 @@ public final class WelcomeScreenController extends ScreenController {
         this.game = gameController;
     }
 
+    /**
+     * Setups all the Stuff for the Scene like Animations
+     */
     @Override
     public void init() {
         setupStartButton();
         setupBackground();
     }
 
+    /**
+     * Adds the Animation to the Start Button if you hover with the mouse over it
+     */
     private void setupStartButton() {
         Button startButton = (Button) game.getPrimaryStage().getScene().lookup("#startButton");
 
@@ -60,6 +66,9 @@ public final class WelcomeScreenController extends ScreenController {
         startButton.setOnMousePressed(event -> startGameButton_Handler());
     }
 
+    /**
+     * Setups this cool animation in background, that the color is "spinning"
+     */
     private void setupBackground() {
         Pane welcomeScreenPane = (Pane) game.getPrimaryStage().getScene().getRoot();
 
