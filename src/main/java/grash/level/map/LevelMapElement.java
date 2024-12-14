@@ -5,7 +5,7 @@ public class LevelMapElement extends LevelMapThing {
     private boolean isLeft;
 
     private double heightNormalized;
-    private byte yType;
+
 
     private double timeEnd;
 
@@ -19,10 +19,6 @@ public class LevelMapElement extends LevelMapThing {
 
     public void setHeightNormalized(double heightNormalized) {
         this.heightNormalized = heightNormalized;
-    }
-
-    public void setYType(byte yType) {
-        this.yType = yType;
     }
 
     public void setTimeEnd(double timeEnd) {
@@ -39,10 +35,6 @@ public class LevelMapElement extends LevelMapThing {
 
     public double getHeightNormalized() {
         return heightNormalized;
-    }
-
-    public byte getYType() {
-        return yType;
     }
 
     public double getTimeEnd() {

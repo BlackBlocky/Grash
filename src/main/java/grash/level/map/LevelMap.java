@@ -19,9 +19,9 @@ public final class LevelMap {
     private final LevelMapElement[] doubleJumps;
     private final LevelMapElement[] ropes;
 
-    private final LevelMapElement[] tapNotes;
-    private final LevelMapElement[] growNotes;
-    private final LevelMapElement[] slideNotes;
+    private final LevelMapNote[] tapNotes;
+    private final LevelMapNote[] growNotes;
+    private final LevelMapNote[] slideNotes;
 
     private final LevelMapEffect[] colors;
     private final LevelMapEffect[] fovScales;
@@ -43,9 +43,9 @@ public final class LevelMap {
                     LevelMapElement[] doubleJumps,
                     LevelMapElement[] ropes,
 
-                    LevelMapElement[] tapNotes,
-                    LevelMapElement[] growNotes,
-                    LevelMapElement[] slideNotes,
+                    LevelMapNote[] tapNotes,
+                    LevelMapNote[] growNotes,
+                    LevelMapNote[] slideNotes,
 
                     LevelMapEffect[] colors,
                     LevelMapEffect[] fovScales,
@@ -123,15 +123,15 @@ public final class LevelMap {
         return ropes;
     }
 
-    public LevelMapElement[] getTapNotes() {
+    public LevelMapNote[] getTapNotes() {
         return tapNotes;
     }
 
-    public LevelMapElement[] getGrowNotes() {
+    public LevelMapNote[] getGrowNotes() {
         return growNotes;
     }
 
-    public LevelMapElement[] getSlideNotes() {
+    public LevelMapNote[] getSlideNotes() {
         return slideNotes;
     }
 

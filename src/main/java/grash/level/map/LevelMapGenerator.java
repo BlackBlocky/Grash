@@ -57,9 +57,9 @@ public class LevelMapGenerator implements GrashEventListener {
                     convertDoubleJumps(mapData.getDoublejump()),
                     convertRopes(mapData.getRope()),
 
-                    null,
-                    null,
-                    null,
+                    convertTapNotes(mapData.getTapnote()),
+                    convertGrowNotes(mapData.getGrownote()),
+                    convertSlideNotes(mapData.getSlidenote()),
 
                     null,
                     null,
@@ -144,6 +144,47 @@ public class LevelMapGenerator implements GrashEventListener {
         }
 
         return convertedRopes;
+    }
+
+
+    private LevelMapNote[] convertTapNotes(String[][] tapNotesString) throws NumberFormatException {
+        if(tapNotesString == null) return new LevelMapNote[0];
+        LevelMapNote[] convertedTapNotes = new LevelMapNote[tapNotesString.length];
+
+        for (int i = 0; i < tapNotesString.length; i++) {
+            convertedTapNotes[i] = new LevelMapNote();
+            convertedTapNotes[i].setYType(Byte.parseByte(tapNotesString[i][0]));
+            convertedTapNotes[i].setTimeStart(Double.parseDouble(tapNotesString[i][1]));
+        }
+
+        return convertedTapNotes;
+    }
+
+    private LevelMapNote[] convertGrowNotes(String[][] growNotesString) throws NumberFormatException {
+        if(growNotesString == null) return new LevelMapNote[0];
+        LevelMapNote[] convertedGrowNotes = new LevelMapNote[growNotesString.length];
+
+        for (int i = 0; i < growNotesString.length; i++) {
+            convertedGrowNotes[i] = new LevelMapNote();
+            convertedGrowNotes[i].setIsLeft(Boolean.parseBoolean(growNotesString[i][0]));
+            convertedGrowNotes[i].setTimeStart(Double.parseDouble(growNotesString[i][1]));
+        }
+
+        return convertedGrowNotes;
+    }
+
+    private LevelMapNote[] convertSlideNotes(String[][] slideNotesString) throws NumberFormatException {
+        if(slideNotesString == null) return new LevelMapNote[0];
+        LevelMapNote[] convertedSlideNotes = new LevelMapNote[slideNotesString.length];
+
+        for (int i = 0; i < slideNotesString.length; i++) {
+            convertedSlideNotes[i] = new LevelMapNote();
+            convertedSlideNotes[i].setYType(Byte.parseByte(slideNotesString[i][0]));
+            convertedSlideNotes[i].setTimeStart(Double.parseDouble(slideNotesString[i][1]));
+            convertedSlideNotes[i].setTimeEnd(Double.parseDouble(slideNotesString[i][2]));
+        }
+
+        return convertedSlideNotes;
     }
 
 }

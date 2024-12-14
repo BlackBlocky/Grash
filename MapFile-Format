@@ -30,8 +30,8 @@ Every Keyword with Examples:
 [doublejump]{(0.5, 7.2)...}       // heightY(normalized), time
 [rope]{(0.3, 3.5, 4.2)...}        // heightY, time, end
 
-[tapnote]{(0..2)...}             // y-type = 0=down;1=middle;2=up, time
-[grownnote]{(true, 3.5)...}      // isLeft, time
+[tapnote]{(0..2, 2.2)...}             // y-type = 0=down;1=middle;2=up, time
+[grownote]{(true, 3.5)...}      // isLeft, time
 [slidenote]{(0..2, 5.5, 6.5)...} // y-type, start, end
 
 [color]{(255, 255, 255, 1.5)...}  // r, g, b, time

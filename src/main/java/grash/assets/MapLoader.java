@@ -42,7 +42,7 @@ final class MapLoader {
         String[][] mapRope = extractParamsFromMapML(mapMl, "rope");
 
         String[][] mapTapnote = extractParamsFromMapML(mapMl, "tapnote");
-        String[][] mapGrownnote = extractParamsFromMapML(mapMl, "grownnote");
+        String[][] mapGrownote = extractParamsFromMapML(mapMl, "grownote");
         String[][] mapSlidenote = extractParamsFromMapML(mapMl, "slidenote");
 
         String[][] mapColor = extractParamsFromMapML(mapMl, "color");
@@ -66,7 +66,7 @@ final class MapLoader {
                 mapRope,
 
                 mapTapnote,
-                mapGrownnote,
+                mapGrownote,
                 mapSlidenote,
 
                 mapColor,

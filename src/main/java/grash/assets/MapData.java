@@ -17,7 +17,7 @@ public final class MapData {
     private final String[][] rope;
 
     private final String[][] tapnote;
-    private final String[][] grownnote;
+    private final String[][] grownote;
     private final String[][] slidenote;
 
     private final String[][] color;
@@ -39,7 +39,7 @@ public final class MapData {
                    String[][] doublejump,
                    String[][] rope,
                    String[][] tapnote,
-                   String[][] grownnote,
+                   String[][] grownote,
                    String[][] slidenote,
                    String[][] color,
                    String[][] fovscale,
@@ -61,7 +61,7 @@ public final class MapData {
         this.rope = rope;
 
         this.tapnote = tapnote;
-        this.grownnote = grownnote;
+        this.grownote = grownote;
         this.slidenote = slidenote;
 
         this.color = color;
@@ -120,8 +120,8 @@ public final class MapData {
         return tapnote;
     }
 
-    public String[][] getGrownnote() {
-        return grownnote;
+    public String[][] getGrownote() {
+        return grownote;
     }
 
     public String[][] getSlidenote() {
