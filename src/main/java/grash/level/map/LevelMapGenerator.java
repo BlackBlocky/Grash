@@ -6,6 +6,7 @@ import grash.events.GrashEvent;
 import grash.events.GrashEventListener;
 import grash.events.GrashEvent_LevelLoaded;
 import grash.events.GrashEvent_LevelReadyToInit;
+import javafx.scene.paint.Color;
 
 /**
  * This class is made for generating the {@link LevelMap} Class, or in other words
@@ -48,7 +49,10 @@ public final class LevelMapGenerator implements GrashEventListener {
 
                     Double.parseDouble(mapData.getSpeed()[0][0]),
                     Double.parseDouble(mapData.getGrowspeed()[0][0]),
-                    null,
+                    new Color(Double.parseDouble(mapData.getStartcolor()[0][0]) / 255.0,
+                              Double.parseDouble(mapData.getStartcolor()[0][1]) / 255.0,
+                              Double.parseDouble(mapData.getStartcolor()[0][2]) / 255.0,
+                              1.0),
                     Double.parseDouble(mapData.getStartfovscale()[0][0]),
                     Double.parseDouble(mapData.getStartrotation()[0][0]),
 
@@ -62,14 +66,14 @@ public final class LevelMapGenerator implements GrashEventListener {
                     convertGrowNotes(mapData.getGrownote()),
                     convertSlideNotes(mapData.getSlidenote()),
 
-                    null,
-                    null,
-                    null,
+                    convertColors(mapData.getColor()),
+                    convertFOVScale(mapData.getFovscale()),
+                    convertRotates(mapData.getRotate()),
 
                     null,
-                    null
+                    convertLaserShows(mapData.getLasershow())
             );
-        } catch(NumberFormatException numberFormatException) {
+        } catch(Exception e) {
             System.out.println("The Map \"" + mapData.getMapMetadata().getMapKey() + "\" contains errors");
         }
 
@@ -188,4 +192,61 @@ public final class LevelMapGenerator implements GrashEventListener {
         return convertedSlideNotes;
     }
 
+
+    private LevelMapEffect[] convertColors(String[][] colorsString) throws IllegalArgumentException {
+        if(colorsString == null) return new LevelMapEffect[0];
+        LevelMapEffect[] convertedColors = new LevelMapEffect[colorsString.length];
+
+        for (int i = 0; i < colorsString.length; i++) {
+            convertedColors[i] = new LevelMapEffect();
+            convertedColors[i].setColor(new Color(
+                    Double.parseDouble(colorsString[i][0]) / 255.0,
+                    Double.parseDouble(colorsString[i][1]) / 255.0,
+                    Double.parseDouble(colorsString[i][2]) / 255.0,
+                    1.0
+            ));
+            convertedColors[i].setTimeStart(Double.parseDouble(colorsString[i][3]));
+        }
+
+        return convertedColors;
+    }
+
+    private LevelMapEffect[] convertFOVScale(String[][] fovScalesString) throws NumberFormatException {
+        if(fovScalesString == null) return new LevelMapEffect[0];
+        LevelMapEffect[] convertedFOVScales = new LevelMapEffect[fovScalesString.length];
+
+        for (int i = 0; i < fovScalesString.length; i++) {
+            convertedFOVScales[i] = new LevelMapEffect();
+            convertedFOVScales[i].setValueDouble(Double.parseDouble(fovScalesString[i][0]));
+            convertedFOVScales[i].setTimeStart(Double.parseDouble(fovScalesString[i][1]));
+        }
+
+        return convertedFOVScales;
+    }
+
+    private LevelMapEffect[] convertRotates(String[][] rotatesString) throws NumberFormatException {
+        if(rotatesString == null) return new LevelMapEffect[0];
+        LevelMapEffect[] convertedRotates = new LevelMapEffect[rotatesString.length];
+
+        for(int i = 0; i < rotatesString.length; i++) {
+            convertedRotates[i] = new LevelMapEffect();
+            convertedRotates[i].setValueDouble(Double.parseDouble(rotatesString[i][0]));
+            convertedRotates[i].setTimeStart(Double.parseDouble(rotatesString[i][1]));
+        }
+
+        return convertedRotates;
+    }
+
+    private LevelMapEffect[] convertLaserShows(String[][] laserShowsString) throws NumberFormatException {
+        if(laserShowsString == null) return new LevelMapEffect[0];
+        LevelMapEffect[] convertedLaserShows = new LevelMapEffect[laserShowsString.length];
+
+        for(int i = 0; i < laserShowsString.length; i++) {
+            convertedLaserShows[i] = new LevelMapEffect();
+            convertedLaserShows[i].setValueDouble(Double.parseDouble(laserShowsString[i][0]));
+            convertedLaserShows[i].setTimeStart(Double.parseDouble(laserShowsString[i][1]));
+        }
+
+        return convertedLaserShows;
+    }
 }
