@@ -88,7 +88,7 @@ public final class LevelMapGenerator implements GrashEventListener {
         LevelMapElement[] convertedSpikes = new LevelMapElement[spikesString.length];
 
         for(int i = 0; i < spikesString.length; i++) {
-            convertedSpikes[i] = new LevelMapElement();
+            convertedSpikes[i] = new LevelMapElement(MapElementType.Spike);
             convertedSpikes[i].setIsUp(Boolean.parseBoolean(spikesString[i][0]));
             convertedSpikes[i].setTimeStart(Double.parseDouble(spikesString[i][1]));
             convertedSpikes[i].setTimeEnd(Double.parseDouble(spikesString[i][2]));
@@ -102,7 +102,7 @@ public final class LevelMapGenerator implements GrashEventListener {
         LevelMapElement[] convertedSlides = new LevelMapElement[slidesString.length];
 
         for(int i = 0; i < slidesString.length; i++) {
-            convertedSlides[i] = new LevelMapElement();
+            convertedSlides[i] = new LevelMapElement(MapElementType.Slide);
             convertedSlides[i].setIsUp(Boolean.parseBoolean(slidesString[i][0]));
             convertedSlides[i].setTimeStart(Double.parseDouble(slidesString[i][1]));
             convertedSlides[i].setTimeEnd(Double.parseDouble(slidesString[i][2]));
@@ -116,7 +116,7 @@ public final class LevelMapGenerator implements GrashEventListener {
         LevelMapElement[] convertedWalls = new LevelMapElement[wallsString.length];
 
         for(int i = 0; i < wallsString.length; i++) {
-            convertedWalls[i] = new LevelMapElement();
+            convertedWalls[i] = new LevelMapElement(MapElementType.Wall);
             convertedWalls[i].setIsUp(Boolean.parseBoolean(wallsString[i][0]));
             convertedWalls[i].setTimeStart(Double.parseDouble(wallsString[i][1]));
         }
@@ -129,7 +129,7 @@ public final class LevelMapGenerator implements GrashEventListener {
         LevelMapElement[] convertedDoubleJumps = new LevelMapElement[doubleJumpsString.length];
 
         for(int i = 0; i < doubleJumpsString.length; i++) {
-            convertedDoubleJumps[i] = new LevelMapElement();
+            convertedDoubleJumps[i] = new LevelMapElement(MapElementType.DoubleJump);
             convertedDoubleJumps[i].setHeightNormalized(Double.parseDouble(doubleJumpsString[i][0]));
             convertedDoubleJumps[i].setTimeStart(Double.parseDouble(doubleJumpsString[i][1]));
         }
@@ -142,7 +142,7 @@ public final class LevelMapGenerator implements GrashEventListener {
         LevelMapElement[] convertedRopes = new LevelMapElement[ropesString.length];
 
         for(int i = 0; i < ropesString.length; i++) {
-            convertedRopes[i] = new LevelMapElement();
+            convertedRopes[i] = new LevelMapElement(MapElementType.Rope);
             convertedRopes[i].setHeightNormalized(Double.parseDouble(ropesString[i][0]));
             convertedRopes[i].setTimeStart(Double.parseDouble(ropesString[i][1]));
             convertedRopes[i].setTimeEnd(Double.parseDouble(ropesString[i][2]));
@@ -157,7 +157,7 @@ public final class LevelMapGenerator implements GrashEventListener {
         LevelMapNote[] convertedTapNotes = new LevelMapNote[tapNotesString.length];
 
         for (int i = 0; i < tapNotesString.length; i++) {
-            convertedTapNotes[i] = new LevelMapNote();
+            convertedTapNotes[i] = new LevelMapNote(MapNoteType.TapNote);
             convertedTapNotes[i].setYType(Byte.parseByte(tapNotesString[i][0]));
             convertedTapNotes[i].setTimeStart(Double.parseDouble(tapNotesString[i][1]));
         }
@@ -170,7 +170,7 @@ public final class LevelMapGenerator implements GrashEventListener {
         LevelMapNote[] convertedGrowNotes = new LevelMapNote[growNotesString.length];
 
         for (int i = 0; i < growNotesString.length; i++) {
-            convertedGrowNotes[i] = new LevelMapNote();
+            convertedGrowNotes[i] = new LevelMapNote(MapNoteType.GrowNote);
             convertedGrowNotes[i].setIsLeft(Boolean.parseBoolean(growNotesString[i][0]));
             convertedGrowNotes[i].setTimeStart(Double.parseDouble(growNotesString[i][1]));
         }
@@ -183,7 +183,7 @@ public final class LevelMapGenerator implements GrashEventListener {
         LevelMapNote[] convertedSlideNotes = new LevelMapNote[slideNotesString.length];
 
         for (int i = 0; i < slideNotesString.length; i++) {
-            convertedSlideNotes[i] = new LevelMapNote();
+            convertedSlideNotes[i] = new LevelMapNote(MapNoteType.SlideNote);
             convertedSlideNotes[i].setYType(Byte.parseByte(slideNotesString[i][0]));
             convertedSlideNotes[i].setTimeStart(Double.parseDouble(slideNotesString[i][1]));
             convertedSlideNotes[i].setTimeEnd(Double.parseDouble(slideNotesString[i][2]));
@@ -198,7 +198,7 @@ public final class LevelMapGenerator implements GrashEventListener {
         LevelMapEffect[] convertedColors = new LevelMapEffect[colorsString.length];
 
         for (int i = 0; i < colorsString.length; i++) {
-            convertedColors[i] = new LevelMapEffect();
+            convertedColors[i] = new LevelMapEffect(MapEffectType.Color);
             convertedColors[i].setColor(new Color(
                     Double.parseDouble(colorsString[i][0]) / 255.0,
                     Double.parseDouble(colorsString[i][1]) / 255.0,
@@ -216,7 +216,7 @@ public final class LevelMapGenerator implements GrashEventListener {
         LevelMapEffect[] convertedFOVScales = new LevelMapEffect[fovScalesString.length];
 
         for (int i = 0; i < fovScalesString.length; i++) {
-            convertedFOVScales[i] = new LevelMapEffect();
+            convertedFOVScales[i] = new LevelMapEffect(MapEffectType.FOVScale);
             convertedFOVScales[i].setValueDouble(Double.parseDouble(fovScalesString[i][0]));
             convertedFOVScales[i].setTimeStart(Double.parseDouble(fovScalesString[i][1]));
         }
@@ -229,7 +229,7 @@ public final class LevelMapGenerator implements GrashEventListener {
         LevelMapEffect[] convertedRotates = new LevelMapEffect[rotatesString.length];
 
         for(int i = 0; i < rotatesString.length; i++) {
-            convertedRotates[i] = new LevelMapEffect();
+            convertedRotates[i] = new LevelMapEffect(MapEffectType.Rotate);
             convertedRotates[i].setValueDouble(Double.parseDouble(rotatesString[i][0]));
             convertedRotates[i].setTimeStart(Double.parseDouble(rotatesString[i][1]));
         }
@@ -242,7 +242,7 @@ public final class LevelMapGenerator implements GrashEventListener {
         LevelMapEffect[] convertedLaserShows = new LevelMapEffect[laserShowsString.length];
 
         for(int i = 0; i < laserShowsString.length; i++) {
-            convertedLaserShows[i] = new LevelMapEffect();
+            convertedLaserShows[i] = new LevelMapEffect(MapEffectType.LaserShow);
             convertedLaserShows[i].setValueDouble(Double.parseDouble(laserShowsString[i][0]));
             convertedLaserShows[i].setTimeStart(Double.parseDouble(laserShowsString[i][1]));
         }

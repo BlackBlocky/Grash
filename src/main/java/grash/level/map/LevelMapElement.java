@@ -1,6 +1,8 @@
 package grash.level.map;
 
 public final class LevelMapElement extends LevelMapThing {
+    private final MapElementType mapElementType;
+
     private boolean isUp;
     private boolean isLeft;
 
@@ -8,6 +10,11 @@ public final class LevelMapElement extends LevelMapThing {
 
 
     private double timeEnd;
+
+    public LevelMapElement(MapElementType mapElementType) {
+        super(MapThingType.Element);
+        this.mapElementType = mapElementType;
+    }
 
     public void setIsUp(boolean up) {
         isUp = up;

@@ -3,10 +3,17 @@ package grash.level.map;
 import javafx.scene.paint.Color;
 
 public final class LevelMapEffect extends LevelMapThing {
+    private MapEffectType mapEffectType;
+
     private double valueDouble;
     private int valueInteger;
 
     private Color color;
+
+    public LevelMapEffect(MapEffectType mapEffectType) {
+        super(MapThingType.Effect);
+        this.mapEffectType = mapEffectType;
+    }
 
     public double getValueDouble() {
         return valueDouble;

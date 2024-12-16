@@ -1,9 +1,16 @@
 package grash.level.map;
 
 public final class LevelMapNote extends LevelMapThing {
+    private final MapNoteType mapNoteType;
+
     private boolean isLeft;
     private byte yType;
     private double timeEnd;
+
+    public LevelMapNote(MapNoteType mapNoteType) {
+        super(MapThingType.Note);
+        this.mapNoteType = mapNoteType;
+    }
 
     public boolean getIsLeft() {
         return isLeft;
