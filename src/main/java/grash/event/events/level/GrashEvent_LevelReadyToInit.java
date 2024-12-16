@@ -1,7 +1,7 @@
-package grash.events;
+package grash.event.events.level;
 
+import grash.event.GrashEvent;
 import grash.level.map.LevelMap;
-import grash.level.map.LevelMapGenerator;
 
 /**
  * This Event is triggered, when the Level is loaded and the LevelMapGenerator is done. Know the Map can be finally "load"

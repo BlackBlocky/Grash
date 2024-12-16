@@ -1,7 +1,10 @@
 package grash.assets;
 
 import grash.core.GameController;
-import grash.events.*;
+import grash.event.*;
+import grash.event.events.core.GrashEvent_LoadResources;
+import grash.event.events.level.GrashEvent_LevelLoaded;
+import grash.event.events.level.GrashEvent_LoadLevel;
 
 import java.io.File;
 import java.util.ArrayList;

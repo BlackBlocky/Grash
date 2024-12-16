@@ -1,6 +1,7 @@
-package grash.events;
+package grash.event.events.scene;
 
 import grash.core.WindowState;
+import grash.event.GrashEvent;
 import grash.ui.ScreenController;
 
 /**

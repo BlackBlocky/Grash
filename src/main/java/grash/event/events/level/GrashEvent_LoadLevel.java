@@ -1,4 +1,6 @@
-package grash.events;
+package grash.event.events.level;
+
+import grash.event.GrashEvent;
 
 /**
  * This Event is triggered to start the loading process fro starting the Level

@@ -2,8 +2,6 @@ package grash.core;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import grash.events.GrashEventBus;
-import grash.events.GrashEvent_Initialize;
 import javafx.stage.StageStyle;
 
 // VM Options: --module-path [FX-PATH] --add-modules javafx.controls,javafx.fxml,javafx.graphics

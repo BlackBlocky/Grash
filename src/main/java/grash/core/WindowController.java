@@ -1,6 +1,10 @@
 package grash.core;
 
-import grash.events.*;
+import grash.event.*;
+import grash.event.events.core.GrashEvent_InitializationDone;
+import grash.event.events.core.GrashEvent_Initialize;
+import grash.event.events.scene.GrashEvent_SceneSwitched;
+import grash.event.events.scene.GrashEvent_SwitchScene;
 import grash.ui.LevelActionScreenController;
 import grash.ui.ScreenController;
 import grash.ui.WelcomeScreenController;

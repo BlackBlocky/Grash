@@ -1,4 +1,4 @@
-package grash.events;
+package grash.event;
 
 import java.util.HashMap;
 import java.util.HashSet;

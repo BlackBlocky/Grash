@@ -1,10 +1,17 @@
 package grash.core;
 
 import grash.assets.ResourceLoader;
-import grash.events.*;
+import grash.event.*;
 
 import java.util.HashSet;
 
+import grash.event.events.core.GrashEvent_InitializationDone;
+import grash.event.events.core.GrashEvent_Initialize;
+import grash.event.events.core.GrashEvent_LoadResources;
+import grash.event.events.level.GrashEvent_LevelReadyToInit;
+import grash.event.events.level.GrashEvent_LoadLevel;
+import grash.event.events.scene.GrashEvent_SceneSwitched;
+import grash.event.events.scene.GrashEvent_SwitchScene;
 import grash.level.LevelController;
 import javafx.stage.Stage;
 

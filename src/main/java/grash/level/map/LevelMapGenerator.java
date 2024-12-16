@@ -2,10 +2,10 @@ package grash.level.map;
 
 import grash.assets.MapData;
 import grash.core.GameController;
-import grash.events.GrashEvent;
-import grash.events.GrashEventListener;
-import grash.events.GrashEvent_LevelLoaded;
-import grash.events.GrashEvent_LevelReadyToInit;
+import grash.event.GrashEvent;
+import grash.event.GrashEventListener;
+import grash.event.events.level.GrashEvent_LevelLoaded;
+import grash.event.events.level.GrashEvent_LevelReadyToInit;
 import javafx.scene.paint.Color;
 
 /**

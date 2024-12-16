@@ -1,6 +1,6 @@
-package grash.events;
+package grash.event.events.level;
 
-import grash.level.map.LevelMapGenerator;
+import grash.event.GrashEvent;
 
 /**
  * This Event is triggered after the {@link GrashEvent_LevelReadyToInit} Event, for starting the Level,

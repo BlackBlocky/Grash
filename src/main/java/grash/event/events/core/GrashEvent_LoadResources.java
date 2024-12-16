@@ -1,4 +1,6 @@
-package grash.events;
+package grash.event.events.core;
+
+import grash.event.GrashEvent;
 
 /**
  * This Event is Triggered only once, and it loads all necessary assets on init

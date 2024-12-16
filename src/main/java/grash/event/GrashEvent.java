@@ -1,4 +1,4 @@
-package grash.events;
+package grash.event;
 
 public abstract class GrashEvent {
     private final String eventKey;

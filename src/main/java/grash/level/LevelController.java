@@ -1,9 +1,9 @@
 package grash.level;
 
 import grash.core.GameController;
-import grash.events.GrashEvent;
-import grash.events.GrashEventListener;
-import grash.events.GrashEvent_Initialize;
+import grash.event.GrashEvent;
+import grash.event.GrashEventListener;
+import grash.event.events.core.GrashEvent_Initialize;
 import grash.level.map.LevelMapGenerator;
 
 public class LevelController implements GrashEventListener {
