@@ -8,6 +8,7 @@ import java.util.HashSet;
 import grash.event.events.core.GrashEvent_InitializationDone;
 import grash.event.events.core.GrashEvent_Initialize;
 import grash.event.events.core.GrashEvent_LoadResources;
+import grash.event.events.level.GrashEvent_InitLevel;
 import grash.event.events.level.GrashEvent_LevelReadyToInit;
 import grash.event.events.level.GrashEvent_LoadLevel;
 import grash.event.events.scene.GrashEvent_SceneSwitched;
@@ -136,7 +137,8 @@ public final class GameController implements GrashEventListener {
 
     private void onEvent_LevelReadyToInit(GrashEvent_LevelReadyToInit event) {
         System.out.println("Level " + event.getLevelMap().getMapMetadata().getMapName() + " is ready!");
-        getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.LevelAction));
+        //getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.LevelAction));
+        getEventBus().triggerEvent(new GrashEvent_InitLevel(event.getLevelMap()));
     }
 
 }

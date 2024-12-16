@@ -1,10 +1,12 @@
 package grash.level.map;
 
 import grash.assets.MapMetadata;
+import grash.level.LevelMapTimeline;
 import javafx.scene.paint.Color;
 
 public final class LevelMap {
     private final MapMetadata mapMetadata;
+    private LevelMapTimeline levelMapTimeline;
 
     private final double speed;
     private final double growspeed;
@@ -77,6 +79,14 @@ public final class LevelMap {
 
         this.bImages = bImages;
         this.lasershows = lasershows;
+    }
+
+    public LevelMapTimeline getLevelMapTimeline() {
+        return levelMapTimeline;
+    }
+
+    public void setLevelMapTimeline(LevelMapTimeline levelMapTimeline) {
+        this.levelMapTimeline = levelMapTimeline;
     }
 
     public MapMetadata getMapMetadata() {

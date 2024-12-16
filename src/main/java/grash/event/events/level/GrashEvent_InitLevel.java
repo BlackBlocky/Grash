@@ -1,6 +1,7 @@
 package grash.event.events.level;
 
 import grash.event.GrashEvent;
+import grash.level.map.LevelMap;
 
 /**
  * This Event is triggered after the {@link GrashEvent_LevelReadyToInit} Event, for starting the Level,
@@ -14,7 +15,14 @@ import grash.event.GrashEvent;
  */
 
 public final class GrashEvent_InitLevel extends GrashEvent {
-    public GrashEvent_InitLevel() {
+    private final LevelMap levelMap;
+
+    public GrashEvent_InitLevel(LevelMap levelMap) {
         super("InitLevel");
+        this.levelMap = levelMap;
+    }
+
+    public LevelMap getLevelMap() {
+        return this.levelMap;
     }
 }
