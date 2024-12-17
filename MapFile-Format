@@ -15,6 +15,7 @@ Every Keyword with Examples:
 [loader]{(v1)}                   // grashMap Loader Version (for loader)  !!!
 
 [mapname]{(Map_Name)}            // Name of the Map  !!!
+[difficulty]{(Easy)}             // Difficulty of the Map !!!
 [mapauthor]{(Some_Person)}        // Name of the Author  !!!
 [songname]{(Songname_by_Person)} // The Name of the Song  !!!
 [mapversion]{(Version_1)}           // The Version on the Map  !!!

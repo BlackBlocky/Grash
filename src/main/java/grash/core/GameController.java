@@ -130,7 +130,7 @@ public final class GameController implements GrashEventListener {
                 getEventBus().triggerEvent(new GrashEvent_InitializationDone());
                 //getEventBus().triggerEvent(new GrashEvent_LoadLevel("BlackBlocky::Test"));
                 getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.WelcomeScreen));
-                getEventBus().triggerEvent(new GrashEvent_LoadLevel("Some_Person::My_Cool_Map::Version_1"));
+                getEventBus().triggerEvent(new GrashEvent_LoadLevel("Some_Person::My_Cool_Map::Version_1::Normal"));
             }
         }
     }

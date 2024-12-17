@@ -22,11 +22,12 @@ final class MapLoader {
         String mapMl = generateMapML(Paths.get(folderPath.toAbsolutePath() + "\\" + grashMapFileName));
 
         String[][] mapName = extractParamsFromMapML(mapMl, "mapname");
+        String[][] mapDifficulty = extractParamsFromMapML(mapMl, "difficulty");
         String[][] mapAuthor = extractParamsFromMapML(mapMl, "mapauthor");
         String[][] songName = extractParamsFromMapML(mapMl, "songname");
         String[][] mapVersion = extractParamsFromMapML(mapMl, "mapversion");
 
-        return new MapMetadata(mapName[0][0], mapAuthor[0][0], mapVersion[0][0], songName[0][0], folderPath, grashMapFileName);
+        return new MapMetadata(mapName[0][0], mapDifficulty[0][0], mapAuthor[0][0], mapVersion[0][0], songName[0][0], folderPath, grashMapFileName);
     }
 
     /**
