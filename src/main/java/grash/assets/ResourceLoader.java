@@ -40,6 +40,7 @@ public final class ResourceLoader implements GrashEventListener {
      * If a Map with the Map does not exist, it will return null
      */
     public MapData loadMap(String mapKey) {
+        if(!mapMetdatasMap.containsKey(mapKey)) return null;
         return mapLoader.loadMap(mapMetdatasMap.get(mapKey));
     }
 
@@ -79,6 +80,12 @@ public final class ResourceLoader implements GrashEventListener {
      */
     private void onEvent_LoadLevel(GrashEvent_LoadLevel event) {
         MapData loadedTargetMap = loadMap(event.getLevelKey());
+
+        if(loadedTargetMap == null) {
+            System.out.println("Level " + event.getLevelKey() + " not found!");
+            return;
+        }
+
         game.getEventBus().triggerEvent(new GrashEvent_LevelLoaded(loadedTargetMap));
     }
 
