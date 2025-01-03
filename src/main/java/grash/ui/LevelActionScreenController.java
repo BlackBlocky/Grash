@@ -1,6 +1,7 @@
 package grash.ui;
 
 import grash.core.GameController;
+import grash.core.WindowState;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.LinearGradient;
@@ -32,5 +33,10 @@ public class LevelActionScreenController extends ScreenController {
 
         g.setFill(gradient);
         g.fillRect(0, 0, test.getWidth(), test.getHeight());
+    }
+
+    public Canvas getGameCanvas() {
+        if(game.getWindowState() != WindowState.LevelAction) return null;
+        return (Canvas) game.getPrimaryStage().getScene().lookup("#gameCanvas");
     }
 }

@@ -5,6 +5,7 @@ import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
 import grash.event.events.core.GrashEvent_Initialize;
 import grash.event.events.level.GrashEvent_InitLevel;
+import grash.event.events.level.GrashEvent_LevelGoingToStart;
 import grash.level.map.LevelMap;
 import grash.level.map.LevelMapGenerator;
 
@@ -44,5 +45,6 @@ public class LevelController implements GrashEventListener {
         LevelMapTimeline generatedLevelMapTimeLine = new LevelMapTimeline(constructingLevelMap);
         constructingLevelMap.setLevelMapTimeline(generatedLevelMapTimeLine);
 
+        game.getEventBus().triggerEvent(new GrashEvent_LevelGoingToStart(constructingLevelMap));
     }
 }
