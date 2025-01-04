@@ -37,3 +37,5 @@ Der Architektur des Spiels wird mit einem Event-Bus basieren, ebenso soll alles 
 ### About
 Das gesamte Spiel (Code, Assets, Story, etc.) wird von mir alleine erstellt und entwickelt. <br>
 Man kann mich über diese E-Mail erreichen: blackblockylp@gmail.com
+
+![Lines Of Code](https://img.shields.io/badge/dynamic/json?label=Lines+Of+Code&query=%24%5B7%5D.linesOfCode&url=https%3A%2F%2Fapi.codetabs.com%2Fv1%2Floc%3Fgithub%3DBlackBlocky%2FGrash)
