@@ -1,4 +1,4 @@
-# Grash - Ein Rhythmus-Spiel ![Lines Of Code](https://img.shields.io/badge/dynamic/json?label=Lines+Of+Code&query=%24%5B7%5D.linesOfCode&url=https%3A%2F%2Fapi.codetabs.com%2Fv1%2Floc%3Fgithub%3DBlackBlocky%2FGrash)
+# Grash - Ein Rhythmus-Spiel ![Lines of Code Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.codetabs.com%2Fv1%2Floc%3Fgithub%3DBlackBlocky%2FGrash&query=%24%5B7%5D.linesOfCode&style=for-the-badge&label=Lines%20of%20Code)
 ## Grash kombiniert die zwei beliebten Rhythmus Spiele [Osu](https://osu.ppy.sh) und [Geometry Dash](https://store.steampowered.com/app/322170/Geometry_Dash/).
 
 ### Spielkonzept
