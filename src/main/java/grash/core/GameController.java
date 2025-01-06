@@ -1,13 +1,16 @@
 package grash.core;
 
+import grash.action.ActionPhaseController;
 import grash.assets.ResourceLoader;
 import grash.event.*;
 
 import java.util.HashSet;
 
+import grash.event.events.action.GrashEvent_StartActionPhase;
 import grash.event.events.core.GrashEvent_InitializationDone;
 import grash.event.events.core.GrashEvent_Initialize;
 import grash.event.events.core.GrashEvent_LoadResources;
+import grash.event.events.core.GrashEvent_Tick;
 import grash.event.events.level.GrashEvent_InitLevel;
 import grash.event.events.level.GrashEvent_LevelGoingToStart;
 import grash.event.events.level.GrashEvent_LevelReadyToInit;
@@ -15,6 +18,7 @@ import grash.event.events.level.GrashEvent_LoadLevel;
 import grash.event.events.scene.GrashEvent_SceneSwitched;
 import grash.event.events.scene.GrashEvent_SwitchScene;
 import grash.level.LevelController;
+import javafx.animation.AnimationTimer;
 import javafx.stage.Stage;
 
 public final class GameController implements GrashEventListener {
@@ -23,6 +27,7 @@ public final class GameController implements GrashEventListener {
     private final ResourceLoader resourceLoader;
     private final WindowController windowController;
     private final LevelController levelController;
+    private final ActionPhaseController actionPhaseController;
 
     private final long initTimestampMillis;
     private final Stage primaryStage;
@@ -41,9 +46,11 @@ public final class GameController implements GrashEventListener {
         this.initTimestampMillis = System.currentTimeMillis();
         this.primaryStage = primaryStage;
         this.eventBus = new GrashEventBus();
+
         this.resourceLoader = new ResourceLoader(this);
         this.windowController = new WindowController(this);
         this.levelController = new LevelController(this);
+        this.actionPhaseController = new ActionPhaseController(this);
 
         eventBus.registerListener(GrashEvent_InitializationDone.class, this);
         eventBus.registerListener(GrashEvent_SceneSwitched.class, this);
@@ -102,6 +109,20 @@ public final class GameController implements GrashEventListener {
         }
     }
 
+    AnimationTimer gameLoop = new AnimationTimer() {
+        private double lastTime = System.nanoTime();
+
+        @Override
+        public void handle(long currentTime) {
+            // DeltaTime calculation
+            double deltaTime = (currentTime - lastTime) / 1_000_000_000.0;
+            //System.out.println(1.0 / deltaTime);
+            lastTime = currentTime;
+
+            getEventBus().triggerEvent(new GrashEvent_Tick(deltaTime));
+        }
+    };
+
     @Override
     public void onEvent(GrashEvent event) {
         switch (event.getEventKey()) {
@@ -135,11 +156,20 @@ public final class GameController implements GrashEventListener {
     private void onEvent_SceneSwitched(GrashEvent_SceneSwitched event) {
         switch (event.getSwitchedWindowState()) {
             case Splashscreen: {
+                // Doing all the Initial Stuff
                 getEventBus().triggerEvent(new GrashEvent_LoadResources());
                 getEventBus().triggerEvent(new GrashEvent_InitializationDone());
-                //getEventBus().triggerEvent(new GrashEvent_LoadLevel("BlackBlocky::Test"));
+
+                gameLoop.start();
+
                 getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.WelcomeScreen));
                 getEventBus().triggerEvent(new GrashEvent_LoadLevel("Some_Person::My_Cool_Map::Version_1::Normal"));
+                break;
+            }
+            case LevelAction: {
+                // The ActionController is set up in the LevelGoingToStartEvent
+                getEventBus().triggerEvent(new GrashEvent_StartActionPhase());
+                break;
             }
         }
     }
@@ -151,8 +181,9 @@ public final class GameController implements GrashEventListener {
     }
 
     private void onEvent_LevelGoingToStart(GrashEvent_LevelGoingToStart event) {
+        gameState = GameState.GameActionPhase;
+        actionPhaseController.setupNewActionPhase(event.getLevelMap(), 3);
         getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.LevelAction));
-        gameState = GameState.GameStartCountdown;
     }
 
 }

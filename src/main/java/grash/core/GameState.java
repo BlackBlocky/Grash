@@ -8,7 +8,5 @@ public enum GameState {
     LevelMenu,
     StoryMenu,
 
-    GameStartCountdown,
     GameActionPhase,
-    GameLoose
 }

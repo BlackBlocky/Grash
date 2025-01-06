@@ -1,6 +1,7 @@
 package grash.ui;
 
 import grash.core.GameController;
+import grash.event.events.level.GrashEvent_LoadLevel;
 import javafx.animation.AnimationTimer;
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
@@ -115,5 +116,6 @@ public final class WelcomeScreenController extends ScreenController {
 
     public void startGameButton_Handler() {
         System.out.println("Start Game!");
+        game.getEventBus().triggerEvent(new GrashEvent_LoadLevel("Some_Person::My_Cool_Map::Version_1::Normal"));
     }
 }
