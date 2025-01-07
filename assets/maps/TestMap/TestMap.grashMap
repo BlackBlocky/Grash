@@ -7,7 +7,7 @@
 [mapversion]{(Version_1)}
 [speed]{(12.5)}
 [growspeed]{(10)}
-[startcolor]{(255, 255, 255)}
+[startcolor]{(0, 255, 255)}
 [startfovscale]{(1.2)}
 [startrotation]{(0.02)}
 

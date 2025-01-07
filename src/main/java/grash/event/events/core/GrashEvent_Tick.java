@@ -20,4 +20,8 @@ public final class GrashEvent_Tick extends GrashEvent {
         super("Tick");
         this.deltaTime = deltaTime;
     }
+
+    public double getDeltaTime() {
+        return this.deltaTime;
+    }
 }

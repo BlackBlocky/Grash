@@ -16,6 +16,8 @@ public class LevelActionScreenController extends ScreenController {
 
     @Override
     public void init() {
+        if(true == true) return;
+
         System.out.println("Hello from the LevelActionScreenController");
         Canvas test = (Canvas) game.getPrimaryStage().getScene().lookup("#gameCanvas");
 
