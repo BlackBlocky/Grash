@@ -1,10 +1,10 @@
-package grash.action;
+package grash.action.renderer;
 
 import grash.core.GameController;
+import grash.level.map.LevelMapEffect;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 
@@ -13,34 +13,40 @@ public final class ActionPhaseRenderer {
     private GameController game;
     private Canvas gameCanvas;
 
-    private Color currentColor;
-    private Color renderedColor;
-    private Color nextColor;
+    private RendererEffectData colorEffectData;
 
-    private double renderedBackgroundValue;
+    private double renderedBackgroundValue; // used in drawBackgroundGradient() ONLY
 
     /**
      * This will be called every Time the Renderer starts, aka another level is starting
      */
-    public void setupRenderer(GameController gameController, Color startColor) {
+    public void setupRenderer(GameController gameController, LevelMapEffect startColorEffect) {
         this.game = gameController;
 
         this.renderedBackgroundValue = 0.0;
 
-        this.currentColor = startColor;
-        this.renderedColor = startColor;
-        this.nextColor = startColor;
+        colorEffectData = new RendererEffectData(startColorEffect);
 
         gameCanvas = (Canvas) game.getPrimaryStage().getScene().lookup("#gameCanvas");
     }
 
-    public void updateCanvas(double deltaTime) {
-        GraphicsContext g = gameCanvas.getGraphicsContext2D();
-
-        drawBackgroundGradient(deltaTime, g);
+    public void updateColors(LevelMapEffect currentColorEffect, LevelMapEffect nextColorEffect) {
+        colorEffectData.setCurrentEffect(currentColorEffect);
+        colorEffectData.setNextEffect(nextColorEffect);
+        colorEffectData.recalculate();
     }
 
-    public void drawBackgroundGradient(double deltaTime, GraphicsContext g) {
+    public void updateCanvas(double deltaTime, double secondsElapsedSinceStart) {
+        GraphicsContext g = gameCanvas.getGraphicsContext2D();
+        Color drawColor = colorEffectData.getCurrentEffect().getColor().interpolate(
+                colorEffectData.getNextEffect().getColor(),
+                colorEffectData.interpolateTime(secondsElapsedSinceStart));
+        System.out.println(drawColor.getRed() + " " + drawColor.getGreen() + " " + drawColor.getBlue());
+
+        drawBackgroundGradient(deltaTime, g, drawColor);
+    }
+
+    private void drawBackgroundGradient(double deltaTime, GraphicsContext g, Color drawColor) {
         double BACKGROUND_ANIMATION_SPEED = 2.5;
         renderedBackgroundValue += deltaTime * BACKGROUND_ANIMATION_SPEED;
 
@@ -53,8 +59,8 @@ public final class ActionPhaseRenderer {
                 rotationX + 0.5, rotationY + 0.5, -rotationX + 0.5, -rotationY + 0.5,
                 true,
                 null,
-                new Stop(0, renderedColor),
-                new Stop(1, renderedColor.deriveColor(0, 1, 0.4, 1))
+                new Stop(0, drawColor),
+                new Stop(1, drawColor.deriveColor(0, 1, 0.4, 1))
         );
 
         g.setFill(gradient);

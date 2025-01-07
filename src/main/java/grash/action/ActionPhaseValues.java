@@ -9,6 +9,11 @@ public final class ActionPhaseValues {
     private double score;
     private double countdownLeft;
 
+    /**
+     * This is the measured time AFTER the Countdown is done!
+     */
+    private long nanoTimeAtStart;
+
     public ActionPhaseValues(LevelMap actionPhaseMap, double countdownLeft) {
         this.actionPhaseMap = actionPhaseMap;
         this.timeProgress = 0.0;
@@ -24,6 +29,14 @@ public final class ActionPhaseValues {
     }
     public void removeCountdown(double value) {
         this.countdownLeft -= value;
+    }
+
+    public long getNanoTimeAtStart() {
+        return nanoTimeAtStart;
+    }
+
+    public void setNanoTimeAtStart(long nanoTimeAtStart) {
+        this.nanoTimeAtStart = nanoTimeAtStart;
     }
 
     public LevelMap getActionPhaseMap() {
