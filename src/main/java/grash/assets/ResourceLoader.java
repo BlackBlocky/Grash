@@ -5,10 +5,13 @@ import grash.event.*;
 import grash.event.events.core.GrashEvent_LoadResources;
 import grash.event.events.level.GrashEvent_LevelLoaded;
 import grash.event.events.level.GrashEvent_LoadLevel;
+import javafx.scene.image.Image;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
 
 public final class ResourceLoader implements GrashEventListener {
 
@@ -18,6 +21,8 @@ public final class ResourceLoader implements GrashEventListener {
 
     private HashMap<String, MapMetadata> mapMetdatasMap = new HashMap<>();
     private String[] allMapKeys = new String[0];
+
+    private HashMap<String, Sprite> spritesMap = new HashMap<>();
 
     public ResourceLoader (GameController gameController) {
         this.game = gameController;
@@ -30,6 +35,7 @@ public final class ResourceLoader implements GrashEventListener {
     public MapMetadata getMapMetadata(String mapKey) {
         return mapMetdatasMap.get(mapKey);
     }
+    public Sprite getSprite(String spriteKey) { return spritesMap.get(spriteKey); }
 
     public String[] getAllMapKeys() {
         return allMapKeys;
@@ -59,9 +65,17 @@ public final class ResourceLoader implements GrashEventListener {
     }
 
     /**
-     * Loading all the MapMetadata (Not the Actual Map) and adding everything loaded to the Resource-Data
+     * Load all the essential stuff like MapMetadata or Sprites
      */
     private void onEvent_LoadResources(GrashEvent_LoadResources event) {
+        loadAllMapMetadatas();
+        loadAllBaseSprites();
+    }
+
+    /**
+     * Loading all the MapMetadata (Not the Actual Map) and adding everything loaded to the Resource-Data
+     */
+    private void loadAllMapMetadatas() {
         MapMetadata[] loadedMapMetadatas = loadAllMaps();
         ArrayList<String> allLoadedMapKeys = new ArrayList<>();
 
@@ -73,6 +87,16 @@ public final class ResourceLoader implements GrashEventListener {
         }
 
         allMapKeys = allLoadedMapKeys.toArray(new String[0]);
+    }
+
+    private void loadAllBaseSprites() {
+        Sprite[] loadedSprites = loadAllSprites();
+
+        if(loadedSprites == null) return;
+
+        for(Sprite sprite : loadedSprites) {
+            spritesMap.put(sprite.getSpriteName(), sprite);
+        }
     }
 
     /**
@@ -114,6 +138,32 @@ public final class ResourceLoader implements GrashEventListener {
 
         System.out.println();
         return loadedMapMetadatas.toArray(new MapMetadata[0]);
+    }
+
+    private Sprite[] loadAllSprites() {
+        File spritesFolder = new File(game.getWorkingDirectory() + "\\assets\\sprites");
+        if(!spritesFolder.exists()) return null;
+        if(!spritesFolder.isDirectory()) return null;
+
+        List<Sprite> loadedSprites = new ArrayList<>();
+        recursive_loadAllSpritesInFolder(loadedSprites, spritesFolder);
+
+        return loadedSprites.toArray(new Sprite[0]);
+    }
+
+    private void recursive_loadAllSpritesInFolder(List<Sprite> loadedSpritesList, File currentDirectory) {
+        if(!currentDirectory.isDirectory()) {
+            System.out.println("ERROR: File got into the recursive directory loader... just how?!");
+            return;
+        }
+
+        for(File file : Objects.requireNonNull(currentDirectory.listFiles())) {
+            if(file.isDirectory()) recursive_loadAllSpritesInFolder(loadedSpritesList, file);
+
+            String spriteName = file.getName();
+            spriteName = spriteName.substring(0, spriteName.lastIndexOf('.'));
+            loadedSpritesList.add(new Sprite(new Image("file:" + file.getAbsolutePath()), spriteName));
+        }
     }
 
     /**
