@@ -12,7 +12,7 @@ import javafx.scene.paint.Stop;
 
 public final class ActionPhaseRenderer {
 
-    private static final double PIXEL_GRID_SIZE = 62;
+    private static final double PIXEL_GRID_SIZE = 66;
     private GameController game;
     private Canvas gameCanvas;
 
@@ -97,7 +97,7 @@ public final class ActionPhaseRenderer {
 
         Sprite floorDownSprite = game.getResourceLoader().getSprite("FloorDown");
         for(int x = 0; x < gameCanvas.getWidth() / PIXEL_GRID_SIZE; x++) {
-            drawSprite(g, floorUpSprite, new Vec2(x, 9));
+            drawSprite(g, floorDownSprite, new Vec2(x, 9));
         }
     }
 
