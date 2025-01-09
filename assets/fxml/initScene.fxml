@@ -7,7 +7,7 @@
 
 <StackPane style="-fx-background-color: #000000;">
     <ImageView fitWidth="500" fitHeight="500" preserveRatio="true">
-        <Image url="@../sprites/GameLogo.jpeg"/>
+        <Image url="@../sprites/icons/GameLogo.jpeg"/>
     </ImageView>
 
     <!--<ProgressBar progress="-1.0" prefWidth="300" style="-fx-padding: 0 0 80 0;" StackPane.alignment="BOTTOM_CENTER"/>-->
