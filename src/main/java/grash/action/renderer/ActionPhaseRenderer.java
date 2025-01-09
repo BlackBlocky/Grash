@@ -1,5 +1,6 @@
 package grash.action.renderer;
 
+import grash.assets.Sprite;
 import grash.core.GameController;
 import grash.level.map.LevelMapEffect;
 import grash.math.Vec2;
@@ -11,7 +12,7 @@ import javafx.scene.paint.Stop;
 
 public final class ActionPhaseRenderer {
 
-    private static final double PIXEL_GRID_SIZE = 66;
+    private static final double PIXEL_GRID_SIZE = 62;
     private GameController game;
     private Canvas gameCanvas;
 
@@ -46,7 +47,7 @@ public final class ActionPhaseRenderer {
 
         drawBackgroundGradient(deltaTime, g, drawColor);
         drawFloors(g, drawColor);
-        drawGrid(g, drawColor);
+        //drawGrid(g, drawColor);
     }
 
     /**
@@ -54,9 +55,8 @@ public final class ActionPhaseRenderer {
      * on the Grid, e.g. (220,350)
      * In other words, returning the top left of the target Grid.
      */
-    private Vec2 getGridPixelsPos(double x, double y) {
-        double yPos = (y * PIXEL_GRID_SIZE) + PIXEL_GRID_SIZE;
-        return new Vec2(x * PIXEL_GRID_SIZE, y * PIXEL_GRID_SIZE);
+    private Vec2 calculateGridPixelsPos(Vec2 pos) {
+        return pos.multiply(PIXEL_GRID_SIZE);
     }
 
     private void drawBackgroundGradient(double deltaTime, GraphicsContext g, Color drawColor) {
@@ -80,19 +80,25 @@ public final class ActionPhaseRenderer {
         g.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
     }
 
-    private void drawSprite() {
+    private void drawSprite(GraphicsContext g, Sprite sprite, Vec2 pos) {
+        Vec2 pixelPos = calculateGridPixelsPos(pos);
 
+        g.drawImage(sprite.getImage(), pixelPos.x, pixelPos.y, PIXEL_GRID_SIZE, PIXEL_GRID_SIZE);
     }
 
     private void drawFloors(GraphicsContext g, Color drawColor) {
         // Draw the first two lines
         g.setFill(drawColor.invert());
 
-        Vec2 firstLineStartPos = getGridPixelsPos(0, 3.5);
-        g.fillRect(firstLineStartPos.x, firstLineStartPos.y, gameCanvas.getWidth(), PIXEL_GRID_SIZE / 2.0);
+        Sprite floorUpSprite = game.getResourceLoader().getSprite("FloorUp");
+        for(int x = 0; x < gameCanvas.getWidth() / PIXEL_GRID_SIZE; x++) {
+            drawSprite(g, floorUpSprite, new Vec2(x, 3));
+        }
 
-        Vec2 secondLineStartPos = getGridPixelsPos(0, 9);
-        g.fillRect(secondLineStartPos.x, secondLineStartPos.y, gameCanvas.getWidth(), PIXEL_GRID_SIZE / 2.0);
+        Sprite floorDownSprite = game.getResourceLoader().getSprite("FloorDown");
+        for(int x = 0; x < gameCanvas.getWidth() / PIXEL_GRID_SIZE; x++) {
+            drawSprite(g, floorUpSprite, new Vec2(x, 9));
+        }
     }
 
     private void drawGrid(GraphicsContext g, Color drawColor) {
