@@ -10,6 +10,7 @@ import javafx.scene.paint.Stop;
 
 public final class ActionPhaseRenderer {
 
+    private static final double PIXEL_GRID_SIZE = 60;
     private GameController game;
     private Canvas gameCanvas;
 
@@ -41,9 +42,18 @@ public final class ActionPhaseRenderer {
         Color drawColor = colorEffectData.getCurrentEffect().getColor().interpolate(
                 colorEffectData.getNextEffect().getColor(),
                 colorEffectData.interpolateTime(secondsElapsedSinceStart));
-        System.out.println(drawColor.getRed() + " " + drawColor.getGreen() + " " + drawColor.getBlue());
 
         drawBackgroundGradient(deltaTime, g, drawColor);
+
+        drawGrid(g, drawColor);
+    }
+
+    /**
+     * Converts simple positions like [2.2,3.5] into screen-space pixel positions, based
+     * on the Grid, e.g. [220/350]
+     */
+    private void getGridPixelsPos(double x, double y) {
+
     }
 
     private void drawBackgroundGradient(double deltaTime, GraphicsContext g, Color drawColor) {
@@ -66,5 +76,27 @@ public final class ActionPhaseRenderer {
         g.setFill(gradient);
         g.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
     }
+
+    private void drawFloors(GraphicsContext g, Color drawColor) {
+
+    }
+
+    private void drawGrid(GraphicsContext g, Color drawColor) {
+        for(int x = 0; x < gameCanvas.getWidth(); x += (int)PIXEL_GRID_SIZE) {
+            for(int y = 0; y < gameCanvas.getHeight(); y += (int)PIXEL_GRID_SIZE) {
+                boolean isEvenX = (x / PIXEL_GRID_SIZE) % 2 == 0;
+                boolean isEvenY = (y / PIXEL_GRID_SIZE) % 2 == 0;
+
+                Color c = (isEvenX == isEvenY)
+                        ? Color.grayRgb(255, 0.2)
+                        : Color.grayRgb(0, 0.2);
+
+                g.setFill(c);
+                g.fillRect(x, y, PIXEL_GRID_SIZE, PIXEL_GRID_SIZE);
+            }
+        }
+    }
+
+
 
 }
