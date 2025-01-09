@@ -79,7 +79,8 @@ public final class WindowController implements GrashEventListener {
     }
 
     private void onEvent_InitializeDone(GrashEvent_InitializationDone event) {
-        System.out.println("second: " + event.getClass().getName());
+        // Changing the Icon here because it isn't loaded before
+        game.getPrimaryStage().getIcons().add(game.getResourceLoader().getSprite("GameIcon").getImage());
     }
 
     /**

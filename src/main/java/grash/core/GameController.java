@@ -43,7 +43,7 @@ public final class GameController implements GrashEventListener {
      * The Game also immediately switched to the Splashscreen, for loading the resources after it.
      */
     public GameController(Stage primaryStage) {
-        this.initTimestampMillis = System.currentTimeMillis();
+        this.initTimestampMillis = System.currentTimeMillis(); // System time
         this.primaryStage = primaryStage;
         this.eventBus = new GrashEventBus();
 
@@ -74,12 +74,9 @@ public final class GameController implements GrashEventListener {
     public Stage getPrimaryStage() {
         return this.primaryStage;
     }
-    public GameState getGameState() {
-        return this.gameState;
-    }
-    public WindowState getWindowState() {
-        return this.windowController.getWindowState();
-    }
+    public GameState getGameState() { return this.gameState; }
+    public WindowState getWindowState() { return this.windowController.getWindowState(); }
+    public ResourceLoader getResourceLoader() { return this.resourceLoader; }
 
     /**
      * This Method will ever return a unique ID, it will NEVER return the same (only after 4.294.967.296 calls :P)
