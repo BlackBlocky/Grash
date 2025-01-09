@@ -158,7 +158,10 @@ public final class ResourceLoader implements GrashEventListener {
         }
 
         for(File file : Objects.requireNonNull(currentDirectory.listFiles())) {
-            if(file.isDirectory()) recursive_loadAllSpritesInFolder(loadedSpritesList, file);
+            if(file.isDirectory()) {
+                recursive_loadAllSpritesInFolder(loadedSpritesList, file);
+                continue;
+            }
 
             String spriteName = file.getName();
             spriteName = spriteName.substring(0, spriteName.lastIndexOf('.'));
