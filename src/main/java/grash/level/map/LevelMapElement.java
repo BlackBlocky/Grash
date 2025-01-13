@@ -47,4 +47,8 @@ public final class LevelMapElement extends LevelMapThing {
     public double getTimeEnd() {
         return timeEnd;
     }
+
+    public MapElementType getMapElementType() {
+        return mapElementType;
+    }
 }

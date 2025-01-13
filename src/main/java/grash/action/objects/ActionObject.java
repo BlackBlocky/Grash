@@ -1,20 +1,27 @@
 package grash.action.objects;
 
+import grash.assets.Sprite;
 import grash.core.GameController;
-import grash.level.map.MapThingType;
+import grash.level.map.LevelMapThing;
 import grash.math.Vec2;
 
 public abstract class ActionObject {
     private Vec2 position;
     protected GameController game;
 
-    private final MapThingType thingType;
+    protected final LevelMapThing levelMapThing;
 
-    public ActionObject(GameController gameController, Vec2 startPos, MapThingType thingType) {
+    private final Sprite sprite;
+
+    public ActionObject(GameController gameController, Vec2 startPos, LevelMapThing levelMapThing) {
         this.game = gameController;
         this.position = startPos;
-        this.thingType = thingType;
+        this.levelMapThing = levelMapThing;
+
+        this.sprite = setupSprite();
     }
+
+    protected abstract Sprite setupSprite();
 
     public Vec2 getPosition() {
         return position;
@@ -24,7 +31,11 @@ public abstract class ActionObject {
         this.position = position;
     }
 
-    public MapThingType getThingType() {
-        return thingType;
+    public LevelMapThing getLevelMapThing() {
+        return levelMapThing;
+    }
+
+    public Sprite getSprite() {
+        return sprite;
     }
 }
