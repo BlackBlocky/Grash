@@ -83,8 +83,12 @@ public final class ActionPhaseController implements GrashEventListener {
         LevelMapEffect startColorEffect = new LevelMapEffect(MapEffectType.Color);
         startColorEffect.setColor(actionPhaseValues.getActionPhaseMap().getStartColor());
 
+        actionPhaseValues.getActionPhaseMap().getLevelMapTimeline().calculateXStartPosForEveryStack(
+                actionPhaseValues.getActionPhaseMap().getSpeed()
+        );
         actionPhaseRenderer.setupRenderer(this.game, startColorEffect);
 
+        // only set the next second Color of there even is a second color
         LevelMapEffect nextColorAfterStartColor = visualEffectValues.getNextColor();
         if(nextColorAfterStartColor != null)
             actionPhaseRenderer.updateColors(startColorEffect, nextColorAfterStartColor);

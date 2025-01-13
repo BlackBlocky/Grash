@@ -31,6 +31,16 @@ public final class LevelMapTimeline {
     }
 
     /**
+     * This Function will be called in the Action Phase first.
+     * The Function can be called as much as you want.
+     */
+    public void calculateXStartPosForEveryStack(double speed) {
+        for(LevelMapTimelineStack stack : timelineFirstToLast) {
+            stack.calculateXStartPos(speed);
+        }
+    }
+
+    /**
      * Takes every Parameter from the LevelMap that contains LevelMapThings and shoots all of them into one single array
      */
     private LevelMapThing[] putAllMapThingsToOneArray(LevelMap levelMap) {
