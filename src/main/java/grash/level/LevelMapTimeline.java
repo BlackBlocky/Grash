@@ -27,7 +27,7 @@ public final class LevelMapTimeline {
 
     public LevelMapTimelineStack getNextTimelineStack(int index) {
         if(timelineFirstToLast.length - 1 < index + 1) return null;
-        return timelineFirstToLast[index];
+        return timelineFirstToLast[index + 1];
     }
 
     /**

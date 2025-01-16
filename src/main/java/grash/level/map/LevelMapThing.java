@@ -15,4 +15,8 @@ public abstract class LevelMapThing {
     public void setTimeStart(double timeStart) {
         this.timeStart = timeStart;
     }
+
+    public MapThingType getMapThingType() {
+        return mapThingType;
+    }
 }

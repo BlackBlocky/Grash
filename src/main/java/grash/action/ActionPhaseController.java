@@ -1,5 +1,6 @@
 package grash.action;
 
+import grash.action.objects.ObstacleObject;
 import grash.action.renderer.ActionPhaseRenderer;
 import grash.core.GameController;
 import grash.core.GameState;
@@ -7,9 +8,9 @@ import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
 import grash.event.events.action.GrashEvent_StartActionPhase;
 import grash.event.events.core.GrashEvent_Tick;
-import grash.level.map.LevelMap;
-import grash.level.map.LevelMapEffect;
-import grash.level.map.MapEffectType;
+import grash.level.LevelMapTimeline;
+import grash.level.LevelMapTimelineStack;
+import grash.level.map.*;
 
 public final class ActionPhaseController implements GrashEventListener {
 
@@ -18,9 +19,15 @@ public final class ActionPhaseController implements GrashEventListener {
     private ActionPhaseValues actionPhaseValues;
     private ActionPhaseVisualEffectValues visualEffectValues;
 
-    private ActionPhaseRenderer actionPhaseRenderer;
+    private final ActionPhaseObjectHandler actionPhaseObjectHandler;
+    private final ActionPhaseRenderer actionPhaseRenderer;
     // TODO Start Timestamp machen und dann Current Color im renderer mit den Effect Values Updaten
-    private GameController game;
+    private final GameController game;
+
+    public static final double PRE_GENERATED_DISTANCE = 10;
+    public static final double Y_UP = 4;
+    public static final double Y_MIDDLE = 6;
+    public static final double Y_DOWN = 8;
 
     public ActionPhaseController(GameController gameController) {
         this.actionPhaseValues = null;
@@ -28,9 +35,14 @@ public final class ActionPhaseController implements GrashEventListener {
 
         this.game = gameController;
         this.actionPhaseRenderer = new ActionPhaseRenderer();
+        this.actionPhaseObjectHandler = new ActionPhaseObjectHandler(this, this.game);
 
         game.getEventBus().registerListener(GrashEvent_Tick.class, this);
         game.getEventBus().registerListener(GrashEvent_StartActionPhase.class, this);
+    }
+
+    public ActionPhaseValues getActionPhaseValues() {
+        return actionPhaseValues;
     }
 
     public void setupNewActionPhase(LevelMap actionPhaseMap, double startCountdownTimeSeconds) {
@@ -61,7 +73,9 @@ public final class ActionPhaseController implements GrashEventListener {
         double secondsElapsedSinceStart = (System.nanoTime() - actionPhaseValues.getNanoTimeAtStart()) / 1_000_000_000.0;
 
         updateVisualEffectRendererValues(secondsElapsedSinceStart);
-        actionPhaseRenderer.updateCanvas(event.getDeltaTime(), secondsElapsedSinceStart);
+        actionPhaseObjectHandler.processLevelMapTimeline(secondsElapsedSinceStart);
+        actionPhaseRenderer.updateCanvas(event.getDeltaTime(), secondsElapsedSinceStart,
+                getActionPhaseValues().getCurrentObstacleObjects());
     }
 
     /**
@@ -93,6 +107,8 @@ public final class ActionPhaseController implements GrashEventListener {
         if(nextColorAfterStartColor != null)
             actionPhaseRenderer.updateColors(startColorEffect, nextColorAfterStartColor);
     }
+
+
 
     private void updateVisualEffectRendererValues(double secondsElapsedSinceStart) {
         /* This works because when the currentColor is not null, it is time for the next color and the

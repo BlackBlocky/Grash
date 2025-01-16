@@ -44,7 +44,9 @@ public final class ActionPhaseRenderer {
         colorEffectData.recalculate();
     }
 
-    public void updateCanvas(double deltaTime, double secondsElapsedSinceStart) {
+    public void updateCanvas(double deltaTime, double secondsElapsedSinceStart,
+                             List<ObstacleObject> renderedObstacleObjects) {
+
         GraphicsContext g = gameCanvas.getGraphicsContext2D();
         Color drawColor = colorEffectData.getCurrentEffect().getColor().interpolate(
                 colorEffectData.getNextEffect().getColor(),
@@ -52,6 +54,7 @@ public final class ActionPhaseRenderer {
 
         drawBackgroundGradient(deltaTime, g, drawColor);
         drawFloors(g, drawColor);
+        drawAllObstacleObjects(g, renderedObstacleObjects);
         //drawGrid(g, drawColor);
     }
 

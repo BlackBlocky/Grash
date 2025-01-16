@@ -1,6 +1,10 @@
 package grash.action;
 
+import grash.action.objects.ObstacleObject;
 import grash.level.map.LevelMap;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public final class ActionPhaseValues {
     private LevelMap actionPhaseMap;
@@ -8,6 +12,9 @@ public final class ActionPhaseValues {
     private double timeProgress;
     private double score;
     private double countdownLeft;
+    private int currentTimelineIndex;
+
+    private final List<ObstacleObject> currentObstacleObjects;
 
     /**
      * This is the measured time AFTER the Countdown is done!
@@ -19,6 +26,9 @@ public final class ActionPhaseValues {
         this.timeProgress = 0.0;
         this.score = 0.0;
         this.countdownLeft = countdownLeft;
+        this.currentTimelineIndex = -1;
+
+        this.currentObstacleObjects = new ArrayList<>();
     }
 
     public void addScore(double value) {
@@ -53,5 +63,17 @@ public final class ActionPhaseValues {
 
     public double getCountdownLeft() {
         return countdownLeft;
+    }
+
+    public int getCurrentTimelineIndex() {
+        return currentTimelineIndex;
+    }
+
+    public void increaseCurrentTimelineIndex() {
+        this.currentTimelineIndex++;
+    }
+
+    public List<ObstacleObject> getCurrentObstacleObjects() {
+        return currentObstacleObjects;
     }
 }
