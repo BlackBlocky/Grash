@@ -113,14 +113,14 @@ public final class ActionPhaseRenderer {
         for(int x = 0; x < gameCanvas.getWidth() / PIXEL_GRID_SIZE; x++) {
             drawSprite(g, floorDownSprite, new Vec2(x, 9));
         }
-
+        /*
         drawSprite(g, game.getResourceLoader().getSprite("SpikeDown"), new Vec2(8, 8));
         drawSprite(g, game.getResourceLoader().getSprite("SpikeDown"), new Vec2(10, 8));
         drawSprite(g, game.getResourceLoader().getSprite("SpikeDown"), new Vec2(11, 8));
 
         drawSprite(g, game.getResourceLoader().getSprite("SpikeUp"), new Vec2(9, 4));
         drawSprite(g, game.getResourceLoader().getSprite("SpikeUp"), new Vec2(11, 4));
-        drawSprite(g, game.getResourceLoader().getSprite("SpikeUp"), new Vec2(12, 4));
+        drawSprite(g, game.getResourceLoader().getSprite("SpikeUp"), new Vec2(12, 4));*/
     }
 
     private void drawGrid(GraphicsContext g, Color drawColor) {
