@@ -1,14 +1,19 @@
 package grash.action.renderer;
 
+import grash.action.objects.ObstacleObject;
 import grash.assets.Sprite;
 import grash.core.GameController;
 import grash.level.map.LevelMapEffect;
+import grash.level.map.LevelMapElement;
+import grash.level.map.MapElementType;
 import grash.math.Vec2;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
+
+import java.util.List;
 
 public final class ActionPhaseRenderer {
 
@@ -59,6 +64,12 @@ public final class ActionPhaseRenderer {
         return pos.multiply(PIXEL_GRID_SIZE);
     }
 
+    private void drawAllObstacleObjects(GraphicsContext g, List<ObstacleObject> allObstacleObjects) {
+        for(ObstacleObject obstacleObject : allObstacleObjects) {
+            drawSprite(g, obstacleObject.getSprite(), obstacleObject.getPosition());
+        }
+    }
+
     private void drawBackgroundGradient(double deltaTime, GraphicsContext g, Color drawColor) {
         double BACKGROUND_ANIMATION_SPEED = 2.5;
         renderedBackgroundValue += deltaTime * BACKGROUND_ANIMATION_SPEED;
@@ -80,8 +91,8 @@ public final class ActionPhaseRenderer {
         g.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
     }
 
-    private void drawSprite(GraphicsContext g, Sprite sprite, Vec2 pos) {
-        Vec2 pixelPos = calculateGridPixelsPos(pos);
+    private void drawSprite(GraphicsContext g, Sprite sprite, Vec2 gridPos) {
+        Vec2 pixelPos = calculateGridPixelsPos(gridPos);
 
         g.drawImage(sprite.getImage(), pixelPos.x, pixelPos.y, PIXEL_GRID_SIZE, PIXEL_GRID_SIZE);
     }

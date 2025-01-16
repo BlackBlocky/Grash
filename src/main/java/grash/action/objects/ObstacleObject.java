@@ -13,7 +13,7 @@ public final class ObstacleObject extends ActionObject {
     }
 
     @Override
-    public Sprite setupSprite() {
+    protected Sprite setupSprite() {
         LevelMapElement thisLevelMapElement = (LevelMapElement) levelMapThing;
         switch (thisLevelMapElement.getMapElementType()) {
             case Spike:
