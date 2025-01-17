@@ -20,11 +20,13 @@ public final class ActionPhaseController implements GrashEventListener {
     private ActionPhaseVisualEffectValues visualEffectValues;
 
     private final ActionPhaseObjectHandler actionPhaseObjectHandler;
+    private final ActionPhaseLogicHandler actionPhaseLogicHandler;
+
     private final ActionPhaseRenderer actionPhaseRenderer;
     // TODO Start Timestamp machen und dann Current Color im renderer mit den Effect Values Updaten
     private final GameController game;
 
-    public static final double PRE_GENERATED_DISTANCE = 10;
+    public static final double PRE_GENERATED_DISTANCE = 25;
     public static final double Y_UP = 4;
     public static final double Y_MIDDLE = 6;
     public static final double Y_DOWN = 8;
@@ -35,7 +37,8 @@ public final class ActionPhaseController implements GrashEventListener {
 
         this.game = gameController;
         this.actionPhaseRenderer = new ActionPhaseRenderer();
-        this.actionPhaseObjectHandler = new ActionPhaseObjectHandler(this, this.game);
+        this.actionPhaseObjectHandler = new ActionPhaseObjectHandler(this, game);
+        this.actionPhaseLogicHandler = new ActionPhaseLogicHandler(this, game);
 
         game.getEventBus().registerListener(GrashEvent_Tick.class, this);
         game.getEventBus().registerListener(GrashEvent_StartActionPhase.class, this);
@@ -73,7 +76,12 @@ public final class ActionPhaseController implements GrashEventListener {
         double secondsElapsedSinceStart = (System.nanoTime() - actionPhaseValues.getNanoTimeAtStart()) / 1_000_000_000.0;
 
         updateVisualEffectRendererValues(secondsElapsedSinceStart);
+        /* Doing the Logic first and the Spawning after the Logic, because the Object shouldn't be moved
+         when it spawned, because that would mess up the timing, I guess*/
+        actionPhaseLogicHandler.moveAllObstacleObjects(actionPhaseValues.getCurrentObstacleObjects(),
+                actionPhaseValues.getActionPhaseMap().getSpeed(), event.getDeltaTime());
         actionPhaseObjectHandler.processLevelMapTimeline(secondsElapsedSinceStart);
+
         actionPhaseRenderer.updateCanvas(event.getDeltaTime(), secondsElapsedSinceStart,
                 getActionPhaseValues().getCurrentObstacleObjects());
     }
