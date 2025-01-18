@@ -76,7 +76,8 @@ public final class ActionPhaseController implements GrashEventListener {
         double secondsElapsedSinceStart = (System.nanoTime() - actionPhaseValues.getNanoTimeAtStart()) / 1_000_000_000.0;
 
         // Updating the Player before everything moves, because otherwise something could move into the player.
-        actionPhaseLogicHandler.playerLogicHandler(actionPhaseValues.getPlayerObject());
+        actionPhaseLogicHandler.playerLogicHandler(actionPhaseValues.getPlayerObject(), secondsElapsedSinceStart,
+                actionPhaseValues.getActionPhaseMap().getSpeed());
 
         /* Doing the Logic first and the Spawning after the Logic, because the Object shouldn't be moved
          when it spawned, because that would mess up the timing, I guess*/

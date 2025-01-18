@@ -38,16 +38,18 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
         }
     }
 
-    public void playerLogicHandler(PlayerObject player) {
-        player.playerTick();
+    public void playerLogicHandler(PlayerObject player, double secondsElapsedSinceStart, double mapSpeed) {
+        player.playerTick(secondsElapsedSinceStart, mapSpeed);
     }
 
     private void onEvent_KeyDown(GrashEvent_KeyDown event) {
-        System.out.println(controller.getActionPhaseState());
         if(controller.getActionPhaseState() != ActionPhaseState.Active) return;
 
         if(event.getKeyCode() == KeyCode.W) {
             controller.getActionPhaseValues().getPlayerObject().doSwitchSideOnNextTick();
+        }
+        else if(event.getKeyCode() == KeyCode.SPACE) {
+            controller.getActionPhaseValues().getPlayerObject().doJumpOnNextTick();
         }
     }
 
