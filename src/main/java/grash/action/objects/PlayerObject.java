@@ -7,8 +7,8 @@ import grash.math.Vec2;
 
 public final class PlayerObject {
 
-    public static final double JUMP_HEIGHT = 1.5;
-    public static final double JUMP_DISTANCE = 2;
+    public static final double JUMP_HEIGHT = 1.6;
+    public static final double JUMP_DISTANCE = 3;
 
     private final Vec2 position;
     private final Sprite sprite;
@@ -76,14 +76,15 @@ public final class PlayerObject {
 
         this.playerState = PlayerState.Jumping;
         this.elapsedSecondsAtJump = secondsElapsedSinceStart;
-
-        position.y += (isDown) ? -JUMP_HEIGHT : JUMP_HEIGHT;
     }
 
     private void jumpTick(double mapSpeed, double secondsElapsedSinceStart) {
         if(playerState != PlayerState.Jumping) return;
 
         // Calculate the new y Pos for the Jump
+        double jumpHeightMultiplier = calculateJumpHeightMultiplier(secondsElapsedSinceStart, mapSpeed);
+        if(isDown) position.y = ActionPhaseController.Y_DOWN - (JUMP_HEIGHT * jumpHeightMultiplier);
+        else position.y = ActionPhaseController.Y_UP + (JUMP_HEIGHT * jumpHeightMultiplier);
 
         // Check if the Jump is over or not
         double secondsSinceJump = secondsElapsedSinceStart - this.elapsedSecondsAtJump;
@@ -91,8 +92,18 @@ public final class PlayerObject {
         if(traveledDistanceSinceJump >= JUMP_DISTANCE) endJump();
     }
 
+    private double calculateJumpHeightMultiplier(double secondsElapsedSinceStart, double mapSpeed) {
+        double maxJumpDurationSeconds = JUMP_DISTANCE / mapSpeed;
+        double currentJumpDurationSeconds = secondsElapsedSinceStart - this.elapsedSecondsAtJump;
+        double currentJumpDurationNormalized = currentJumpDurationSeconds / maxJumpDurationSeconds;
+        /* \/ We currently have a value from 0 to 1.
+        But now it's going to be mapped like this "0.0 - 1.0 - 0.0", while the middle is 0.5.
+        This is going to be solved with a parabola in the linear factor form*/
+        return -4.0 * (currentJumpDurationNormalized - 0.0) * (currentJumpDurationNormalized - 1.0);
+    }
+
     private void endJump() {
-        position.y -= (isDown) ? -JUMP_HEIGHT : JUMP_HEIGHT;
+        position.y = (isDown) ? ActionPhaseController.Y_DOWN : ActionPhaseController.Y_UP;
         this.playerState = PlayerState.Idle;
     }
 
