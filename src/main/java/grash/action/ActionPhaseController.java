@@ -45,9 +45,8 @@ public final class ActionPhaseController implements GrashEventListener {
         game.getEventBus().registerListener(GrashEvent_StartActionPhase.class, this);
     }
 
-    public ActionPhaseValues getActionPhaseValues() {
-        return actionPhaseValues;
-    }
+    public ActionPhaseValues getActionPhaseValues() { return this.actionPhaseValues; }
+    public ActionPhaseState getActionPhaseState() { return this.actionPhaseState; }
 
     public void setupNewActionPhase(LevelMap actionPhaseMap, double startCountdownTimeSeconds) {
         this.actionPhaseValues = new ActionPhaseValues(actionPhaseMap, startCountdownTimeSeconds, game);
@@ -104,6 +103,7 @@ public final class ActionPhaseController implements GrashEventListener {
 
         actionPhaseState = ActionPhaseState.Countdown;
         actionPhaseValues.setNanoTimeAtStart(System.nanoTime()); // TODO This should not be here, but yeah
+        actionPhaseState = ActionPhaseState.Active; // TODO This should not be here, but yeah
 
         /* Generate LevelMapEffects because the Renderer needs and Effect to work with as start Values,
         and not just simple Types like "Color".

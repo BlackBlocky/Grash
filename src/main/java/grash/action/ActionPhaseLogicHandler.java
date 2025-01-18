@@ -43,6 +43,9 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
     }
 
     private void onEvent_KeyDown(GrashEvent_KeyDown event) {
+        System.out.println(controller.getActionPhaseState());
+        if(controller.getActionPhaseState() != ActionPhaseState.Active) return;
+
         if(event.getKeyCode() == KeyCode.W) {
             controller.getActionPhaseValues().getPlayerObject().doSwitchSideOnNextTick();
         }
