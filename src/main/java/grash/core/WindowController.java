@@ -8,8 +8,10 @@ import grash.event.events.scene.GrashEvent_SwitchScene;
 import grash.ui.LevelActionScreenController;
 import grash.ui.ScreenController;
 import grash.ui.WelcomeScreenController;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -150,6 +152,20 @@ public final class WindowController implements GrashEventListener {
         if(pane == null) return;
 
         Scene scene = new Scene(pane);
+
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                game.getKeyInputHandler().handle_JavaFXKeyEvent(keyEvent, true);
+            }
+        });
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                game.getKeyInputHandler().handle_JavaFXKeyEvent(keyEvent, false);
+            }
+        });
+
         game.getPrimaryStage().setScene(scene);
 
         // Get the ScreenController that belongs to the current Scene, and call the init() Function

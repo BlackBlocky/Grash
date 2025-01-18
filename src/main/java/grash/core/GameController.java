@@ -17,6 +17,7 @@ import grash.event.events.level.GrashEvent_LevelReadyToInit;
 import grash.event.events.level.GrashEvent_LoadLevel;
 import grash.event.events.scene.GrashEvent_SceneSwitched;
 import grash.event.events.scene.GrashEvent_SwitchScene;
+import grash.input.KeyInputHandler;
 import grash.level.LevelController;
 import javafx.animation.AnimationTimer;
 import javafx.stage.Stage;
@@ -28,6 +29,7 @@ public final class GameController implements GrashEventListener {
     private final WindowController windowController;
     private final LevelController levelController;
     private final ActionPhaseController actionPhaseController;
+    private final KeyInputHandler keyInputHandler;
 
     private final long initTimestampMillis;
     private final Stage primaryStage;
@@ -51,6 +53,7 @@ public final class GameController implements GrashEventListener {
         this.windowController = new WindowController(this);
         this.levelController = new LevelController(this);
         this.actionPhaseController = new ActionPhaseController(this);
+        this.keyInputHandler = new KeyInputHandler(this);
 
         eventBus.registerListener(GrashEvent_InitializationDone.class, this);
         eventBus.registerListener(GrashEvent_SceneSwitched.class, this);
@@ -77,6 +80,7 @@ public final class GameController implements GrashEventListener {
     public GameState getGameState() { return this.gameState; }
     public WindowState getWindowState() { return this.windowController.getWindowState(); }
     public ResourceLoader getResourceLoader() { return this.resourceLoader; }
+    public KeyInputHandler getKeyInputHandler() { return this.keyInputHandler; }
 
     /**
      * This Method will ever return a unique ID, it will NEVER return the same (only after 4.294.967.296 calls :P)

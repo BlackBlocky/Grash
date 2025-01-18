@@ -1,5 +1,7 @@
 package grash.event;
 
+import grash.event.events.core.GrashEvent_Tick;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -21,6 +23,9 @@ public final class GrashEventBus {
         isAlreadyProcessing = true;
         do {
             GrashEvent activeEvent = eventQueue.getFirst();
+            /*if(activeEvent.getClass() != GrashEvent_Tick.class) {
+                System.out.println("Doing Event: " + activeEvent.getClass().getName());
+            }*/
 
             HashSet<GrashEventListener> eventListeners = listeners.get(activeEvent.getClass());
             if(eventListeners != null) {
@@ -29,7 +34,6 @@ public final class GrashEventBus {
             }
             else {
                 eventQueue.remove(activeEvent);
-                continue;
             }
 
             if(eventQueue.isEmpty()) isAlreadyProcessing = false;
