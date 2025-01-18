@@ -10,7 +10,6 @@ import grash.input.KeyInputHandler;
  *
  *  <br>Received by:
  * {@link grash.core.WindowController}
- * {@link KeyInputHandler}
  *
  */
 public final class GrashEvent_Initialize extends GrashEvent {
