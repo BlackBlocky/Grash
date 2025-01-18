@@ -18,6 +18,9 @@ public final class ActionPhaseObjectHandler {
         this.game = gameController;
     }
 
+    /**
+     * Spawning LevelMapThings into the Action, when they are on order with their start time.
+     */
     public void processLevelMapTimeline(double secondsElapsedSinceStart) {
         ActionPhaseValues actionPhaseValues = controller.getActionPhaseValues();
         LevelMapTimeline timeline = actionPhaseValues.getActionPhaseMap().getLevelMapTimeline();
@@ -52,8 +55,9 @@ public final class ActionPhaseObjectHandler {
     }
 
     private double calculateObjectXStartPos(double objectTime, double secondsElapsedSinceStart) {
-        return (objectTime - secondsElapsedSinceStart)
-                * controller.getActionPhaseValues().getActionPhaseMap().getSpeed();
+        return ((objectTime - secondsElapsedSinceStart)
+                * controller.getActionPhaseValues().getActionPhaseMap().getSpeed())
+                + controller.getActionPhaseValues().getPlayerObject().getPosition().x;
     }
 
     private void addObstacleObjectToAction(LevelMapElement levelMapElement, double secondsElapsedSinceStart) {
