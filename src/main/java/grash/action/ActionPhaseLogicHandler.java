@@ -1,6 +1,7 @@
 package grash.action;
 
 import grash.action.objects.ObstacleObject;
+import grash.action.objects.PlayerObject;
 import grash.core.GameController;
 
 import java.util.List;
@@ -19,6 +20,10 @@ public final class ActionPhaseLogicHandler {
         for(ObstacleObject obstacleObject : allObstacleObjects) {
             obstacleObject.getPosition().x -= speed * deltaTime;
         }
+    }
+
+    public void playerLogicHandler(PlayerObject player) {
+
     }
 
 }

@@ -30,6 +30,7 @@ public final class ActionPhaseController implements GrashEventListener {
     public static final double Y_UP = 4;
     public static final double Y_MIDDLE = 6;
     public static final double Y_DOWN = 8;
+    public static final double PLAYER_X = 8;
 
     public ActionPhaseController(GameController gameController) {
         this.actionPhaseValues = null;
@@ -49,7 +50,7 @@ public final class ActionPhaseController implements GrashEventListener {
     }
 
     public void setupNewActionPhase(LevelMap actionPhaseMap, double startCountdownTimeSeconds) {
-        this.actionPhaseValues = new ActionPhaseValues(actionPhaseMap, startCountdownTimeSeconds);
+        this.actionPhaseValues = new ActionPhaseValues(actionPhaseMap, startCountdownTimeSeconds, game);
         this.visualEffectValues = new ActionPhaseVisualEffectValues(actionPhaseMap);
     }
 
@@ -75,15 +76,20 @@ public final class ActionPhaseController implements GrashEventListener {
 
         double secondsElapsedSinceStart = (System.nanoTime() - actionPhaseValues.getNanoTimeAtStart()) / 1_000_000_000.0;
 
-        updateVisualEffectRendererValues(secondsElapsedSinceStart);
+        // Updating the Player before everything moves, because otherwise something could move into the player.
+        actionPhaseLogicHandler.playerLogicHandler(actionPhaseValues.getPlayerObject());
+
         /* Doing the Logic first and the Spawning after the Logic, because the Object shouldn't be moved
          when it spawned, because that would mess up the timing, I guess*/
         actionPhaseLogicHandler.moveAllObstacleObjects(actionPhaseValues.getCurrentObstacleObjects(),
                 actionPhaseValues.getActionPhaseMap().getSpeed(), event.getDeltaTime());
         actionPhaseObjectHandler.processLevelMapTimeline(secondsElapsedSinceStart);
 
+        // Updating the renderer
+        updateVisualEffectRendererValues(secondsElapsedSinceStart);
         actionPhaseRenderer.updateCanvas(event.getDeltaTime(), secondsElapsedSinceStart,
-                getActionPhaseValues().getCurrentObstacleObjects());
+                getActionPhaseValues().getCurrentObstacleObjects(),
+                actionPhaseValues.getPlayerObject());
     }
 
     /**
@@ -105,12 +111,15 @@ public final class ActionPhaseController implements GrashEventListener {
         LevelMapEffect startColorEffect = new LevelMapEffect(MapEffectType.Color);
         startColorEffect.setColor(actionPhaseValues.getActionPhaseMap().getStartColor());
 
+        // Setup renderer and other necessary stuff
         actionPhaseValues.getActionPhaseMap().getLevelMapTimeline().calculateXStartPosForEveryStack(
                 actionPhaseValues.getActionPhaseMap().getSpeed()
         );
         actionPhaseRenderer.setupRenderer(this.game, startColorEffect);
 
-        // only set the next second Color of there even is a second color
+        /* Only set the next second Color of there even is a second color.
+         This needs to be executed AFTER the Renderer was set up,
+         because we are using the updateColors() Method */
         LevelMapEffect nextColorAfterStartColor = visualEffectValues.getNextColor();
         if(nextColorAfterStartColor != null)
             actionPhaseRenderer.updateColors(startColorEffect, nextColorAfterStartColor);

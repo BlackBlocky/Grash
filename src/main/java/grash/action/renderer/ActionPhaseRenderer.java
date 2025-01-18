@@ -1,6 +1,7 @@
 package grash.action.renderer;
 
 import grash.action.objects.ObstacleObject;
+import grash.action.objects.PlayerObject;
 import grash.assets.Sprite;
 import grash.core.GameController;
 import grash.level.map.LevelMapEffect;
@@ -45,7 +46,8 @@ public final class ActionPhaseRenderer {
     }
 
     public void updateCanvas(double deltaTime, double secondsElapsedSinceStart,
-                             List<ObstacleObject> renderedObstacleObjects) {
+                             List<ObstacleObject> renderedObstacleObjects,
+                             PlayerObject player) {
 
         GraphicsContext g = gameCanvas.getGraphicsContext2D();
         Color drawColor = colorEffectData.getCurrentEffect().getColor().interpolate(
@@ -55,6 +57,8 @@ public final class ActionPhaseRenderer {
         drawBackgroundGradient(deltaTime, g, drawColor);
         drawFloors(g, drawColor);
         drawAllObstacleObjects(g, renderedObstacleObjects);
+
+        if(player != null) drawSprite(g, player.getSprite(), player.getPosition());
         //drawGrid(g, drawColor);
     }
 
