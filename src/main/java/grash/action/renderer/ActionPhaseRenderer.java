@@ -58,7 +58,7 @@ public final class ActionPhaseRenderer {
         drawFloors(g, drawColor);
         drawAllObstacleObjects(g, renderedObstacleObjects);
 
-        if(player != null) drawSprite(g, player.getSprite(), player.getPosition());
+        if(player != null) drawSprite(g, player.getSprite(), player.getPosition(), Vec2.ONE());
         //drawGrid(g, drawColor);
     }
 
@@ -73,7 +73,7 @@ public final class ActionPhaseRenderer {
 
     private void drawAllObstacleObjects(GraphicsContext g, List<ObstacleObject> allObstacleObjects) {
         for(ObstacleObject obstacleObject : allObstacleObjects) {
-            drawSprite(g, obstacleObject.getSprite(), obstacleObject.getPosition());
+            drawSprite(g, obstacleObject.getSprite(), obstacleObject.getPosition(), obstacleObject.getScale());
         }
     }
 
@@ -98,10 +98,11 @@ public final class ActionPhaseRenderer {
         g.fillRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
     }
 
-    private void drawSprite(GraphicsContext g, Sprite sprite, Vec2 gridPos) {
+    private void drawSprite(GraphicsContext g, Sprite sprite, Vec2 gridPos, Vec2 scale) {
         Vec2 pixelPos = calculateGridPixelsPos(gridPos);
 
-        g.drawImage(sprite.getImage(), pixelPos.x, pixelPos.y, PIXEL_GRID_SIZE, PIXEL_GRID_SIZE);
+        g.drawImage(sprite.getImage(), pixelPos.x, pixelPos.y,
+                PIXEL_GRID_SIZE * scale.x, PIXEL_GRID_SIZE * scale.y);
     }
 
     private void drawFloors(GraphicsContext g, Color drawColor) {
@@ -110,12 +111,12 @@ public final class ActionPhaseRenderer {
 
         Sprite floorUpSprite = game.getResourceLoader().getSprite("FloorUp");
         for(int x = 0; x < gameCanvas.getWidth() / PIXEL_GRID_SIZE; x++) {
-            drawSprite(g, floorUpSprite, new Vec2(x, 3));
+            drawSprite(g, floorUpSprite, new Vec2(x, 3), Vec2.ONE());
         }
 
         Sprite floorDownSprite = game.getResourceLoader().getSprite("FloorDown");
         for(int x = 0; x < gameCanvas.getWidth() / PIXEL_GRID_SIZE; x++) {
-            drawSprite(g, floorDownSprite, new Vec2(x, 9));
+            drawSprite(g, floorDownSprite, new Vec2(x, 9), Vec2.ONE());
         }
         /*
         drawSprite(g, game.getResourceLoader().getSprite("SpikeDown"), new Vec2(8, 8));

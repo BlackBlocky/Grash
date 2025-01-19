@@ -69,7 +69,7 @@ public final class ActionPhaseObjectHandler {
                 spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart);
                 spawnPos.y = (levelMapElement.getIsUp()) ? ActionPhaseController.Y_UP : ActionPhaseController.Y_DOWN;
 
-                actionPhaseValues.getCurrentObstacleObjects().add(new ObstacleObject(game, spawnPos, levelMapElement));
+                actionPhaseValues.getCurrentObstacleObjects().add(new ObstacleObject(game, spawnPos, new Vec2(1, 2), levelMapElement));
                 break;
             }
         }

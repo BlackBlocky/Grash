@@ -8,8 +8,8 @@ import grash.math.Vec2;
 
 public final class ObstacleObject extends ActionObject {
 
-    public ObstacleObject(GameController gameController, Vec2 startPos, LevelMapThing levelMapThing) {
-        super(gameController, startPos, levelMapThing);
+    public ObstacleObject(GameController gameController, Vec2 startPos, Vec2 scale, LevelMapThing levelMapThing) {
+        super(gameController, startPos, scale, levelMapThing);
     }
 
     @Override
