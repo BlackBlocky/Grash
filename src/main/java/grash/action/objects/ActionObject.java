@@ -8,16 +8,19 @@ import grash.math.Vec2;
 public abstract class ActionObject {
     private Vec2 position;
     private Vec2 scale;
+    private Vec2 drawOffset;
     protected GameController game;
 
     protected final LevelMapThing levelMapThing;
 
     private final Sprite sprite;
 
-    public ActionObject(GameController gameController, Vec2 startPos, Vec2 scale, LevelMapThing levelMapThing) {
+    public ActionObject(GameController gameController, Vec2 startPos, Vec2 scale, Vec2 drawOffset,
+                        LevelMapThing levelMapThing) {
         this.game = gameController;
         this.position = startPos;
         this.scale = scale;
+        this.drawOffset = drawOffset;
         this.levelMapThing = levelMapThing;
 
         this.sprite = setupSprite();
@@ -30,6 +33,8 @@ public abstract class ActionObject {
     }
 
     public Vec2 getScale() { return this.scale; }
+
+    public Vec2 getDrawOffset() { return this.drawOffset; }
 
     public void setPosition(Vec2 position) {
         this.position = position;

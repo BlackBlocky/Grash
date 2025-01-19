@@ -73,7 +73,7 @@ public final class ActionPhaseRenderer {
 
     private void drawAllObstacleObjects(GraphicsContext g, List<ObstacleObject> allObstacleObjects) {
         for(ObstacleObject obstacleObject : allObstacleObjects) {
-            drawSprite(g, obstacleObject.getSprite(), obstacleObject.getPosition(), obstacleObject.getScale());
+            drawSprite(g, obstacleObject.getSprite(), obstacleObject.getPosition().add(obstacleObject.getDrawOffset()), obstacleObject.getScale());
         }
     }
 
@@ -100,6 +100,13 @@ public final class ActionPhaseRenderer {
 
     private void drawSprite(GraphicsContext g, Sprite sprite, Vec2 gridPos, Vec2 scale) {
         Vec2 pixelPos = calculateGridPixelsPos(gridPos);
+
+
+        if(sprite == null) {
+            g.setFill(Color.HOTPINK);
+            g.fillRect(pixelPos.x, pixelPos.y, PIXEL_GRID_SIZE * scale.x, PIXEL_GRID_SIZE * scale.y);
+            return;
+        }
 
         g.drawImage(sprite.getImage(), pixelPos.x, pixelPos.y,
                 PIXEL_GRID_SIZE * scale.x, PIXEL_GRID_SIZE * scale.y);

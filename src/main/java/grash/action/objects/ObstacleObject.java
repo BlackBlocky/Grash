@@ -8,8 +8,9 @@ import grash.math.Vec2;
 
 public final class ObstacleObject extends ActionObject {
 
-    public ObstacleObject(GameController gameController, Vec2 startPos, Vec2 scale, LevelMapThing levelMapThing) {
-        super(gameController, startPos, scale, levelMapThing);
+    public ObstacleObject(GameController gameController, Vec2 startPos, Vec2 scale, Vec2 drawOffset,
+                          LevelMapThing levelMapThing) {
+        super(gameController, startPos, scale, drawOffset, levelMapThing);
     }
 
     @Override
@@ -22,7 +23,8 @@ public final class ObstacleObject extends ActionObject {
             case Rope:
                 return null;
             case Wall:
-                return null;
+                return (thisLevelMapElement.getIsUp()) ? game.getResourceLoader().getSprite("WallUp") :
+                        game.getResourceLoader().getSprite("WallDown");
             case Slide:
                 return null;
             case DoubleJump:
