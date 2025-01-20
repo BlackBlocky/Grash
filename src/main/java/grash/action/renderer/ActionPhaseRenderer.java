@@ -1,5 +1,6 @@
 package grash.action.renderer;
 
+import grash.action.objects.Hitbox;
 import grash.action.objects.ObstacleObject;
 import grash.action.objects.PlayerObject;
 import grash.assets.Sprite;
@@ -60,6 +61,7 @@ public final class ActionPhaseRenderer {
 
         if(player != null) drawSprite(g, player.getSprite(), player.getPosition(), Vec2.ONE());
         //drawGrid(g, drawColor);
+        drawAllHitboxes(g, player, renderedObstacleObjects);
     }
 
     /**
@@ -74,6 +76,12 @@ public final class ActionPhaseRenderer {
     private void drawAllObstacleObjects(GraphicsContext g, List<ObstacleObject> allObstacleObjects) {
         for(ObstacleObject obstacleObject : allObstacleObjects) {
             drawSprite(g, obstacleObject.getSprite(), obstacleObject.getPosition().add(obstacleObject.getDrawOffset()), obstacleObject.getScale());
+        }
+    }
+
+    private void drawAllHitboxes(GraphicsContext g, PlayerObject player, List<ObstacleObject> allObstacleObjects) {
+        for(ObstacleObject obstacleObject : allObstacleObjects) {
+            drawHitbox(g, obstacleObject.getPosition(), obstacleObject.getHitbox());
         }
     }
 
@@ -110,6 +118,15 @@ public final class ActionPhaseRenderer {
 
         g.drawImage(sprite.getImage(), pixelPos.x, pixelPos.y,
                 PIXEL_GRID_SIZE * scale.x, PIXEL_GRID_SIZE * scale.y);
+    }
+
+    private void drawHitbox(GraphicsContext g, Vec2 gridPos, Hitbox hitbox) {
+        Vec2 pixelPos = calculateGridPixelsPos(gridPos.add(hitbox.getOffset()));
+
+        g.setStroke(Color.LIME);
+        g.setLineWidth(2);
+        g.strokeRect(pixelPos.x, pixelPos.y,
+                PIXEL_GRID_SIZE * hitbox.getSize().x, PIXEL_GRID_SIZE * hitbox.getSize().y);
     }
 
     private void drawFloors(GraphicsContext g, Color drawColor) {
