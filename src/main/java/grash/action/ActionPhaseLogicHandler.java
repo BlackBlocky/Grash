@@ -42,6 +42,11 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
         player.playerTick(secondsElapsedSinceStart, mapSpeed);
     }
 
+    public boolean checkIfPlayerIsColliding(PlayerObject player, List<ObstacleObject> obstacleObjects) {
+
+        return false;
+    }
+
     private void onEvent_KeyDown(GrashEvent_KeyDown event) {
         if(controller.getActionPhaseState() != ActionPhaseState.Active) return;
 

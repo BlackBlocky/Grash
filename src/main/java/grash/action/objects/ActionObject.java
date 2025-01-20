@@ -9,6 +9,7 @@ public abstract class ActionObject {
     private Vec2 position;
     private Vec2 scale;
     private Vec2 drawOffset;
+    private Hitbox hitbox;
     protected GameController game;
 
     protected final LevelMapThing levelMapThing;
@@ -16,12 +17,13 @@ public abstract class ActionObject {
     private final Sprite sprite;
 
     public ActionObject(GameController gameController, Vec2 startPos, Vec2 scale, Vec2 drawOffset,
-                        LevelMapThing levelMapThing) {
+                        LevelMapThing levelMapThing, Hitbox hitbox) {
         this.game = gameController;
         this.position = startPos;
         this.scale = scale;
         this.drawOffset = drawOffset;
         this.levelMapThing = levelMapThing;
+        this.hitbox = hitbox;
 
         this.sprite = setupSprite();
     }
@@ -43,6 +45,8 @@ public abstract class ActionObject {
     public LevelMapThing getLevelMapThing() {
         return levelMapThing;
     }
+
+    public Hitbox getHitbox() { return this.hitbox; }
 
     public Sprite getSprite() {
         return sprite;

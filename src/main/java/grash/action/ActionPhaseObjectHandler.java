@@ -1,5 +1,6 @@
 package grash.action;
 
+import grash.action.objects.Hitbox;
 import grash.action.objects.ObstacleObject;
 import grash.core.GameController;
 import grash.level.LevelMapTimeline;
@@ -69,8 +70,10 @@ public final class ActionPhaseObjectHandler {
                 spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart);
                 spawnPos.y = (levelMapElement.getIsUp()) ? ActionPhaseController.Y_UP : ActionPhaseController.Y_DOWN;
 
+                Hitbox hitbox = new Hitbox(Vec2.ONE(), Vec2.ZERO());
+
                 actionPhaseValues.getCurrentObstacleObjects().add(new ObstacleObject(game,
-                        spawnPos,new Vec2(1, 1), Vec2.ZERO(), levelMapElement));
+                        spawnPos,new Vec2(1, 1), Vec2.ZERO(), levelMapElement, hitbox));
                 break;
             }
             case Wall: {
@@ -79,9 +82,11 @@ public final class ActionPhaseObjectHandler {
                 spawnPos.y = (levelMapElement.getIsUp()) ? ActionPhaseController.Y_UP : ActionPhaseController.Y_DOWN;
 
                 Vec2 drawOffset = (levelMapElement.getIsUp()) ? Vec2.ZERO() : new Vec2(0, -2);
+                Hitbox hitbox = new Hitbox(new Vec2(1, 3),
+                        (levelMapElement.getIsUp()) ? Vec2.ZERO() : new Vec2(0, -2));
 
                 actionPhaseValues.getCurrentObstacleObjects().add(new ObstacleObject(game,
-                        spawnPos, new Vec2(1, 3), drawOffset, levelMapElement));
+                        spawnPos, new Vec2(1, 3), drawOffset, levelMapElement, hitbox));
                 break;
             }
         }
