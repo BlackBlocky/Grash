@@ -1,5 +1,6 @@
 package grash.action;
 
+import grash.action.objects.Hitbox;
 import grash.action.objects.ObstacleObject;
 import grash.action.objects.PlayerObject;
 import grash.core.GameController;
@@ -33,7 +34,10 @@ public final class ActionPhaseValues {
         this.currentTimelineIndex = -1;
 
         this.currentObstacleObjects = new ArrayList<>();
-        this.playerObject = new PlayerObject(gameController, new Vec2(ActionPhaseController.PLAYER_X, ActionPhaseController.Y_DOWN));
+
+        Hitbox playerHitbox = new Hitbox(Vec2.ONE(), Vec2.ZERO());
+        this.playerObject = new PlayerObject(gameController,
+                new Vec2(ActionPhaseController.PLAYER_X, ActionPhaseController.Y_DOWN), playerHitbox);
     }
 
     public void addScore(double value) {

@@ -12,6 +12,7 @@ public final class PlayerObject {
 
     private final Vec2 position;
     private final Sprite sprite;
+    private final Hitbox hitbox;
 
     private PlayerState playerState;
 
@@ -24,9 +25,10 @@ public final class PlayerObject {
 
     private double elapsedSecondsAtJump;
 
-    public PlayerObject(GameController gameController, Vec2 startPos) {
+    public PlayerObject(GameController gameController, Vec2 startPos, Hitbox hitbox) {
         this.position = startPos;
         this.isDown = (startPos.y == ActionPhaseController.Y_DOWN);
+        this.hitbox = hitbox;
 
         this.game = gameController;
         this.sprite = game.getResourceLoader().getSprite("MagnetSnake");
@@ -40,6 +42,7 @@ public final class PlayerObject {
 
     public Vec2 getPosition() { return this.position; }
     public Sprite getSprite() { return this.sprite; }
+    public Hitbox getHitbox() { return this.hitbox; }
 
     public void doJumpOnNextTick() { this.jumpOnNextTick = true; }
     public void doSwitchSideOnNextTick() { this.switchSideOnNextTick = true; }

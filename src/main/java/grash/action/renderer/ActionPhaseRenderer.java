@@ -83,6 +83,8 @@ public final class ActionPhaseRenderer {
         for(ObstacleObject obstacleObject : allObstacleObjects) {
             drawHitbox(g, obstacleObject.getPosition(), obstacleObject.getHitbox());
         }
+
+        if(player != null) drawHitbox(g, player.getPosition(), player.getHitbox());
     }
 
     private void drawBackgroundGradient(double deltaTime, GraphicsContext g, Color drawColor) {
