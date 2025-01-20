@@ -5,6 +5,9 @@ import grash.action.objects.ObstacleObject;
 import grash.action.objects.PlayerObject;
 import grash.assets.Sprite;
 import grash.core.GameController;
+import grash.event.GrashEvent;
+import grash.event.GrashEventListener;
+import grash.event.events.input.GrashEvent_KeyDown;
 import grash.level.map.LevelMapEffect;
 import grash.level.map.LevelMapElement;
 import grash.level.map.MapElementType;
@@ -17,7 +20,7 @@ import javafx.scene.paint.Stop;
 
 import java.util.List;
 
-public final class ActionPhaseRenderer {
+public final class ActionPhaseRenderer implements GrashEventListener {
 
     private static final double PIXEL_GRID_SIZE = 66;
     private GameController game;
@@ -27,17 +30,49 @@ public final class ActionPhaseRenderer {
 
     private double renderedBackgroundValue; // used in drawBackgroundGradient() ONLY
 
+    private boolean debug_renderGrid;
+    private boolean debug_renderHitbox;
+
+    public ActionPhaseRenderer(GameController gameController) {
+        this.game = gameController;
+        game.getEventBus().registerListener(GrashEvent_KeyDown.class, this);
+    }
+
     /**
      * This will be called every Time the Renderer starts, aka another level is starting
      */
-    public void setupRenderer(GameController gameController, LevelMapEffect startColorEffect) {
-        this.game = gameController;
-
+    public void setupRenderer(LevelMapEffect startColorEffect) {
         this.renderedBackgroundValue = 0.0;
+
+        this.debug_renderGrid = false;
+        this.debug_renderHitbox = false;
 
         colorEffectData = new RendererEffectData(startColorEffect);
 
         gameCanvas = (Canvas) game.getPrimaryStage().getScene().lookup("#gameCanvas");
+    }
+
+    @Override
+    public void onEvent(GrashEvent event) {
+        switch (event.getEventKey()) {
+            case "KeyDown": {
+                onEvent_KeyDown((GrashEvent_KeyDown) event);
+                break;
+            }
+        }
+    }
+
+    private void onEvent_KeyDown(GrashEvent_KeyDown event) {
+        switch (event.getKeyCode()) {
+            case DIGIT0: {
+                debug_renderGrid = !debug_renderGrid;
+                break;
+            }
+            case DIGIT9: {
+                debug_renderHitbox = !debug_renderHitbox;
+                break;
+            }
+        }
     }
 
     public void updateColors(LevelMapEffect currentColorEffect, LevelMapEffect nextColorEffect) {
@@ -60,8 +95,8 @@ public final class ActionPhaseRenderer {
         drawAllObstacleObjects(g, renderedObstacleObjects);
 
         if(player != null) drawSprite(g, player.getSprite(), player.getPosition(), Vec2.ONE());
-        //drawGrid(g, drawColor);
-        drawAllHitboxes(g, player, renderedObstacleObjects);
+        if(debug_renderGrid) drawGrid(g, drawColor);
+        if(debug_renderHitbox) drawAllHitboxes(g, player, renderedObstacleObjects);
     }
 
     /**

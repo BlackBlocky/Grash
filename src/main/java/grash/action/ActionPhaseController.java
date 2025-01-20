@@ -37,7 +37,7 @@ public final class ActionPhaseController implements GrashEventListener {
         this.actionPhaseState = ActionPhaseState.Inactive;
 
         this.game = gameController;
-        this.actionPhaseRenderer = new ActionPhaseRenderer();
+        this.actionPhaseRenderer = new ActionPhaseRenderer(game);
         this.actionPhaseObjectHandler = new ActionPhaseObjectHandler(this, game);
         this.actionPhaseLogicHandler = new ActionPhaseLogicHandler(this, game);
 
@@ -116,7 +116,7 @@ public final class ActionPhaseController implements GrashEventListener {
         actionPhaseValues.getActionPhaseMap().getLevelMapTimeline().calculateXStartPosForEveryStack(
                 actionPhaseValues.getActionPhaseMap().getSpeed()
         );
-        actionPhaseRenderer.setupRenderer(this.game, startColorEffect);
+        actionPhaseRenderer.setupRenderer(startColorEffect);
 
         /* Only set the next second Color of there even is a second color.
          This needs to be executed AFTER the Renderer was set up,
