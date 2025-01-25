@@ -8,9 +8,11 @@ import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
 import grash.event.events.action.GrashEvent_StartActionPhase;
 import grash.event.events.core.GrashEvent_Tick;
+import grash.event.events.input.GrashEvent_KeyDown;
 import grash.level.LevelMapTimeline;
 import grash.level.LevelMapTimelineStack;
 import grash.level.map.*;
+import javafx.scene.input.KeyCode;
 
 public final class ActionPhaseController implements GrashEventListener {
 
@@ -32,6 +34,9 @@ public final class ActionPhaseController implements GrashEventListener {
     public static final double Y_DOWN = 8;
     public static final double PLAYER_X = 8;
 
+    private boolean useCustomTime;
+    private double lastCustomTimeSeconds;
+
     public ActionPhaseController(GameController gameController) {
         this.actionPhaseValues = null;
         this.actionPhaseState = ActionPhaseState.Inactive;
@@ -41,16 +46,24 @@ public final class ActionPhaseController implements GrashEventListener {
         this.actionPhaseObjectHandler = new ActionPhaseObjectHandler(this, game);
         this.actionPhaseLogicHandler = new ActionPhaseLogicHandler(this, game);
 
+        this.useCustomTime = false;
+        this.lastCustomTimeSeconds = 0.0;
+
         game.getEventBus().registerListener(GrashEvent_Tick.class, this);
         game.getEventBus().registerListener(GrashEvent_StartActionPhase.class, this);
+        game.getEventBus().registerListener(GrashEvent_KeyDown.class, this);
     }
 
     public ActionPhaseValues getActionPhaseValues() { return this.actionPhaseValues; }
     public ActionPhaseState getActionPhaseState() { return this.actionPhaseState; }
+    public boolean getUseCustomTime() { return this.useCustomTime; }
 
     public void setupNewActionPhase(LevelMap actionPhaseMap, double startCountdownTimeSeconds) {
         this.actionPhaseValues = new ActionPhaseValues(actionPhaseMap, startCountdownTimeSeconds, game);
         this.visualEffectValues = new ActionPhaseVisualEffectValues(actionPhaseMap);
+
+        this.useCustomTime = false;
+        this.lastCustomTimeSeconds = 0.0;
     }
 
     @Override
@@ -64,6 +77,10 @@ public final class ActionPhaseController implements GrashEventListener {
                 onEvent_StartActionPhase((GrashEvent_StartActionPhase) event);
                 break;
             }
+            case "KeyDown": {
+                onEvent_KeyDown((GrashEvent_KeyDown) event);
+                break;
+            }
         }
     }
 
@@ -73,7 +90,16 @@ public final class ActionPhaseController implements GrashEventListener {
     private void onEvent_Tick(GrashEvent_Tick event) {
         if(actionPhaseState == ActionPhaseState.Inactive) return;
 
-        double secondsElapsedSinceStart = (System.nanoTime() - actionPhaseValues.getNanoTimeAtStart()) / 1_000_000_000.0;
+        double secondsElapsedSinceStart = calculateTimeSinceStartInSeconds();
+        double deltaTime = event.getDeltaTime();
+
+        if(useCustomTime) {
+            actionPhaseLogicHandler.updateCustomTime(event.getDeltaTime());
+            secondsElapsedSinceStart = actionPhaseValues.getCustomTime();
+            deltaTime = actionPhaseValues.getCustomTime() - lastCustomTimeSeconds;
+
+            lastCustomTimeSeconds = actionPhaseValues.getCustomTime();
+        }
 
         // Updating the Player before everything moves, because otherwise something could move into the player.
         actionPhaseLogicHandler.playerLogicHandler(actionPhaseValues.getPlayerObject(), secondsElapsedSinceStart,
@@ -82,12 +108,12 @@ public final class ActionPhaseController implements GrashEventListener {
         /* Doing the Logic first and the Spawning after the Logic, because the Object shouldn't be moved
          when it spawned, because that would mess up the timing, I guess*/
         actionPhaseLogicHandler.moveAllObstacleObjects(actionPhaseValues.getCurrentObstacleObjects(),
-                actionPhaseValues.getActionPhaseMap().getSpeed(), event.getDeltaTime());
+                actionPhaseValues.getActionPhaseMap().getSpeed(), deltaTime);
         actionPhaseObjectHandler.processLevelMapTimeline(secondsElapsedSinceStart);
 
         // Updating the renderer
         updateVisualEffectRendererValues(secondsElapsedSinceStart);
-        actionPhaseRenderer.updateCanvas(event.getDeltaTime(), secondsElapsedSinceStart,
+        actionPhaseRenderer.updateCanvas(deltaTime, secondsElapsedSinceStart,
                 getActionPhaseValues().getCurrentObstacleObjects(),
                 actionPhaseValues.getPlayerObject());
 
@@ -129,6 +155,19 @@ public final class ActionPhaseController implements GrashEventListener {
             actionPhaseRenderer.updateColors(startColorEffect, nextColorAfterStartColor);
     }
 
+    private void onEvent_KeyDown(GrashEvent_KeyDown event) {
+        if(actionPhaseState == ActionPhaseState.Inactive) return;
+
+        if(event.getKeyCode() == KeyCode.MINUS) {
+            this.actionPhaseValues.setCustomTime(calculateTimeSinceStartInSeconds());
+            this.lastCustomTimeSeconds = actionPhaseValues.getCustomTime();
+            this.useCustomTime = true;
+        }
+    }
+
+    private double calculateTimeSinceStartInSeconds() {
+        return (System.nanoTime() - actionPhaseValues.getNanoTimeAtStart()) / 1_000_000_000.0;
+    }
 
 
     private void updateVisualEffectRendererValues(double secondsElapsedSinceStart) {

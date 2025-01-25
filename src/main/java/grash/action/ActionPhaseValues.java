@@ -26,6 +26,8 @@ public final class ActionPhaseValues {
      */
     private long nanoTimeAtStart;
 
+    private double customTime; // The Time this is used as "secondsSinceStart"
+
     public ActionPhaseValues(LevelMap actionPhaseMap, double countdownLeft, GameController gameController) {
         this.actionPhaseMap = actionPhaseMap;
         this.timeProgress = 0.0;
@@ -38,6 +40,8 @@ public final class ActionPhaseValues {
         Hitbox playerHitbox = new Hitbox(Vec2.ONE(), Vec2.ZERO());
         this.playerObject = new PlayerObject(gameController,
                 new Vec2(ActionPhaseController.PLAYER_X, ActionPhaseController.Y_DOWN), playerHitbox);
+
+        this.customTime = 0.0;
     }
 
     public void addScore(double value) {
@@ -88,5 +92,17 @@ public final class ActionPhaseValues {
 
     public PlayerObject getPlayerObject() {
         return playerObject;
+    }
+
+    public double getCustomTime() {
+        return customTime;
+    }
+
+    public void setCustomTime(double customTime) {
+        this.customTime = customTime;
+    }
+
+    public void modifyCustomTime(double amount) {
+        this.customTime += amount;
     }
 }
