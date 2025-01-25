@@ -90,6 +90,9 @@ public final class ActionPhaseController implements GrashEventListener {
         actionPhaseRenderer.updateCanvas(event.getDeltaTime(), secondsElapsedSinceStart,
                 getActionPhaseValues().getCurrentObstacleObjects(),
                 actionPhaseValues.getPlayerObject());
+
+        actionPhaseLogicHandler.checkIfPlayerIsColliding(actionPhaseValues.getPlayerObject(),
+                actionPhaseValues.getCurrentObstacleObjects());
     }
 
     /**

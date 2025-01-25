@@ -1,5 +1,6 @@
 package grash.action;
 
+import grash.action.objects.Hitbox;
 import grash.action.objects.ObstacleObject;
 import grash.action.objects.PlayerObject;
 import grash.core.GameController;
@@ -42,8 +43,14 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
         player.playerTick(secondsElapsedSinceStart, mapSpeed);
     }
 
-    public boolean checkIfPlayerIsColliding(PlayerObject player, List<ObstacleObject> obstacleObjects) {
-
+    public boolean checkIfPlayerIsColliding(PlayerObject player, List<ObstacleObject> allObstacleObjects) {
+        for(ObstacleObject obstacleObject : allObstacleObjects) {
+            if(Hitbox.CHECK_COLLISION(player.getPosition(), player.getHitbox(),
+                    obstacleObject.getPosition(), obstacleObject.getHitbox())) {
+                System.out.println("Collision");
+                return true;
+            }
+        }
         return false;
     }
 
