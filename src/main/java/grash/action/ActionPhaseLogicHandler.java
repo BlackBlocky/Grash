@@ -47,8 +47,9 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
         }
     }
 
-    public void playerLogicHandler(PlayerObject player, double secondsElapsedSinceStart, double mapSpeed) {
-        player.playerTick(secondsElapsedSinceStart, mapSpeed);
+    public void playerLogicHandler(PlayerObject player, double secondsElapsedSinceStart, double mapSpeed,
+                                   double realDeltaTime) {
+        player.playerTick(secondsElapsedSinceStart, mapSpeed, realDeltaTime);
     }
 
     public boolean checkIfPlayerIsColliding(PlayerObject player, List<ObstacleObject> allObstacleObjects) {
@@ -81,6 +82,14 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
             else if(event.getKeyCode() == KeyCode.COMMA) { customTimeScrollMultiplier = -1.0; }
         }
 
+        // Custom player height (only active when custom player height is used)
+        if(controller.getUseCustomPlayerHeight()) {
+            if(event.getKeyCode() == KeyCode.PAGE_UP)
+                { controller.getActionPhaseValues().getPlayerObject().setHeightChangeMultiplier(-1.0); }
+            else if(event.getKeyCode() == KeyCode.PAGE_DOWN)
+                { controller.getActionPhaseValues().getPlayerObject().setHeightChangeMultiplier(1.0); }
+        }
+
         // Player controls
         if(event.getKeyCode() == KeyCode.W) {
             controller.getActionPhaseValues().getPlayerObject().doSwitchSideOnNextTick();
@@ -100,6 +109,13 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
             }
             else if(event.getKeyCode() == KeyCode.COMMA && customTimeScrollMultiplier == -1.0) {
                 customTimeScrollMultiplier = 0.0;
+            }
+        }
+
+        // Custom player height (only active when custom player height is used)
+        if(controller.getUseCustomPlayerHeight()) {
+            if(event.getKeyCode() == KeyCode.PAGE_UP || event.getKeyCode() == KeyCode.PAGE_DOWN) {
+                controller.getActionPhaseValues().getPlayerObject().setHeightChangeMultiplier(0.0);
             }
         }
     }

@@ -25,6 +25,8 @@ public final class PlayerObject {
 
     private double elapsedSecondsAtJump;
 
+    private double heightChangeMultiplier; // This is used a debug Setting, when the useCustomPlayerHeight is true
+
     public PlayerObject(GameController gameController, Vec2 startPos, Hitbox hitbox) {
         this.position = startPos;
         this.isDown = (startPos.y == ActionPhaseController.Y_DOWN);
@@ -44,10 +46,13 @@ public final class PlayerObject {
     public Sprite getSprite() { return this.sprite; }
     public Hitbox getHitbox() { return this.hitbox; }
 
+    public void setHeightChangeMultiplier(double heightChangeMultiplier) {
+        this.heightChangeMultiplier = heightChangeMultiplier; }
+
     public void doJumpOnNextTick() { this.jumpOnNextTick = true; }
     public void doSwitchSideOnNextTick() { this.switchSideOnNextTick = true; }
 
-    public void playerTick(double secondsElapsedSinceStart, double mapSpeed) {
+    public void playerTick(double secondsElapsedSinceStart, double mapSpeed, double realDeltaTime) {
         // Doing these things first because otherwise it would affect the initial states.
         jumpTick(mapSpeed, secondsElapsedSinceStart);
 
@@ -61,6 +66,8 @@ public final class PlayerObject {
             doJump(secondsElapsedSinceStart);
             this.jumpOnNextTick = false;
         }
+
+        changeHeight(realDeltaTime);
     }
 
     private void switchSides() {
@@ -108,6 +115,15 @@ public final class PlayerObject {
     private void endJump() {
         position.y = (isDown) ? ActionPhaseController.Y_DOWN : ActionPhaseController.Y_UP;
         this.playerState = PlayerState.Idle;
+    }
+
+    /**
+     * DEBUG Method for changing the PlayerHeight.
+     * @param realDeltaTime Using realDeltaTime because this should also work when the time is frozen.
+     */
+    private void changeHeight(double realDeltaTime) {
+        final double heightChangeSpeed = 5.0;
+        this.position.y += heightChangeSpeed * heightChangeMultiplier * realDeltaTime;
     }
 
 }

@@ -37,6 +37,8 @@ public final class ActionPhaseController implements GrashEventListener {
     private boolean useCustomTime;
     private double lastCustomTimeSeconds;
 
+    private boolean useCustomPlayerHeight;
+
     public ActionPhaseController(GameController gameController) {
         this.actionPhaseValues = null;
         this.actionPhaseState = ActionPhaseState.Inactive;
@@ -49,6 +51,8 @@ public final class ActionPhaseController implements GrashEventListener {
         this.useCustomTime = false;
         this.lastCustomTimeSeconds = 0.0;
 
+        this.useCustomPlayerHeight = false;
+
         game.getEventBus().registerListener(GrashEvent_Tick.class, this);
         game.getEventBus().registerListener(GrashEvent_StartActionPhase.class, this);
         game.getEventBus().registerListener(GrashEvent_KeyDown.class, this);
@@ -57,6 +61,7 @@ public final class ActionPhaseController implements GrashEventListener {
     public ActionPhaseValues getActionPhaseValues() { return this.actionPhaseValues; }
     public ActionPhaseState getActionPhaseState() { return this.actionPhaseState; }
     public boolean getUseCustomTime() { return this.useCustomTime; }
+    public boolean getUseCustomPlayerHeight() { return this.useCustomPlayerHeight; }
 
     public void setupNewActionPhase(LevelMap actionPhaseMap, double startCountdownTimeSeconds) {
         this.actionPhaseValues = new ActionPhaseValues(actionPhaseMap, startCountdownTimeSeconds, game);
@@ -64,6 +69,7 @@ public final class ActionPhaseController implements GrashEventListener {
 
         this.useCustomTime = false;
         this.lastCustomTimeSeconds = 0.0;
+        this.useCustomPlayerHeight = false;
     }
 
     @Override
@@ -103,7 +109,7 @@ public final class ActionPhaseController implements GrashEventListener {
 
         // Updating the Player before everything moves, because otherwise something could move into the player.
         actionPhaseLogicHandler.playerLogicHandler(actionPhaseValues.getPlayerObject(), secondsElapsedSinceStart,
-                actionPhaseValues.getActionPhaseMap().getSpeed());
+                actionPhaseValues.getActionPhaseMap().getSpeed(), event.getDeltaTime());
 
         /* Doing the Logic first and the Spawning after the Logic, because the Object shouldn't be moved
          when it spawned, because that would mess up the timing, I guess*/
@@ -162,6 +168,9 @@ public final class ActionPhaseController implements GrashEventListener {
             this.actionPhaseValues.setCustomTime(calculateTimeSinceStartInSeconds());
             this.lastCustomTimeSeconds = actionPhaseValues.getCustomTime();
             this.useCustomTime = true;
+        }
+        if(event.getKeyCode() == KeyCode.NUMBER_SIGN) {
+            this.useCustomPlayerHeight = true;
         }
     }
 
