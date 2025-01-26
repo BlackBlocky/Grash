@@ -4,15 +4,21 @@ import grash.action.objects.ObstacleObject;
 import grash.action.renderer.ActionPhaseRenderer;
 import grash.core.GameController;
 import grash.core.GameState;
+import grash.core.WindowState;
 import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
+import grash.event.events.action.GrashEvent_ExitActionPhase;
+import grash.event.events.action.GrashEvent_PlayerDied;
 import grash.event.events.action.GrashEvent_StartActionPhase;
 import grash.event.events.core.GrashEvent_Tick;
 import grash.event.events.input.GrashEvent_KeyDown;
+import grash.event.events.scene.GrashEvent_SwitchScene;
 import grash.level.LevelMapTimeline;
 import grash.level.LevelMapTimelineStack;
 import grash.level.map.*;
 import javafx.scene.input.KeyCode;
+
+import java.util.concurrent.locks.LockSupport;
 
 public final class ActionPhaseController implements GrashEventListener {
 
@@ -56,6 +62,8 @@ public final class ActionPhaseController implements GrashEventListener {
         game.getEventBus().registerListener(GrashEvent_Tick.class, this);
         game.getEventBus().registerListener(GrashEvent_StartActionPhase.class, this);
         game.getEventBus().registerListener(GrashEvent_KeyDown.class, this);
+        game.getEventBus().registerListener(GrashEvent_PlayerDied.class, this);
+        game.getEventBus().registerListener(GrashEvent_ExitActionPhase.class, this);
     }
 
     public ActionPhaseValues getActionPhaseValues() { return this.actionPhaseValues; }
@@ -87,6 +95,14 @@ public final class ActionPhaseController implements GrashEventListener {
                 onEvent_KeyDown((GrashEvent_KeyDown) event);
                 break;
             }
+            case "PlayerDied": {
+                onEvent_PlayerDied((GrashEvent_PlayerDied) event);
+                break;
+            }
+            case "ExitActionPhase": {
+                onEvent_ExitActionPhase((GrashEvent_ExitActionPhase) event);
+                break;
+            }
         }
     }
 
@@ -111,6 +127,12 @@ public final class ActionPhaseController implements GrashEventListener {
         actionPhaseLogicHandler.playerLogicHandler(actionPhaseValues.getPlayerObject(), secondsElapsedSinceStart,
                 actionPhaseValues.getActionPhaseMap().getSpeed(), event.getDeltaTime());
 
+        // Checking if the Player collides with something
+        if(actionPhaseLogicHandler.checkIfPlayerIsColliding(actionPhaseValues.getPlayerObject(),
+                actionPhaseValues.getCurrentObstacleObjects())) {
+            game.getEventBus().triggerEvent(new GrashEvent_PlayerDied());
+        }
+
         /* Doing the Logic first and the Spawning after the Logic, because the Object shouldn't be moved
          when it spawned, because that would mess up the timing, I guess*/
         actionPhaseLogicHandler.moveAllObstacleObjects(actionPhaseValues.getCurrentObstacleObjects(),
@@ -122,9 +144,6 @@ public final class ActionPhaseController implements GrashEventListener {
         actionPhaseRenderer.updateCanvas(deltaTime, secondsElapsedSinceStart,
                 getActionPhaseValues().getCurrentObstacleObjects(),
                 actionPhaseValues.getPlayerObject());
-
-        actionPhaseLogicHandler.checkIfPlayerIsColliding(actionPhaseValues.getPlayerObject(),
-                actionPhaseValues.getCurrentObstacleObjects());
     }
 
     /**
@@ -174,10 +193,32 @@ public final class ActionPhaseController implements GrashEventListener {
         }
     }
 
+    private void onEvent_PlayerDied(GrashEvent_PlayerDied event) {
+        // TODO this is only for test should me resetting the level instead
+        game.getEventBus().triggerEvent(new GrashEvent_ExitActionPhase());
+    }
+
+    private void onEvent_ExitActionPhase(GrashEvent_ExitActionPhase event) {
+        exitActionPhase();
+    }
+
     private double calculateTimeSinceStartInSeconds() {
         return (System.nanoTime() - actionPhaseValues.getNanoTimeAtStart()) / 1_000_000_000.0;
     }
 
+    /**
+     * This will close everything related to the ActionPhase.
+     * It also will everything clean up for the next run and go back to the menu.
+     */
+    private void exitActionPhase() {
+        actionPhaseState = ActionPhaseState.Inactive;
+        actionPhaseValues = null;
+        visualEffectValues = null;
+
+        LockSupport.parkNanos((long)(0.5 * 1_000_000_000.0));
+
+        game.getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.WelcomeScreen));
+    }
 
     private void updateVisualEffectRendererValues(double secondsElapsedSinceStart) {
         /* This works because when the currentColor is not null, it is time for the next color and the
