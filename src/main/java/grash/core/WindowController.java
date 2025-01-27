@@ -153,6 +153,8 @@ public final class WindowController implements GrashEventListener {
 
         Scene scene = new Scene(pane);
 
+        // Adding KeyInput Listeners
+        game.getKeyInputHandler().resetKeyInput();
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
@@ -166,6 +168,7 @@ public final class WindowController implements GrashEventListener {
             }
         });
 
+        // Set the created scene tot he Primary Stage
         game.getPrimaryStage().setScene(scene);
 
         // Get the ScreenController that belongs to the current Scene, and call the init() Function
