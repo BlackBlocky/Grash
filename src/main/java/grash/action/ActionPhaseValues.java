@@ -37,7 +37,7 @@ public final class ActionPhaseValues {
 
         this.currentObstacleObjects = new ArrayList<>();
 
-        Hitbox playerHitbox = new Hitbox(Vec2.ONE(), Vec2.ZERO());
+        Hitbox playerHitbox = new Hitbox(new Vec2(0.8, 0.7), new Vec2(0.1, 0.15));
         this.playerObject = new PlayerObject(gameController,
                 new Vec2(ActionPhaseController.PLAYER_X, ActionPhaseController.Y_DOWN), playerHitbox);
 
