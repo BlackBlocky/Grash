@@ -13,6 +13,10 @@ public final class ObstacleObject extends ActionObject {
         super(gameController, startPos, scale, drawOffset, levelMapThing, hitbox);
     }
 
+    public LevelMapElement getLevelMapElement() {
+        return (LevelMapElement) this.levelMapThing;
+    }
+
     @Override
     protected Sprite setupSprite() {
         LevelMapElement thisLevelMapElement = (LevelMapElement) levelMapThing;

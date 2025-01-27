@@ -110,7 +110,12 @@ public final class ActionPhaseRenderer implements GrashEventListener {
 
     private void drawAllObstacleObjects(GraphicsContext g, List<ObstacleObject> allObstacleObjects) {
         for(ObstacleObject obstacleObject : allObstacleObjects) {
-            drawSprite(g, obstacleObject.getSprite(), obstacleObject.getPosition().add(obstacleObject.getDrawOffset()), obstacleObject.getScale());
+           switch (obstacleObject.getLevelMapElement().getMapElementType()) {
+               case Spike:
+               case Wall:
+                   drawSprite(g, obstacleObject.getSprite(), obstacleObject.getPosition().add(obstacleObject.getDrawOffset()), obstacleObject.getScale());
+                   break;
+           }
         }
     }
 

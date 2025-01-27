@@ -90,6 +90,10 @@ public final class ActionPhaseObjectHandler {
                         spawnPos, new Vec2(1, 3), drawOffset, levelMapElement, hitbox));
                 break;
             }
+            case Rope: {
+                Vec2 spawnPos = Vec2.ZERO();
+                break;
+            }
         }
     }
 
