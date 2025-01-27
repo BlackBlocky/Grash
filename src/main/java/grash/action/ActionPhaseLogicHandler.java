@@ -27,6 +27,13 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
         game.getEventBus().registerListener(GrashEvent_KeyUp.class, this);
     }
 
+    /**
+     * Clears out everything from the last run and makes everything nice and fresh again
+     */
+    public void resetLogicHandler() {
+        customTimeScrollMultiplier = 0.0;
+    }
+
     public void moveAllObstacleObjects(List<ObstacleObject> allObstacleObjects, double speed, double deltaTime) {
         for(ObstacleObject obstacleObject : allObstacleObjects) {
             obstacleObject.getPosition().x -= speed * deltaTime;

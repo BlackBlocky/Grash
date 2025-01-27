@@ -70,7 +70,8 @@ public final class ActionPhaseObjectHandler {
                 spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart);
                 spawnPos.y = (levelMapElement.getIsUp()) ? ActionPhaseController.Y_UP : ActionPhaseController.Y_DOWN;
 
-                Hitbox hitbox = new Hitbox(Vec2.ONE(), Vec2.ZERO());
+                Hitbox hitbox = new Hitbox(new Vec2(0.4, 0.6),
+                        new Vec2(0.3, (levelMapElement.getIsUp()) ? 0.0 : 0.4));
 
                 actionPhaseValues.getCurrentObstacleObjects().add(new ObstacleObject(game,
                         spawnPos,new Vec2(1, 1), Vec2.ZERO(), levelMapElement, hitbox));
@@ -82,8 +83,8 @@ public final class ActionPhaseObjectHandler {
                 spawnPos.y = (levelMapElement.getIsUp()) ? ActionPhaseController.Y_UP : ActionPhaseController.Y_DOWN;
 
                 Vec2 drawOffset = (levelMapElement.getIsUp()) ? Vec2.ZERO() : new Vec2(0, -2);
-                Hitbox hitbox = new Hitbox(new Vec2(1, 3),
-                        (levelMapElement.getIsUp()) ? Vec2.ZERO() : new Vec2(0, -2));
+                Hitbox hitbox = new Hitbox(new Vec2(1, 2.5),
+                        (levelMapElement.getIsUp()) ? Vec2.ZERO() : new Vec2(0, -1.5));
 
                 actionPhaseValues.getCurrentObstacleObjects().add(new ObstacleObject(game,
                         spawnPos, new Vec2(1, 3), drawOffset, levelMapElement, hitbox));

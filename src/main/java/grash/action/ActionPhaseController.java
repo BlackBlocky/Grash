@@ -178,12 +178,14 @@ public final class ActionPhaseController implements GrashEventListener {
         LevelMapEffect nextColorAfterStartColor = visualEffectValues.getNextColor();
         if(nextColorAfterStartColor != null)
             actionPhaseRenderer.updateColors(startColorEffect, nextColorAfterStartColor);
+
+        actionPhaseLogicHandler.resetLogicHandler();
     }
 
     private void onEvent_KeyDown(GrashEvent_KeyDown event) {
         if(actionPhaseState == ActionPhaseState.Inactive) return;
 
-        if(event.getKeyCode() == KeyCode.MINUS) {
+        if(event.getKeyCode() == KeyCode.MINUS && !this.useCustomTime) {
             this.actionPhaseValues.setCustomTime(calculateTimeSinceStartInSeconds());
             this.lastCustomTimeSeconds = actionPhaseValues.getCustomTime();
             this.useCustomTime = true;
