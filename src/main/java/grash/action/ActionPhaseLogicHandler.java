@@ -8,6 +8,7 @@ import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
 import grash.event.events.input.GrashEvent_KeyDown;
 import grash.event.events.input.GrashEvent_KeyUp;
+import grash.math.Vec2;
 import javafx.scene.input.KeyCode;
 
 import java.util.List;
@@ -37,6 +38,12 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
     public void moveAllObstacleObjects(List<ObstacleObject> allObstacleObjects, double speed, double deltaTime) {
         for(ObstacleObject obstacleObject : allObstacleObjects) {
             obstacleObject.getPosition().x -= speed * deltaTime;
+
+            Vec2[] additionalPositions = obstacleObject.getAdditionalPositions();
+            if(additionalPositions == null) continue;
+            for(Vec2 additionalPos : obstacleObject.getAdditionalPositions()) {
+                additionalPos.x -= speed * deltaTime;
+            }
         }
     }
 

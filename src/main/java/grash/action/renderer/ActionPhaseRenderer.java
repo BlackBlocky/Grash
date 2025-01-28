@@ -115,8 +115,34 @@ public final class ActionPhaseRenderer implements GrashEventListener {
                case Wall:
                    drawSprite(g, obstacleObject.getSprite(), obstacleObject.getPosition().add(obstacleObject.getDrawOffset()), obstacleObject.getScale());
                    break;
+               case Rope:
+                   drawRope(g, obstacleObject);
+                   break;
            }
         }
+    }
+
+    private void drawRope(GraphicsContext g, ObstacleObject ropeObject) {
+        double ropeSizePixels = PIXEL_GRID_SIZE / 6;
+        double ropeDrawOffset = (PIXEL_GRID_SIZE / 2) - (ropeSizePixels / 2);
+
+        // Reminder: It's the Position on the TOP LEFT of the grid
+        Vec2 ropeStartPosPixels = calculateGridPixelsPos(ropeObject.getPosition());
+        Vec2 ropeEndPosPixels = calculateGridPixelsPos(ropeObject.getAdditionalPositions()[0]); // 0 = EndPos
+
+        //drawSprite(g, null, ropeObject.getPosition(), Vec2.ONE());
+
+        Vec2 lineOffset = new Vec2(ropeSizePixels / 2, ropeSizePixels / 2);
+        ropeStartPosPixels = ropeStartPosPixels.add(ropeDrawOffset).add(lineOffset);
+        ropeEndPosPixels = ropeEndPosPixels.add(ropeDrawOffset).add(lineOffset);
+
+        g.setStroke(Color.YELLOW);
+        g.setLineWidth(ropeSizePixels);
+
+        /* Adding the ropeSizePixels / 2 offset, because the line is not just 6 pixels tall,
+        it also goes into the length: See in the lineOffset Vec2 */
+        g.strokeLine(ropeStartPosPixels.x + ropeSizePixels / 2, ropeStartPosPixels.y,
+                  ropeEndPosPixels.x + ropeSizePixels / 2, ropeEndPosPixels.y);
     }
 
     private void drawAllHitboxes(GraphicsContext g, PlayerObject player, List<ObstacleObject> allObstacleObjects) {
@@ -163,6 +189,8 @@ public final class ActionPhaseRenderer implements GrashEventListener {
     }
 
     private void drawHitbox(GraphicsContext g, Vec2 gridPos, Hitbox hitbox) {
+        if(hitbox == null) return;
+
         Vec2 pixelPos = calculateGridPixelsPos(gridPos.add(hitbox.getOffset()));
 
         g.setStroke(Color.LIME);

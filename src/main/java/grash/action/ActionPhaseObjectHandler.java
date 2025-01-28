@@ -111,14 +111,14 @@ public final class ActionPhaseObjectHandler {
                                                 LevelMapElement levelMapElement, double secondsElapsedSinceStart) {
         Vec2 spawnPos = Vec2.ZERO();
         spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart);
-        spawnPos.y = 0.5;
+        spawnPos.y = ActionPhaseController.Y_MIDDLE;
 
         ObstacleObject newRopeObject = new ObstacleObject(game,
                 spawnPos, Vec2.ONE(), Vec2.ZERO(), levelMapElement, null);
 
         Vec2 ropeEndPos = Vec2.ZERO();
         ropeEndPos.x = calculateObjectXStartPos(levelMapElement.getTimeEnd(), secondsElapsedSinceStart);
-        ropeEndPos.y = 0.5;
+        ropeEndPos.y = ActionPhaseController.Y_MIDDLE;
 
         Vec2[] ropeEndPosArray = new Vec2[1]; // It's an array because the ObstacleObject works with arrays
         ropeEndPosArray[0] = ropeEndPos;

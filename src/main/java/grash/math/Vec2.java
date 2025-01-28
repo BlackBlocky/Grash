@@ -21,6 +21,10 @@ public final class Vec2 {
         return new Vec2(this.x + other.x, this.y + other.y);
     }
 
+    public Vec2 add(double v) {
+        return new Vec2(this.x + v, this.y + v);
+    }
+
     public Vec2 subtract(Vec2 other) {
         return new Vec2(this.x - other.x, this.y - other.y);
     }
