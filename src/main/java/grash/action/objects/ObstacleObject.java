@@ -8,6 +8,9 @@ import grash.math.Vec2;
 
 public final class ObstacleObject extends ActionObject {
 
+    private Vec2[] additionalPositions = null;
+    private Sprite[] additionalSprites = null;
+
     public ObstacleObject(GameController gameController, Vec2 startPos, Vec2 scale, Vec2 drawOffset,
                           LevelMapThing levelMapThing, Hitbox hitbox) {
         super(gameController, startPos, scale, drawOffset, levelMapThing, hitbox);
@@ -15,6 +18,16 @@ public final class ObstacleObject extends ActionObject {
 
     public LevelMapElement getLevelMapElement() {
         return (LevelMapElement) this.levelMapThing;
+    }
+    public Vec2[] getAdditionalPositions() { return additionalPositions; }
+    public Sprite[] getAdditionalSprites() { return additionalSprites; }
+
+    public void setAdditionalPositions(Vec2[] additionalPositions) {
+        this.additionalPositions = additionalPositions;
+    }
+
+    public void setAdditionalSprites(Sprite[] additionalSprites) {
+        this.additionalSprites = additionalSprites;
     }
 
     @Override
@@ -35,5 +48,15 @@ public final class ObstacleObject extends ActionObject {
                 return null;
         }
         return null;
+    }
+
+    @Override
+    protected void setupObject() {
+        // No use for now :P
+
+        LevelMapElement thisLevelMapElement = (LevelMapElement) levelMapThing;
+        switch (thisLevelMapElement.getMapElementType()) {
+
+        }
     }
 }

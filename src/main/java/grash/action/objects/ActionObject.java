@@ -26,9 +26,15 @@ public abstract class ActionObject {
         this.hitbox = hitbox;
 
         this.sprite = setupSprite();
+        setupObject();
     }
 
     protected abstract Sprite setupSprite();
+
+    /**
+     * This Method is supposed to do Object Specific stuff, like calculating the end Pos for a Rope Object
+     */
+    protected abstract void setupObject();
 
     public Vec2 getPosition() {
         return position;

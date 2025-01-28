@@ -61,6 +61,8 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
 
     public boolean checkIfPlayerIsColliding(PlayerObject player, List<ObstacleObject> allObstacleObjects) {
         for(ObstacleObject obstacleObject : allObstacleObjects) {
+            if(obstacleObject.getHitbox() == null) continue;
+
             if(Hitbox.CHECK_COLLISION(player.getPosition(), player.getHitbox(),
                     obstacleObject.getPosition(), obstacleObject.getHitbox())) {
                 System.out.println("Collision");
