@@ -164,7 +164,7 @@ public final class GameController implements GrashEventListener {
                 gameLoop.start();
 
                 getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.WelcomeScreen));
-                getEventBus().triggerEvent(new GrashEvent_LoadLevel("Some_Person::My_Cool_Map::Version_1::Normal"));
+                getEventBus().triggerEvent(new GrashEvent_LoadLevel("Dev::Showcase::Version_1::Easy"));
                 break;
             }
             case LevelAction: {

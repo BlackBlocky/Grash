@@ -1,0 +1,16 @@
+[loader]{(v1)}
+
+[mapname]{(Showcase)}
+[difficulty]{(Easy)}
+[mapauthor]{(Dev)}
+[songname]{(Very_Cool_Song)}
+[mapversion]{(Version_1)}
+[speed]{(8.0)}
+[growspeed]{(5)}
+[startcolor]{(50, 50, 50)}
+[startfovscale]{(1.0)}
+[startrotation]{(0.0)}
+
+[rope]{(0.5, 2.0, 5.0)}
+[spike]{(false, 6, 6)(true, 7, 7)}
+[wall]{(false, 8, 8)(true, 9, 9)}
