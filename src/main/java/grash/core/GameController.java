@@ -81,6 +81,7 @@ public final class GameController implements GrashEventListener {
     public WindowState getWindowState() { return this.windowController.getWindowState(); }
     public ResourceLoader getResourceLoader() { return this.resourceLoader; }
     public KeyInputHandler getKeyInputHandler() { return this.keyInputHandler; }
+    public ActionPhaseController getActionPhaseController() { return this.actionPhaseController; }
 
     /**
      * This Method will ever return a unique ID, it will NEVER return the same (only after 4.294.967.296 calls :P)

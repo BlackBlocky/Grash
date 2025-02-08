@@ -67,6 +67,7 @@ public final class ActionPhaseController implements GrashEventListener {
     }
 
     public ActionPhaseValues getActionPhaseValues() { return this.actionPhaseValues; }
+    public ActionPhaseLogicHandler getActionPhaseLogicHandler() { return this.actionPhaseLogicHandler; }
     public ActionPhaseState getActionPhaseState() { return this.actionPhaseState; }
     public boolean getUseCustomTime() { return this.useCustomTime; }
     public boolean getUseCustomPlayerHeight() { return this.useCustomPlayerHeight; }

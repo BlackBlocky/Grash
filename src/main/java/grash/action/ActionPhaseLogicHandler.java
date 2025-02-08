@@ -8,9 +8,12 @@ import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
 import grash.event.events.input.GrashEvent_KeyDown;
 import grash.event.events.input.GrashEvent_KeyUp;
+import grash.level.map.LevelMapElement;
+import grash.level.map.MapElementType;
 import grash.math.Vec2;
 import javafx.scene.input.KeyCode;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class ActionPhaseLogicHandler implements GrashEventListener {
@@ -77,6 +80,30 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
             }
         }
         return false;
+    }
+
+    /**
+     * Checks if a Rope currently at the Y-Level with the Player. So basically, if it is colliding at Y.
+     * @return Null if there is no Rope, otherwise the Rope object.
+     */
+    public ObstacleObject checkIfRopeIsAtPlayer(List<ObstacleObject> obstacleObjectsPool, PlayerObject player) {
+        // Get all the ropes
+        List<ObstacleObject> allCurrentRopes = new ArrayList<>();
+        for(ObstacleObject item : obstacleObjectsPool) {
+            if(item.getLevelMapElement().getMapElementType() == MapElementType.Rope) allCurrentRopes.add(item);
+        }
+
+        // Check if a Rope is "colliding"
+        ObstacleObject collidingRope = null;
+        for(ObstacleObject rope : allCurrentRopes) {
+            if(player.getPosition().x < rope.getPosition().x) continue; // StartPos
+            if(player.getPosition().x > rope.getAdditionalPositions()[0].x) continue; // End Pos
+
+            collidingRope = rope;
+            break;
+        }
+
+        return collidingRope;
     }
 
     /**

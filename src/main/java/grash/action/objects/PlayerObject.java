@@ -58,7 +58,7 @@ public final class PlayerObject {
 
         /* Solving this with an "else if",
         because otherwise it my happen that a sideSwitch and a Jump happening at the same time. */
-        if(switchSideOnNextTick && playerState == PlayerState.Idle) {
+        if(switchSideOnNextTick && playerState != PlayerState.Jumping) {
             switchSides();
             this.switchSideOnNextTick = false;
         }
@@ -71,14 +71,41 @@ public final class PlayerObject {
     }
 
     private void switchSides() {
-        if(position.y == ActionPhaseController.Y_UP) {
-            position.y = ActionPhaseController.Y_DOWN;
-        }
-        else {
+        // Hop to bottom or top if the Player is gliding on a Rope
+        if(playerState == PlayerState.RopingToTop) {
             position.y = ActionPhaseController.Y_UP;
+            isDown = false;
+            playerState = PlayerState.Idle;
+            return;
+        }
+        else if(playerState == PlayerState.RopingToBottom) {
+            position.y = ActionPhaseController.Y_DOWN;
+            isDown = true;
+            playerState = PlayerState.Idle;
+            return;
         }
 
+        // Check if there is a Rope at the Player
+        ObstacleObject detectedRope = game.getActionPhaseController().getActionPhaseLogicHandler()
+                .checkIfRopeIsAtPlayer(
+                        game.getActionPhaseController().getActionPhaseValues().getCurrentObstacleObjects(), this
+        );
+
+        if(detectedRope != null) { switchToARope(detectedRope); return; };
+
+        // Flip sides
+        if (position.y == ActionPhaseController.Y_UP) {
+            position.y = ActionPhaseController.Y_DOWN;
+        } else {
+            position.y = ActionPhaseController.Y_UP;
+        }
         isDown = !isDown;
+    }
+
+    private void switchToARope(ObstacleObject rope) {
+        position.y = rope.getPosition().y;
+        if(isDown) playerState = PlayerState.RopingToTop; // Go from bottom to top
+        else playerState = PlayerState.RopingToBottom; // Go from top to bottom
     }
 
     private void doJump(double secondsElapsedSinceStart) {

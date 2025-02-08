@@ -1,5 +1,5 @@
 package grash.action.objects;
 
 public enum PlayerState {
-    Idle, Jumping
+    Idle, Jumping, RopingToTop, RopingToBottom
 }
