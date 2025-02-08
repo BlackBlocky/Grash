@@ -8,8 +8,8 @@ import grash.math.Vec2;
 
 public final class ObstacleObject extends ActionObject {
 
-    private Vec2[] additionalPositions = null;
-    private Sprite[] additionalSprites = null;
+    private Vec2[] additionalPositions;
+    private Sprite[] additionalSprites;
 
     public ObstacleObject(GameController gameController, Vec2 startPos, Vec2 scale, Vec2 drawOffset,
                           LevelMapThing levelMapThing, Hitbox hitbox) {
@@ -38,7 +38,8 @@ public final class ObstacleObject extends ActionObject {
                 return (thisLevelMapElement.getIsUp()) ? game.getResourceLoader().getSprite("SpikeUp") :
                         game.getResourceLoader().getSprite("SpikeDown");
             case Rope:
-                return null;
+                additionalSprites = new Sprite[]{game.getResourceLoader().getSprite("RopeEnd")};
+                return game.getResourceLoader().getSprite("RopeStart");
             case Wall:
                 return (thisLevelMapElement.getIsUp()) ? game.getResourceLoader().getSprite("WallUp") :
                         game.getResourceLoader().getSprite("WallDown");

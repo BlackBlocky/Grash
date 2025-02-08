@@ -130,11 +130,10 @@ public final class ActionPhaseRenderer implements GrashEventListener {
         Vec2 ropeStartPosPixels = calculateGridPixelsPos(ropeObject.getPosition());
         Vec2 ropeEndPosPixels = calculateGridPixelsPos(ropeObject.getAdditionalPositions()[0]); // 0 = EndPos
 
-        //drawSprite(g, null, ropeObject.getPosition(), Vec2.ONE());
-
         Vec2 lineOffset = new Vec2(ropeSizePixels / 2, ropeSizePixels / 2);
         ropeStartPosPixels = ropeStartPosPixels.add(ropeDrawOffset).add(lineOffset);
         ropeEndPosPixels = ropeEndPosPixels.add(ropeDrawOffset).add(lineOffset);
+        ropeEndPosPixels.x -= ropeSizePixels;
 
         g.setStroke(Color.YELLOW);
         g.setLineWidth(ropeSizePixels);
@@ -143,6 +142,17 @@ public final class ActionPhaseRenderer implements GrashEventListener {
         it also goes into the length: See in the lineOffset Vec2 */
         g.strokeLine(ropeStartPosPixels.x + ropeSizePixels / 2, ropeStartPosPixels.y,
                   ropeEndPosPixels.x + ropeSizePixels / 2, ropeEndPosPixels.y);
+
+        // Add a glow, I guess
+        g.setGlobalAlpha(0.2);
+        g.setLineWidth(ropeSizePixels + 5);
+        g.strokeLine(ropeStartPosPixels.x + ropeSizePixels / 2, ropeStartPosPixels.y,
+                ropeEndPosPixels.x + ropeSizePixels / 2, ropeEndPosPixels.y);
+        g.setGlobalAlpha(1.0);
+
+        // Draw the Sprites over the line/rope
+        drawSprite(g, ropeObject.getSprite(), ropeObject.getPosition(), Vec2.ONE());
+        drawSprite(g, ropeObject.getAdditionalSprites()[0], ropeObject.getAdditionalPositions()[0], Vec2.ONE());
     }
 
     private void drawAllHitboxes(GraphicsContext g, PlayerObject player, List<ObstacleObject> allObstacleObjects) {
