@@ -1,5 +1,9 @@
 package grash.assets;
 
+import javafx.scene.media.Media;
+
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 
 public final class MapMetadata {
@@ -16,6 +20,8 @@ public final class MapMetadata {
     private final String mapKey;
     private final String mapGroupKey;
 
+    private final Media songMetadata;
+
     public MapMetadata(String mapName, String mapDifficulty, String mapAuthor, String mapVersion,
                        String songName, String songAuthor, Path folderPath, String fileName) {
         this.mapName = mapName;
@@ -29,6 +35,9 @@ public final class MapMetadata {
 
         this.mapKey = mapAuthor + "::" + mapName + "::" + songName + "::" + songAuthor + "::" + mapVersion + "::" + mapDifficulty;
         this.mapGroupKey = mapAuthor + "::" + mapName + "::" + songName + "::" + songAuthor + "::" + mapVersion;
+
+        // Load the Song
+        songMetadata = loadSongMetaData(this.folderPath.toString());
     }
 
     public String getSongName() {
@@ -60,5 +69,19 @@ public final class MapMetadata {
 
     public String getMapKey() { return this.mapKey; }
 
+    /**
+     * Returns null if there is no song
+     */
+    private static Media loadSongMetaData(String targetPath) {
+        try {
+            File songFile = new File(targetPath + "\\song.mp3");
+            if(!songFile.exists())
+                throw new IOException("Cant find the songFile inside the Map Folder: \"" + targetPath + "\"");
+
+            return new Media(songFile.toURI().toString());
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
 }
