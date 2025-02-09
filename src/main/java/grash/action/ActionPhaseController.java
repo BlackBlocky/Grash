@@ -37,6 +37,7 @@ public final class ActionPhaseController implements GrashEventListener {
 
     private MediaPlayer mapSong;
     private double lastSongCurrentTimeSeconds;
+    private MediaPlayer.Status lastSongStatus;
 
     public static final double PRE_GENERATED_DISTANCE = 25;
     public static final double Y_UP = 4;
@@ -120,10 +121,23 @@ public final class ActionPhaseController implements GrashEventListener {
      */
     private void onEvent_Tick(GrashEvent_Tick event) {
         if(actionPhaseState == ActionPhaseState.Inactive) return;
-        else if(mapSong.getStatus() == MediaPlayer.Status.UNKNOWN) return;
+
+        // Waiting until the Song actually starts playing, so the Song and the Map are synced. (about 200 ms delay)
+        if(mapSong != null && lastSongStatus == MediaPlayer.Status.UNKNOWN) {
+            lastSongStatus = mapSong.getStatus();
+            if(lastSongStatus != MediaPlayer.Status.PLAYING) return;
+            else actionPhaseValues.setNanoTimeAtStart(System.nanoTime());
+        }
 
         double secondsElapsedSinceStart = calculateTimeSinceStartInSeconds();
         double deltaTime = event.getDeltaTime();
+//        if(mapSong != null) {
+//            secondsElapsedSinceStart = mapSong.getCurrentTime().toMillis() / 1000.0;
+//            deltaTime = secondsElapsedSinceStart - lastSongCurrentTimeSeconds;
+//            lastSongCurrentTimeSeconds = secondsElapsedSinceStart;
+//        }
+
+        //System.out.println(secondsElapsedSinceStart + " - " + deltaTime + " :: " + mapSong.getCurrentTime().toSeconds());
 
         //System.out.println(secondsElapsedSinceStart + " - " + mapSong.getCurrentTime().toSeconds());
 
@@ -172,8 +186,11 @@ public final class ActionPhaseController implements GrashEventListener {
         actionPhaseValues.setNanoTimeAtStart(System.nanoTime()); // TODO This should not be here, but yeah
         actionPhaseState = ActionPhaseState.Active; // TODO This should not be here, but yeah
 
-        mapSong = new MediaPlayer(actionPhaseValues.getActionPhaseMap().getMapMetadata().getSongMetadata());
-        mapSong.play();
+        if(actionPhaseValues.getActionPhaseMap().getMapMetadata().getSongMetadata() != null) {
+            mapSong = new MediaPlayer(actionPhaseValues.getActionPhaseMap().getMapMetadata().getSongMetadata());
+            mapSong.play();
+            lastSongStatus = MediaPlayer.Status.UNKNOWN;
+        }
 
         /* Generate LevelMapEffects because the Renderer needs and Effect to work with as start Values,
         and not just simple Types like "Color".
@@ -232,7 +249,10 @@ public final class ActionPhaseController implements GrashEventListener {
         actionPhaseValues = null;
         visualEffectValues = null;
 
-        mapSong.dispose();
+        if(mapSong != null) {
+            mapSong.dispose();
+            mapSong = null;
+        }
 
         LockSupport.parkNanos((long)(0.5 * 1_000_000_000.0));
 
