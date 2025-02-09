@@ -136,7 +136,6 @@ public final class ResourceLoader implements GrashEventListener {
             loadedMapMetadatas.add(mapLoader.loadMapMetadata(mapFolder.toPath(), grashMapFile.getName()));
         }
 
-        System.out.println();
         return loadedMapMetadatas.toArray(new MapMetadata[0]);
     }
 

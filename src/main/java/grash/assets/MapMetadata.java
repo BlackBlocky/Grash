@@ -8,6 +8,7 @@ public final class MapMetadata {
     private final String mapAuthor;
     private final String mapVersion;
     private final String songName;
+    private final String songAuthor;
 
     private final Path folderPath;
     private final String fileName;
@@ -16,17 +17,18 @@ public final class MapMetadata {
     private final String mapGroupKey;
 
     public MapMetadata(String mapName, String mapDifficulty, String mapAuthor, String mapVersion,
-                       String songName, Path folderPath, String fileName) {
+                       String songName, String songAuthor, Path folderPath, String fileName) {
         this.mapName = mapName;
         this.mapDifficulty = mapDifficulty;
         this.mapAuthor = mapAuthor;
         this.mapVersion = mapVersion;
         this.songName = songName;
+        this.songAuthor = songAuthor;
         this.folderPath = folderPath;
         this.fileName = fileName;
 
-        this.mapKey = mapAuthor + "::" + mapName + "::" + mapVersion + "::" + mapDifficulty;
-        this.mapGroupKey = mapAuthor + "::" + mapName + "::" + mapVersion;
+        this.mapKey = mapAuthor + "::" + mapName + "::" + songName + "::" + songAuthor + "::" + mapVersion + "::" + mapDifficulty;
+        this.mapGroupKey = mapAuthor + "::" + mapName + "::" + songName + "::" + songAuthor + "::" + mapVersion;
     }
 
     public String getSongName() {

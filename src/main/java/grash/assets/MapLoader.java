@@ -25,9 +25,11 @@ final class MapLoader {
         String[][] mapDifficulty = extractParamsFromMapML(mapMl, "difficulty");
         String[][] mapAuthor = extractParamsFromMapML(mapMl, "mapauthor");
         String[][] songName = extractParamsFromMapML(mapMl, "songname");
+        String[][] songAuthor = extractParamsFromMapML(mapMl, "songauthor");
         String[][] mapVersion = extractParamsFromMapML(mapMl, "mapversion");
 
-        return new MapMetadata(mapName[0][0], mapDifficulty[0][0], mapAuthor[0][0], mapVersion[0][0], songName[0][0], folderPath, grashMapFileName);
+        return new MapMetadata(mapName[0][0], mapDifficulty[0][0], mapAuthor[0][0], mapVersion[0][0], songName[0][0],
+                songAuthor[0][0], folderPath, grashMapFileName);
     }
 
     /**
