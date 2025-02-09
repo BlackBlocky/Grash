@@ -116,6 +116,6 @@ public final class WelcomeScreenController extends ScreenController {
 
     public void startGameButton_Handler() {
         System.out.println("Start Game!");
-        game.getEventBus().triggerEvent(new GrashEvent_LoadLevel("Some_Person::My_Cool_Map::Cool_Song::Testman_1::Version_1::Normal"));
+        game.getEventBus().triggerEvent(new GrashEvent_LoadLevel("BlackBlocky::Welcome::Welcome_to_Grash::BlackBlocky::Version_1::Easy"));
     }
 }

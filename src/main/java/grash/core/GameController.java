@@ -165,7 +165,7 @@ public final class GameController implements GrashEventListener {
                 gameLoop.start();
 
                 getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.WelcomeScreen));
-                getEventBus().triggerEvent(new GrashEvent_LoadLevel("Dev::Showcase::Super_Mario_Bros._Theme_Remix::ApproachingNirvana::Version_1::Easy"));
+                //getEventBus().triggerEvent(new GrashEvent_LoadLevel("BlackBlocky::Welcome::Welcome_to_Grash::BlackBlocky::Version_1::Easy"));
                 break;
             }
             case LevelAction: {
