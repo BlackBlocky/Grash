@@ -69,6 +69,8 @@ public final class MapMetadata {
 
     public String getMapKey() { return this.mapKey; }
 
+    public Media getSongMetadata() { return this.songMetadata; }
+
     /**
      * Returns null if there is no song
      */

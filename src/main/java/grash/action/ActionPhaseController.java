@@ -17,6 +17,7 @@ import grash.level.LevelMapTimeline;
 import grash.level.LevelMapTimelineStack;
 import grash.level.map.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.media.MediaPlayer;
 
 import java.util.concurrent.locks.LockSupport;
 
@@ -33,6 +34,9 @@ public final class ActionPhaseController implements GrashEventListener {
     private final ActionPhaseRenderer actionPhaseRenderer;
     // TODO Start Timestamp machen und dann Current Color im renderer mit den Effect Values Updaten
     private final GameController game;
+
+    private MediaPlayer mapSong;
+    private double lastSongCurrentTimeSeconds;
 
     public static final double PRE_GENERATED_DISTANCE = 25;
     public static final double Y_UP = 4;
@@ -53,6 +57,8 @@ public final class ActionPhaseController implements GrashEventListener {
         this.actionPhaseRenderer = new ActionPhaseRenderer(game);
         this.actionPhaseObjectHandler = new ActionPhaseObjectHandler(this, game);
         this.actionPhaseLogicHandler = new ActionPhaseLogicHandler(this, game);
+
+        this.mapSong = null;
 
         this.useCustomTime = false;
         this.lastCustomTimeSeconds = 0.0;
@@ -75,6 +81,8 @@ public final class ActionPhaseController implements GrashEventListener {
     public void setupNewActionPhase(LevelMap actionPhaseMap, double startCountdownTimeSeconds) {
         this.actionPhaseValues = new ActionPhaseValues(actionPhaseMap, startCountdownTimeSeconds, game);
         this.visualEffectValues = new ActionPhaseVisualEffectValues(actionPhaseMap);
+
+        this.lastSongCurrentTimeSeconds = 0.0;
 
         this.useCustomTime = false;
         this.lastCustomTimeSeconds = 0.0;
@@ -112,9 +120,12 @@ public final class ActionPhaseController implements GrashEventListener {
      */
     private void onEvent_Tick(GrashEvent_Tick event) {
         if(actionPhaseState == ActionPhaseState.Inactive) return;
+        else if(mapSong.getStatus() == MediaPlayer.Status.UNKNOWN) return;
 
         double secondsElapsedSinceStart = calculateTimeSinceStartInSeconds();
         double deltaTime = event.getDeltaTime();
+
+        //System.out.println(secondsElapsedSinceStart + " - " + mapSong.getCurrentTime().toSeconds());
 
         if(useCustomTime) {
             actionPhaseLogicHandler.updateCustomTime(event.getDeltaTime());
@@ -160,6 +171,9 @@ public final class ActionPhaseController implements GrashEventListener {
         actionPhaseState = ActionPhaseState.Countdown;
         actionPhaseValues.setNanoTimeAtStart(System.nanoTime()); // TODO This should not be here, but yeah
         actionPhaseState = ActionPhaseState.Active; // TODO This should not be here, but yeah
+
+        mapSong = new MediaPlayer(actionPhaseValues.getActionPhaseMap().getMapMetadata().getSongMetadata());
+        mapSong.play();
 
         /* Generate LevelMapEffects because the Renderer needs and Effect to work with as start Values,
         and not just simple Types like "Color".
@@ -217,6 +231,8 @@ public final class ActionPhaseController implements GrashEventListener {
         actionPhaseState = ActionPhaseState.Inactive;
         actionPhaseValues = null;
         visualEffectValues = null;
+
+        mapSong.dispose();
 
         LockSupport.parkNanos((long)(0.5 * 1_000_000_000.0));
 
