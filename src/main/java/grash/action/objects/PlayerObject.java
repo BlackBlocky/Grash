@@ -1,9 +1,14 @@
 package grash.action.objects;
 
 import grash.action.ActionPhaseController;
+import grash.action.ActionPhaseLogicHandler;
+import grash.action.CollisionInfo;
+import grash.action.CollisionType;
 import grash.assets.Sprite;
 import grash.core.GameController;
 import grash.math.Vec2;
+
+import java.util.List;
 
 public final class PlayerObject {
 
@@ -28,6 +33,7 @@ public final class PlayerObject {
 
     private double elapsedSecondsAtJump;
     private double currentJumpForce;
+    private ObstacleObject lastUsedDoubleJump;
 
     private double heightChangeMultiplier; // This is used a debug Setting, when the useCustomPlayerHeight is true
 
@@ -45,6 +51,7 @@ public final class PlayerObject {
         this.switchSideOnNextTick = false;
         this.elapsedSecondsAtJump = 0.0;
         this.currentJumpForce = 0.0;
+        this.lastUsedDoubleJump = null;
     }
 
     public Vec2 getPosition() { return this.position; }
@@ -114,7 +121,16 @@ public final class PlayerObject {
     }
 
     private void doJump() {
-        if(playerState == PlayerState.Jumping) return;
+        ActionPhaseLogicHandler logicHandler = game.getActionPhaseController().getActionPhaseLogicHandler();
+        List<ObstacleObject> allObstacleObjects =
+                game.getActionPhaseController().getActionPhaseValues().getCurrentObstacleObjects();
+        CollisionInfo checkedCollision = logicHandler.checkIfPlayerIsColliding(this, allObstacleObjects);
+        if (checkedCollision.getCollisionType() != CollisionType.DoubleJump && playerState == PlayerState.Jumping) return;
+
+        if (checkedCollision.getCollisionType() == CollisionType.DoubleJump) {
+            if(checkedCollision.getObstacleObject() == lastUsedDoubleJump) return;
+            lastUsedDoubleJump = checkedCollision.getObstacleObject();
+        }
 
         this.playerState = PlayerState.Jumping;
         if(isDown) this.currentJumpForce = -JUMP_FORCE; // Bottom Jump
