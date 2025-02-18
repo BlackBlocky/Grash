@@ -46,7 +46,7 @@ public final class ObstacleObject extends ActionObject {
             case Slide:
                 return null;
             case DoubleJump:
-                return null;
+                return game.getResourceLoader().getSprite("DoubleJump");
         }
         return null;
     }

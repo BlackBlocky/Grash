@@ -77,6 +77,10 @@ public final class ActionPhaseObjectHandler {
                 addObstacleObjectToAction_Rope(actionPhaseValues, levelMapElement, secondsElapsedSinceStart);
                 break;
             }
+            case DoubleJump: {
+                addObstacleObjectToAction_DoubleJump(actionPhaseValues, levelMapElement, secondsElapsedSinceStart);
+                break;
+            }
         }
     }
 
@@ -125,6 +129,26 @@ public final class ActionPhaseObjectHandler {
         newRopeObject.setAdditionalPositions(ropeEndPosArray);
 
         actionPhaseValues.getCurrentObstacleObjects().add(newRopeObject);
+    }
+
+    private void addObstacleObjectToAction_DoubleJump(ActionPhaseValues actionPhaseValues,
+                                                      LevelMapElement levelMapElement,
+                                                      double secondsElapsedSinceStart) {
+        Vec2 spawnPos = Vec2.ZERO();
+        spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart);
+        spawnPos.y = calculateHeightFromNormalizedValue(levelMapElement.getHeightNormalized());
+
+        Hitbox hitbox = new Hitbox(new Vec2(0.36, 0.36),
+                new Vec2(0.32, 0.32));
+
+        actionPhaseValues.getCurrentObstacleObjects().add(new ObstacleObject(game,
+                spawnPos,new Vec2(1, 1), Vec2.ZERO(), levelMapElement, hitbox));
+    }
+
+    private double calculateHeightFromNormalizedValue(double normalizedHeight) {
+        // Linear Interpolation
+        return ActionPhaseController.Y_UP +
+                (ActionPhaseController.Y_DOWN - ActionPhaseController.Y_UP) * normalizedHeight;
     }
 
 }

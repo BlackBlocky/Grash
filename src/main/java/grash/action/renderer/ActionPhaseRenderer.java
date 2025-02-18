@@ -113,6 +113,7 @@ public final class ActionPhaseRenderer implements GrashEventListener {
            switch (obstacleObject.getLevelMapElement().getMapElementType()) {
                case Spike:
                case Wall:
+               case DoubleJump:
                    drawSprite(g, obstacleObject.getSprite(), obstacleObject.getPosition().add(obstacleObject.getDrawOffset()), obstacleObject.getScale());
                    break;
                case Rope:
