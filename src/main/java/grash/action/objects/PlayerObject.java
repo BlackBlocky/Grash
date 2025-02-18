@@ -9,6 +9,9 @@ public final class PlayerObject {
 
     public static final double JUMP_HEIGHT = 1.6;
     public static final double JUMP_DISTANCE = 3;
+    public static final double JUMP_FORCE = 18;
+    public static final double JUMP_GRAVITY = 90;
+    public static final double JUMP_MAP_SPEED_STANDARD = 12.0;
 
     private final Vec2 position;
     private final Sprite sprite;
@@ -24,6 +27,7 @@ public final class PlayerObject {
     private boolean switchSideOnNextTick;
 
     private double elapsedSecondsAtJump;
+    private double currentJumpForce;
 
     private double heightChangeMultiplier; // This is used a debug Setting, when the useCustomPlayerHeight is true
 
@@ -40,6 +44,7 @@ public final class PlayerObject {
         this.jumpOnNextTick = false;
         this.switchSideOnNextTick = false;
         this.elapsedSecondsAtJump = 0.0;
+        this.currentJumpForce = 0.0;
     }
 
     public Vec2 getPosition() { return this.position; }
@@ -52,9 +57,9 @@ public final class PlayerObject {
     public void doJumpOnNextTick() { this.jumpOnNextTick = true; }
     public void doSwitchSideOnNextTick() { this.switchSideOnNextTick = true; }
 
-    public void playerTick(double secondsElapsedSinceStart, double mapSpeed, double realDeltaTime) {
+    public void playerTick(double secondsElapsedSinceStart, double mapSpeed, double realDeltaTime, double deltaTime) {
         // Doing these things first because otherwise it would affect the initial states.
-        jumpTick(mapSpeed, secondsElapsedSinceStart);
+        jumpTick(mapSpeed, deltaTime);
 
         /* Solving this with an "else if",
         because otherwise it my happen that a sideSwitch and a Jump happening at the same time. */
@@ -63,11 +68,11 @@ public final class PlayerObject {
             this.switchSideOnNextTick = false;
         }
         else if(jumpOnNextTick) {
-            doJump(secondsElapsedSinceStart);
+            doJump();
             this.jumpOnNextTick = false;
         }
 
-        changeHeight(realDeltaTime);
+        changeHeight(realDeltaTime); // DEBUG
     }
 
     private void switchSides() {
@@ -108,25 +113,29 @@ public final class PlayerObject {
         else playerState = PlayerState.RopingToBottom; // Go from top to bottom
     }
 
-    private void doJump(double secondsElapsedSinceStart) {
+    private void doJump() {
         if(playerState == PlayerState.Jumping) return;
 
         this.playerState = PlayerState.Jumping;
-        this.elapsedSecondsAtJump = secondsElapsedSinceStart;
+        if(isDown) this.currentJumpForce = -JUMP_FORCE; // Bottom Jump
+        else this.currentJumpForce = JUMP_FORCE; // Top Jump
     }
 
-    private void jumpTick(double mapSpeed, double secondsElapsedSinceStart) {
+    private void jumpTick(double mapSpeed, double deltaTime) {
         if(playerState != PlayerState.Jumping) return;
 
+        double mapSpeedMultiplier = mapSpeed / JUMP_MAP_SPEED_STANDARD; // Makes e.g.,
+                                                                        // the Jump slower if the Map is slower
+        double deltaTimeWithMultiplier = deltaTime * mapSpeedMultiplier;
+
         // Calculate the new y Pos for the Jump
-        double jumpHeightMultiplier = calculateJumpHeightMultiplier(secondsElapsedSinceStart, mapSpeed);
-        if(isDown) position.y = ActionPhaseController.Y_DOWN - (JUMP_HEIGHT * jumpHeightMultiplier);
-        else position.y = ActionPhaseController.Y_UP + (JUMP_HEIGHT * jumpHeightMultiplier);
+        position.y += currentJumpForce * deltaTimeWithMultiplier;
+        if(isDown) currentJumpForce += JUMP_GRAVITY * deltaTimeWithMultiplier;
+        else currentJumpForce -= JUMP_GRAVITY * deltaTimeWithMultiplier;
 
         // Check if the Jump is over or not
-        double secondsSinceJump = secondsElapsedSinceStart - this.elapsedSecondsAtJump;
-        double traveledDistanceSinceJump = secondsSinceJump * mapSpeed;
-        if(traveledDistanceSinceJump >= JUMP_DISTANCE) endJump();
+        if(isDown && position.y > ActionPhaseController.Y_DOWN) endJump();
+        else if (!isDown && position.y < ActionPhaseController.Y_UP) endJump();
     }
 
     private double calculateJumpHeightMultiplier(double secondsElapsedSinceStart, double mapSpeed) {

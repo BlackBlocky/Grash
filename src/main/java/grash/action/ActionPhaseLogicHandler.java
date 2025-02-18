@@ -65,8 +65,8 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
     }
 
     public void playerLogicHandler(PlayerObject player, double secondsElapsedSinceStart, double mapSpeed,
-                                   double realDeltaTime) {
-        player.playerTick(secondsElapsedSinceStart, mapSpeed, realDeltaTime);
+                                   double realDeltaTime, double deltaTime) {
+        player.playerTick(secondsElapsedSinceStart, mapSpeed, realDeltaTime, deltaTime);
     }
 
     public boolean checkIfPlayerIsColliding(PlayerObject player, List<ObstacleObject> allObstacleObjects) {

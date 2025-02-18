@@ -87,6 +87,10 @@ public final class ResourceLoader implements GrashEventListener {
         }
 
         allMapKeys = allLoadedMapKeys.toArray(new String[0]);
+
+        for(String s : allMapKeys) {
+            System.out.println(s);
+        }
     }
 
     private void loadAllBaseSprites() {

@@ -165,7 +165,7 @@ public final class GameController implements GrashEventListener {
                 gameLoop.start();
 
                 getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.WelcomeScreen));
-                //getEventBus().triggerEvent(new GrashEvent_LoadLevel("BlackBlocky::Welcome::Welcome_to_Grash::BlackBlocky::Version_1::Easy"));
+                getEventBus().triggerEvent(new GrashEvent_LoadLevel("Dev::Spikes::no_Song::no_one::final::Easy"));
                 break;
             }
             case LevelAction: {

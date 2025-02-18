@@ -151,7 +151,7 @@ public final class ActionPhaseController implements GrashEventListener {
 
         // Updating the Player before everything moves, because otherwise something could move into the player.
         actionPhaseLogicHandler.playerLogicHandler(actionPhaseValues.getPlayerObject(), secondsElapsedSinceStart,
-                actionPhaseValues.getActionPhaseMap().getSpeed(), event.getDeltaTime());
+                actionPhaseValues.getActionPhaseMap().getSpeed(), event.getDeltaTime(), deltaTime);
 
         // Checking if the Player collides with something
         if(actionPhaseLogicHandler.checkIfPlayerIsColliding(actionPhaseValues.getPlayerObject(),
