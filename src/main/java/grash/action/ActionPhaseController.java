@@ -155,7 +155,7 @@ public final class ActionPhaseController implements GrashEventListener {
 
         // Checking if the Player collides with something
         if(actionPhaseLogicHandler.checkIfPlayerIsColliding(actionPhaseValues.getPlayerObject(),
-                actionPhaseValues.getCurrentObstacleObjects())) {
+                actionPhaseValues.getCurrentObstacleObjects()).getCollisionType() == CollisionType.Deadly) {
             game.getEventBus().triggerEvent(new GrashEvent_PlayerDied());
         }
 

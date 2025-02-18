@@ -13,6 +13,7 @@ import grash.level.map.MapElementType;
 import grash.math.Vec2;
 import javafx.scene.input.KeyCode;
 
+import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,17 +70,20 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
         player.playerTick(secondsElapsedSinceStart, mapSpeed, realDeltaTime, deltaTime);
     }
 
-    public boolean checkIfPlayerIsColliding(PlayerObject player, List<ObstacleObject> allObstacleObjects) {
+    public CollisionInfo checkIfPlayerIsColliding(PlayerObject player, List<ObstacleObject> allObstacleObjects) {
         for(ObstacleObject obstacleObject : allObstacleObjects) {
             if(obstacleObject.getHitbox() == null) continue;
 
             if(Hitbox.CHECK_COLLISION(player.getPosition(), player.getHitbox(),
                     obstacleObject.getPosition(), obstacleObject.getHitbox())) {
-                System.out.println("Collision");
-                return true;
+
+                if(obstacleObject.getLevelMapElement().getMapElementType() == MapElementType.DoubleJump)
+                    return new CollisionInfo(CollisionType.DoubleJump, obstacleObject);
+                else
+                    return new CollisionInfo(CollisionType.Deadly, obstacleObject);
             }
         }
-        return false;
+        return CollisionInfo.noneCollision;
     }
 
     /**
