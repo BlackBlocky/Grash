@@ -139,7 +139,7 @@ public final class ActionPhaseObjectHandler {
         spawnPos.y = calculateHeightFromNormalizedValue(levelMapElement.getHeightNormalized());
 
         Hitbox hitbox = new Hitbox(new Vec2(0.36, 0.36),
-                new Vec2(0.32, 0.32));
+                new Vec2(0, 0.32));
 
         actionPhaseValues.getCurrentObstacleObjects().add(new ObstacleObject(game,
                 spawnPos,new Vec2(1, 1), Vec2.ZERO(), levelMapElement, hitbox));
