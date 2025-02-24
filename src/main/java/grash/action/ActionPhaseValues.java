@@ -38,8 +38,11 @@ public final class ActionPhaseValues {
         this.currentObstacleObjects = new ArrayList<>();
 
         Hitbox playerHitbox = new Hitbox(new Vec2(0.8, 0.7), new Vec2(0.1, 0.15));
+        Hitbox playerSneakHitboxDown = new Hitbox(new Vec2(0.8, 0.35), new Vec2(0.1, 0.5));
+        Hitbox playerSneakHitboxUp = new Hitbox(new Vec2(0.8, 0.35), new Vec2(0.1, 0.1));
         this.playerObject = new PlayerObject(gameController,
-                new Vec2(ActionPhaseController.PLAYER_X, ActionPhaseController.Y_DOWN), playerHitbox);
+                new Vec2(ActionPhaseController.PLAYER_X, ActionPhaseController.Y_DOWN),
+                playerHitbox, playerSneakHitboxDown, playerSneakHitboxUp);
 
         this.customTime = 0.0;
     }

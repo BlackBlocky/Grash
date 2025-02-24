@@ -21,6 +21,8 @@ public final class PlayerObject {
     private final Vec2 position;
     private final Sprite sprite;
     private final Hitbox hitbox;
+    private final Hitbox sneakHitboxDown;
+    private final Hitbox sneakHitboxUp;
 
     private PlayerState playerState;
 
@@ -37,10 +39,13 @@ public final class PlayerObject {
 
     private double heightChangeMultiplier; // This is used a debug Setting, when the useCustomPlayerHeight is true
 
-    public PlayerObject(GameController gameController, Vec2 startPos, Hitbox hitbox) {
+    public PlayerObject(GameController gameController, Vec2 startPos,
+                        Hitbox hitbox, Hitbox sneakHitboxDown, Hitbox sneakHitboxUp) {
         this.position = startPos;
         this.isDown = (startPos.y == ActionPhaseController.Y_DOWN);
         this.hitbox = hitbox;
+        this.sneakHitboxDown = sneakHitboxDown;
+        this.sneakHitboxUp = sneakHitboxUp;
 
         this.game = gameController;
         this.sprite = game.getResourceLoader().getSprite("MagnetSnake");
