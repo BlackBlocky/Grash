@@ -8,6 +8,7 @@ import grash.assets.Sprite;
 import grash.core.GameController;
 import grash.math.Vec2;
 
+import java.util.HashMap;
 import java.util.List;
 
 public final class PlayerObject {
@@ -19,8 +20,12 @@ public final class PlayerObject {
     public static final double JUMP_MAP_SPEED_STANDARD = 12.0;
 
     private final Vec2 position;
-    private final Sprite sprite;
-    private final Hitbox hitbox;
+    private Sprite sprite;
+
+    private final HashMap<String, Sprite> spritesMap;
+
+    private Hitbox hitbox;
+    private final Hitbox defaultHitbox;
     private final Hitbox sneakHitboxDown;
     private final Hitbox sneakHitboxUp;
 
@@ -32,6 +37,7 @@ public final class PlayerObject {
 
     private boolean jumpOnNextTick;
     private boolean switchSideOnNextTick;
+    private boolean switchSneakStateNextTick;
 
     private double elapsedSecondsAtJump;
     private double currentJumpForce;
@@ -43,11 +49,19 @@ public final class PlayerObject {
                         Hitbox hitbox, Hitbox sneakHitboxDown, Hitbox sneakHitboxUp) {
         this.position = startPos;
         this.isDown = (startPos.y == ActionPhaseController.Y_DOWN);
-        this.hitbox = hitbox;
+
+        this.defaultHitbox = hitbox;
         this.sneakHitboxDown = sneakHitboxDown;
         this.sneakHitboxUp = sneakHitboxUp;
+        this.hitbox = this.defaultHitbox;
 
         this.game = gameController;
+
+        this.spritesMap = new HashMap<>();
+        spritesMap.put("default", game.getResourceLoader().getSprite("MagnetSnake"));
+        spritesMap.put("sneakDown", game.getResourceLoader().getSprite("MagnetSnakeSneakDown"));
+        spritesMap.put("sneakUp", game.getResourceLoader().getSprite("MagnetSnakeSneakUp"));
+
         this.sprite = game.getResourceLoader().getSprite("MagnetSnake");
 
         this.playerState = PlayerState.Idle;
@@ -57,25 +71,31 @@ public final class PlayerObject {
         this.elapsedSecondsAtJump = 0.0;
         this.currentJumpForce = 0.0;
         this.lastUsedDoubleJump = null;
+        this.switchSneakStateNextTick = false;
     }
 
     public Vec2 getPosition() { return this.position; }
     public Sprite getSprite() { return this.sprite; }
     public Hitbox getHitbox() { return this.hitbox; }
+    public PlayerState getPlayerState() { return this.playerState; }
 
     public void setHeightChangeMultiplier(double heightChangeMultiplier) {
         this.heightChangeMultiplier = heightChangeMultiplier; }
 
     public void doJumpOnNextTick() { this.jumpOnNextTick = true; }
     public void doSwitchSideOnNextTick() { this.switchSideOnNextTick = true; }
+    public void doSwitchSneakStateNextTick() { this.switchSneakStateNextTick = true; }
 
     public void playerTick(double secondsElapsedSinceStart, double mapSpeed, double realDeltaTime, double deltaTime) {
         // Doing these things first because otherwise it would affect the initial states.
         jumpTick(mapSpeed, deltaTime);
 
         /* Solving this with an "else if",
-        because otherwise it my happen that a sideSwitch and a Jump happening at the same time. */
-        if(switchSideOnNextTick && playerState != PlayerState.Jumping) {
+        because otherwise it my happen that a sideSwitch and a Jump happening at the same time.
+
+        Note: Doing all these things in the next tick, because the Input Thread is the JavaFX thread, and not the
+              tick "thread" */
+        if(switchSideOnNextTick) {
             switchSides();
             this.switchSideOnNextTick = false;
         }
@@ -84,10 +104,17 @@ public final class PlayerObject {
             this.jumpOnNextTick = false;
         }
 
+        if(switchSneakStateNextTick) {
+            switchSneakState();
+            this.switchSneakStateNextTick = false;
+        }
+
         changeHeight(realDeltaTime); // DEBUG
     }
 
     private void switchSides() {
+        if(playerState == PlayerState.Jumping || playerState == PlayerState.Sneaking) return;
+
         // Hop to bottom or top if the Player is gliding on a Rope
         if(playerState == PlayerState.RopingToTop) {
             position.y = ActionPhaseController.Y_UP;
@@ -126,6 +153,8 @@ public final class PlayerObject {
     }
 
     private void doJump() {
+        if(playerState != PlayerState.Idle && playerState != PlayerState.Jumping) return;
+
         ActionPhaseLogicHandler logicHandler = game.getActionPhaseController().getActionPhaseLogicHandler();
         List<ObstacleObject> allObstacleObjects =
                 game.getActionPhaseController().getActionPhaseValues().getCurrentObstacleObjects();
@@ -157,6 +186,25 @@ public final class PlayerObject {
         // Check if the Jump is over or not
         if(isDown && position.y > ActionPhaseController.Y_DOWN) endJump();
         else if (!isDown && position.y < ActionPhaseController.Y_UP) endJump();
+    }
+
+    private void switchSneakState() {
+        if(playerState == PlayerState.Idle) {
+            playerState = PlayerState.Sneaking;
+            if(isDown) {
+                this.hitbox = sneakHitboxDown;
+                this.sprite = spritesMap.get("sneakDown");
+            }
+            else {
+                this.hitbox = sneakHitboxUp;
+                this.sprite = spritesMap.get("sneakUp");
+            }
+        }
+        else if (playerState == PlayerState.Sneaking) {
+            playerState = PlayerState.Idle;
+            this.hitbox = defaultHitbox;
+            this.sprite = spritesMap.get("default");
+        }
     }
 
     private double calculateJumpHeightMultiplier(double secondsElapsedSinceStart, double mapSpeed) {

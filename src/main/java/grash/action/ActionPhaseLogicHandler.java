@@ -3,6 +3,7 @@ package grash.action;
 import grash.action.objects.Hitbox;
 import grash.action.objects.ObstacleObject;
 import grash.action.objects.PlayerObject;
+import grash.action.objects.PlayerState;
 import grash.core.GameController;
 import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
@@ -144,6 +145,9 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
         else if(event.getKeyCode() == KeyCode.SPACE) {
             controller.getActionPhaseValues().getPlayerObject().doJumpOnNextTick();
         }
+        else if(event.getKeyCode() == KeyCode.SHIFT || event.getKeyCode() == KeyCode.CONTROL) {
+            controller.getActionPhaseValues().getPlayerObject().doSwitchSneakStateNextTick();
+        }
     }
 
     private void onEvent_KeyUp(GrashEvent_KeyUp event) {
@@ -164,6 +168,13 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
             if(event.getKeyCode() == KeyCode.PAGE_UP || event.getKeyCode() == KeyCode.PAGE_DOWN) {
                 controller.getActionPhaseValues().getPlayerObject().setHeightChangeMultiplier(0.0);
             }
+        }
+
+        // Player controls
+        if(event.getKeyCode() == KeyCode.SHIFT || event.getKeyCode() == KeyCode.CONTROL) {
+            // Making sure that you don't sneak when you're un-sneak
+            if(controller.getActionPhaseValues().getPlayerObject().getPlayerState() == PlayerState.Sneaking)
+                controller.getActionPhaseValues().getPlayerObject().doSwitchSneakStateNextTick();
         }
     }
 
