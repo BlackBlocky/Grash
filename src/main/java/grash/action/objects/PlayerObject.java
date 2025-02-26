@@ -58,11 +58,12 @@ public final class PlayerObject {
         this.game = gameController;
 
         this.spritesMap = new HashMap<>();
-        spritesMap.put("default", game.getResourceLoader().getSprite("MagnetSnake"));
+        spritesMap.put("idleDown", game.getResourceLoader().getSprite("MagnetSnakeDown"));
+        spritesMap.put("idleUp", game.getResourceLoader().getSprite("MagnetSnakeUp"));
         spritesMap.put("sneakDown", game.getResourceLoader().getSprite("MagnetSnakeSneakDown"));
         spritesMap.put("sneakUp", game.getResourceLoader().getSprite("MagnetSnakeSneakUp"));
 
-        this.sprite = game.getResourceLoader().getSprite("MagnetSnake");
+        this.sprite = spritesMap.get("idleDown");
 
         this.playerState = PlayerState.Idle;
 
@@ -120,12 +121,14 @@ public final class PlayerObject {
             position.y = ActionPhaseController.Y_UP;
             isDown = false;
             playerState = PlayerState.Idle;
+            updateSprite();
             return;
         }
         else if(playerState == PlayerState.RopingToBottom) {
             position.y = ActionPhaseController.Y_DOWN;
             isDown = true;
             playerState = PlayerState.Idle;
+            updateSprite();
             return;
         }
 
@@ -143,7 +146,9 @@ public final class PlayerObject {
         } else {
             position.y = ActionPhaseController.Y_UP;
         }
+
         isDown = !isDown;
+        updateSprite();
     }
 
     private void switchToARope(ObstacleObject rope) {
@@ -193,18 +198,17 @@ public final class PlayerObject {
             playerState = PlayerState.Sneaking;
             if(isDown) {
                 this.hitbox = sneakHitboxDown;
-                this.sprite = spritesMap.get("sneakDown");
             }
             else {
                 this.hitbox = sneakHitboxUp;
-                this.sprite = spritesMap.get("sneakUp");
             }
         }
         else if (playerState == PlayerState.Sneaking) {
             playerState = PlayerState.Idle;
             this.hitbox = defaultHitbox;
-            this.sprite = spritesMap.get("default");
         }
+
+        updateSprite();
     }
 
     private double calculateJumpHeightMultiplier(double secondsElapsedSinceStart, double mapSpeed) {
@@ -220,6 +224,19 @@ public final class PlayerObject {
     private void endJump() {
         position.y = (isDown) ? ActionPhaseController.Y_DOWN : ActionPhaseController.Y_UP;
         this.playerState = PlayerState.Idle;
+    }
+
+    private void updateSprite() {
+        switch (playerState) {
+            case Sneaking: {
+                this.sprite = (isDown) ? spritesMap.get("sneakDown") : spritesMap.get("sneakUp");
+                break;
+            }
+            default: {
+                this.sprite = (isDown) ? spritesMap.get("idleDown") : spritesMap.get("idleUp");
+                break;
+            }
+        }
     }
 
     /**
