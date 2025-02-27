@@ -175,14 +175,16 @@ public final class ActionPhaseRenderer implements GrashEventListener {
         // Draw "holder" Lines
         Vec2 slideStartPos = slideObject.getPosition();
         Vec2 slideEndPos = slideObject.getAdditionalPositions()[0];
-        double holderLinesY = slideStartPos.y;
+        double holderLinesY = (slideObject.getLevelMapElement().getIsUp()) ? slideStartPos.y + 1.0 : slideStartPos.y;
         double slideStartOffset = 0.5;
         double holderLineStepSize = (slideEndPos.x - slideStartPos.x) / (ropesPerSlide - 1) -
                 (slideStartOffset / (ropesPerSlide - 1)); // length / 4 (making it parts)
                 // (somehow it makes one more rope as intended, but it works so don't touch it lol :P)
         for(double lineX = slideStartPos.x + slideStartOffset / 2; lineX < slideEndPos.x; lineX += holderLineStepSize) {
             Vec2 holderLineStartPixels = calculateGridPixelsPos(new Vec2(lineX, holderLinesY));
-            Vec2 holderLineEndPixels = calculateGridPixelsPos(new Vec2(lineX, ActionPhaseController.Y_UP));
+            double lineEndY = (slideObject.getLevelMapElement().getIsUp()) ?
+                    ActionPhaseController.Y_DOWN + 1 : ActionPhaseController.Y_UP;
+            Vec2 holderLineEndPixels = calculateGridPixelsPos(new Vec2(lineX, lineEndY));
 
             g.strokeLine(holderLineStartPixels.x, holderLineStartPixels.y,
                     holderLineEndPixels.x, holderLineEndPixels.y);
