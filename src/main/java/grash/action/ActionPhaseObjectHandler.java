@@ -81,6 +81,10 @@ public final class ActionPhaseObjectHandler {
                 addObstacleObjectToAction_DoubleJump(actionPhaseValues, levelMapElement, secondsElapsedSinceStart);
                 break;
             }
+            case Slide: {
+                addObstacleObjectToAction_Slide(actionPhaseValues, levelMapElement, secondsElapsedSinceStart);
+                break;
+            }
         }
     }
 
@@ -143,6 +147,37 @@ public final class ActionPhaseObjectHandler {
 
         actionPhaseValues.getCurrentObstacleObjects().add(new ObstacleObject(game,
                 spawnPos,new Vec2(1, 1), Vec2.ZERO(), levelMapElement, hitbox));
+    }
+
+    private void addObstacleObjectToAction_Slide(ActionPhaseValues actionPhaseValues,
+                                                 LevelMapElement levelMapElement, double secondsElapsedSinceStart) {
+        Vec2 spawnPos = Vec2.ZERO();
+        spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart);
+        final double slideHeight = 1.0;
+        spawnPos.y = (levelMapElement.getIsUp()) ?
+                ActionPhaseController.Y_UP + slideHeight : ActionPhaseController.Y_DOWN - slideHeight;
+
+        Vec2 endPos = Vec2.ZERO();
+        endPos.x = calculateObjectXStartPos(levelMapElement.getTimeEnd(), secondsElapsedSinceStart);
+        endPos.y = spawnPos.y;
+
+        double slideDuration = levelMapElement.getTimeEnd() - levelMapElement.getTimeStart();
+        Hitbox slideHitbox = new Hitbox(
+                new Vec2(
+                        slideDuration * actionPhaseValues.getActionPhaseMap().getSpeed(),
+                        4.4),
+                new Vec2(
+                        0,
+                        (levelMapElement.getIsUp()) ? -0.4 : -3
+                ));
+
+        ObstacleObject newSlideObject = new ObstacleObject(game, spawnPos,
+                Vec2.ONE(), Vec2.ZERO(), levelMapElement, slideHitbox);
+
+        Vec2[] ropeEndPosArray = new Vec2[]{endPos}; // It's an array because the ObstacleObject works with arrays
+        newSlideObject.setAdditionalPositions(ropeEndPosArray);
+
+        actionPhaseValues.getCurrentObstacleObjects().add(newSlideObject);
     }
 
     private double calculateHeightFromNormalizedValue(double normalizedHeight) {
