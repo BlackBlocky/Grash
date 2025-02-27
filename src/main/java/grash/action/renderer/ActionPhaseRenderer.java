@@ -1,5 +1,6 @@
 package grash.action.renderer;
 
+import grash.action.ActionPhaseController;
 import grash.action.objects.Hitbox;
 import grash.action.objects.ObstacleObject;
 import grash.action.objects.PlayerObject;
@@ -9,8 +10,6 @@ import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
 import grash.event.events.input.GrashEvent_KeyDown;
 import grash.level.map.LevelMapEffect;
-import grash.level.map.LevelMapElement;
-import grash.level.map.MapElementType;
 import grash.math.Vec2;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -21,6 +20,8 @@ import javafx.scene.paint.Stop;
 import java.util.List;
 
 public final class ActionPhaseRenderer implements GrashEventListener {
+
+    private static final int ropesPerSlide = 5;
 
     private static final double PIXEL_GRID_SIZE = 66;
     private GameController game;
@@ -119,6 +120,9 @@ public final class ActionPhaseRenderer implements GrashEventListener {
                case Rope:
                    drawRope(g, obstacleObject);
                    break;
+               case Slide:
+                   drawSlide(g, obstacleObject);
+                   break;
            }
         }
     }
@@ -154,6 +158,40 @@ public final class ActionPhaseRenderer implements GrashEventListener {
         // Draw the Sprites over the line/rope
         drawSprite(g, ropeObject.getSprite(), ropeObject.getPosition(), Vec2.ONE());
         drawSprite(g, ropeObject.getAdditionalSprites()[0], ropeObject.getAdditionalPositions()[0], Vec2.ONE());
+    }
+
+    private void drawSlide(GraphicsContext g, ObstacleObject slideObject) {
+        // Draw base-line
+        Vec2 slideStartPixels = calculateGridPixelsPos(slideObject.getPosition());
+        Vec2 slideEndPixels = calculateGridPixelsPos(slideObject.getAdditionalPositions()[0].add(new Vec2(0, 1)));
+        final double baselineStartOffsetPixels = PIXEL_GRID_SIZE / 4.4; // Making it a bit larger so it overlaps a bit
+        g.setFill(Color.WHITE);
+        g.setStroke(Color.WHITE);
+        g.setLineWidth(3.0);
+        g.strokeRect(slideStartPixels.x + baselineStartOffsetPixels, slideStartPixels.y + 1.5, //xy
+                (slideEndPixels.x - slideStartPixels.x) - (baselineStartOffsetPixels * 2), // w
+                (slideEndPixels.y - slideStartPixels.y) - 3); // h
+
+        // Draw "holder" Lines
+        Vec2 slideStartPos = slideObject.getPosition();
+        Vec2 slideEndPos = slideObject.getAdditionalPositions()[0];
+        double holderLinesY = slideStartPos.y;
+        double slideStartOffset = 0.5;
+        double holderLineStepSize = (slideEndPos.x - slideStartPos.x) / (ropesPerSlide - 1) -
+                (slideStartOffset / (ropesPerSlide - 1)); // length / 4 (making it parts)
+                // (somehow it makes one more rope as intended, but it works so don't touch it lol :P)
+        for(double lineX = slideStartPos.x + slideStartOffset / 2; lineX < slideEndPos.x; lineX += holderLineStepSize) {
+            Vec2 holderLineStartPixels = calculateGridPixelsPos(new Vec2(lineX, holderLinesY));
+            Vec2 holderLineEndPixels = calculateGridPixelsPos(new Vec2(lineX, ActionPhaseController.Y_UP));
+
+            g.strokeLine(holderLineStartPixels.x, holderLineStartPixels.y,
+                    holderLineEndPixels.x, holderLineEndPixels.y);
+        }
+
+        // Draw Sprites
+        drawSprite(g, slideObject.getSprite(), slideObject.getPosition(), Vec2.ONE()); // StartPos, SlideLeftSprite
+        drawSprite(g, slideObject.getAdditionalSprites()[0],
+                slideObject.getAdditionalPositions()[0].add(new Vec2(-1, 0)), Vec2.ONE()); // EndPos, SlideRightSprite
     }
 
     private void drawAllHitboxes(GraphicsContext g, PlayerObject player, List<ObstacleObject> allObstacleObjects) {

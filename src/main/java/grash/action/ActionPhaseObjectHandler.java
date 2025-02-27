@@ -155,7 +155,7 @@ public final class ActionPhaseObjectHandler {
         spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart);
         final double slideHeight = 1.0;
         spawnPos.y = (levelMapElement.getIsUp()) ?
-                ActionPhaseController.Y_UP + slideHeight : ActionPhaseController.Y_DOWN - slideHeight;
+                ActionPhaseController.Y_UP + slideHeight - 0.4 : ActionPhaseController.Y_DOWN - slideHeight + 0.4;
 
         Vec2 endPos = Vec2.ZERO();
         endPos.x = calculateObjectXStartPos(levelMapElement.getTimeEnd(), secondsElapsedSinceStart);
@@ -168,7 +168,7 @@ public final class ActionPhaseObjectHandler {
                         4.4),
                 new Vec2(
                         0,
-                        (levelMapElement.getIsUp()) ? -0.4 : -3
+                        (levelMapElement.getIsUp()) ? 0 : -3.4
                 ));
 
         ObstacleObject newSlideObject = new ObstacleObject(game, spawnPos,

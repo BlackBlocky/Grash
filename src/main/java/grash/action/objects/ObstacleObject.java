@@ -44,7 +44,8 @@ public final class ObstacleObject extends ActionObject {
                 return (thisLevelMapElement.getIsUp()) ? game.getResourceLoader().getSprite("WallUp") :
                         game.getResourceLoader().getSprite("WallDown");
             case Slide:
-                return null;
+                additionalSprites = new Sprite[]{game.getResourceLoader().getSprite("SlideRight")};
+                return game.getResourceLoader().getSprite("SlideLeft");
             case DoubleJump:
                 return game.getResourceLoader().getSprite("DoubleJump");
         }
