@@ -63,6 +63,11 @@ public final class PlayerObject {
         spritesMap.put("sneakDown", game.getResourceLoader().getSprite("MagnetSnakeSneakDown"));
         spritesMap.put("sneakUp", game.getResourceLoader().getSprite("MagnetSnakeSneakUp"));
 
+        spritesMap.put("jumpUpFromDown", game.getResourceLoader().getSprite("MagnetSnakeJumpUpFromDown"));
+        spritesMap.put("jumpDownFromDown", game.getResourceLoader().getSprite("MagnetSnakeJumpDownFromDown"));
+        spritesMap.put("jumpUpFromUp", game.getResourceLoader().getSprite("MagnetSnakeJumpUpFromUp"));
+        spritesMap.put("jumpDownFromUp", game.getResourceLoader().getSprite("MagnetSnakeJumpDownFromUp"));
+
         this.sprite = spritesMap.get("idleDown");
 
         this.playerState = PlayerState.Idle;
@@ -191,6 +196,8 @@ public final class PlayerObject {
         // Check if the Jump is over or not
         if(isDown && position.y > ActionPhaseController.Y_DOWN) endJump();
         else if (!isDown && position.y < ActionPhaseController.Y_UP) endJump();
+
+        updateSprite();
     }
 
     private void switchSneakState() {
@@ -230,6 +237,17 @@ public final class PlayerObject {
         switch (playerState) {
             case Sneaking: {
                 this.sprite = (isDown) ? spritesMap.get("sneakDown") : spritesMap.get("sneakUp");
+                break;
+            }
+            case Jumping: {
+                if(isDown) {
+                    this.sprite = (currentJumpForce > 0) ?
+                            spritesMap.get("jumpDownFromDown") : spritesMap.get("jumpUpFromDown");
+                }
+                else {
+                    this.sprite = (currentJumpForce < 0) ?
+                            spritesMap.get("jumpDownFromUp") : spritesMap.get("jumpUpFromUp");
+                }
                 break;
             }
             default: {
