@@ -28,6 +28,7 @@ public final class ActionPhaseRenderer implements GrashEventListener {
     private Canvas gameCanvas;
 
     private RendererEffectData colorEffectData;
+    private RendererEffectData rotationEffectData;
 
     private double renderedBackgroundValue; // used in drawBackgroundGradient() ONLY
 
@@ -42,13 +43,14 @@ public final class ActionPhaseRenderer implements GrashEventListener {
     /**
      * This will be called every Time the Renderer starts, aka another level is starting
      */
-    public void setupRenderer(LevelMapEffect startColorEffect) {
+    public void setupRenderer(LevelMapEffect startColorEffect, LevelMapEffect startRotationEffect) {
         this.renderedBackgroundValue = 0.0;
 
         this.debug_renderGrid = false;
         this.debug_renderHitbox = false;
 
         colorEffectData = new RendererEffectData(startColorEffect);
+        rotationEffectData = new RendererEffectData(startRotationEffect);
 
         gameCanvas = (Canvas) game.getPrimaryStage().getScene().lookup("#gameCanvas");
     }
@@ -81,6 +83,8 @@ public final class ActionPhaseRenderer implements GrashEventListener {
         colorEffectData.setNextEffect(nextColorEffect);
         colorEffectData.recalculate();
     }
+
+
 
     public void updateCanvas(double deltaTime, double secondsElapsedSinceStart,
                              List<ObstacleObject> renderedObstacleObjects,

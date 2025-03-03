@@ -9,8 +9,15 @@ public final class ActionPhaseVisualEffectValues {
     private final VisualEffectIncrementer colorIncrementer;
     private LevelMapEffect currentColorEffect;
 
+    private final VisualEffectIncrementer rotationIncrementer;
+    private LevelMapEffect currentRotationEffect;
+
     public ActionPhaseVisualEffectValues(LevelMap levelMap) {
         colorIncrementer = new VisualEffectIncrementer(levelMap.getColors());
+        rotationIncrementer = new VisualEffectIncrementer(levelMap.getRotates());
+
+        currentColorEffect = null;
+        currentRotationEffect = null;
     }
 
     /**

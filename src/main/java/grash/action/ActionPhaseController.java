@@ -198,11 +198,14 @@ public final class ActionPhaseController implements GrashEventListener {
         LevelMapEffect startColorEffect = new LevelMapEffect(MapEffectType.Color);
         startColorEffect.setColor(actionPhaseValues.getActionPhaseMap().getStartColor());
 
+        LevelMapEffect startRotationEffect = new LevelMapEffect(MapEffectType.Rotate);
+        startRotationEffect.setValueDouble(actionPhaseValues.getActionPhaseMap().getStartRotation());
+
         // Setup renderer and other necessary stuff
         actionPhaseValues.getActionPhaseMap().getLevelMapTimeline().calculateXStartPosForEveryStack(
                 actionPhaseValues.getActionPhaseMap().getSpeed()
         );
-        actionPhaseRenderer.setupRenderer(startColorEffect);
+        actionPhaseRenderer.setupRenderer(startColorEffect, startRotationEffect);
 
         /* Only set the next second Color of there even is a second color.
          This needs to be executed AFTER the Renderer was set up,
