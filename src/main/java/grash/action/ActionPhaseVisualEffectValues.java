@@ -13,6 +13,11 @@ public final class ActionPhaseVisualEffectValues {
         colorIncrementer = new VisualEffectIncrementer(levelMap.getColors());
     }
 
+    /**
+     * Returns the current color. If it is time to switch to next Color, the VisualEffectIncrementer
+     * switches automatically to the next Element, and so returns the next Color.
+     * If there is no next Color, it just returns the last color in the List.
+     */
     public LevelMapEffect getCurrentColor(double time) {
         LevelMapEffect nextColorElement = colorIncrementer.getNextEffectIfReady(time);
         if(nextColorElement != null) {

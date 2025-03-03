@@ -28,6 +28,13 @@ public final class RendererEffectData {
         return progressSeconds / timeBetweenBothEffects;
     }
 
+    /**
+     * Returns a value between min and max based on the normalized Value from v
+     */
+    public static double valueBetweenMinMax(double min, double max, double v) {
+        return (max - min) * v + min;
+    }
+
     public double getTimeBetweenBothEffects() {
         return timeBetweenBothEffects;
     }
