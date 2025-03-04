@@ -6,4 +6,5 @@ public enum WindowState {
     WelcomeScreen,
     MainMenu,
     LevelAction,
+    LevelSelectorMenu,
 }
