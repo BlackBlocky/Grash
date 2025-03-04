@@ -12,12 +12,17 @@ public final class ActionPhaseVisualEffectValues {
     private final VisualEffectIncrementer rotationIncrementer;
     private LevelMapEffect currentRotationEffect;
 
+    private final VisualEffectIncrementer fovScaleIncrementer;
+    private LevelMapEffect currentFovScale;
+
     public ActionPhaseVisualEffectValues(LevelMap levelMap) {
         colorIncrementer = new VisualEffectIncrementer(levelMap.getColors());
         rotationIncrementer = new VisualEffectIncrementer(levelMap.getRotates());
+        fovScaleIncrementer = new VisualEffectIncrementer(levelMap.getFovScales());
 
         currentColorEffect = null;
         currentRotationEffect = null;
+        currentFovScale = null;
     }
 
     /**
@@ -55,4 +60,17 @@ public final class ActionPhaseVisualEffectValues {
         return rotationIncrementer.justGetNextEffect();
     }
 
+
+    public LevelMapEffect getCurrentFovScale(double time) {
+        LevelMapEffect nextFovScaleElement = fovScaleIncrementer.getNextEffectIfReady(time);
+        if(nextFovScaleElement != null) {
+            currentFovScale = nextFovScaleElement;
+        }
+
+        return this.currentFovScale;
+    }
+
+    public LevelMapEffect getNextFovScale() {
+        return fovScaleIncrementer.justGetNextEffect();
+    }
 }

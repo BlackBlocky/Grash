@@ -201,11 +201,14 @@ public final class ActionPhaseController implements GrashEventListener {
         LevelMapEffect startRotationEffect = new LevelMapEffect(MapEffectType.Rotate);
         startRotationEffect.setValueDouble(actionPhaseValues.getActionPhaseMap().getStartRotation());
 
+        LevelMapEffect startFovScaleEffect = new LevelMapEffect(MapEffectType.FOVScale);
+        startFovScaleEffect.setValueDouble(actionPhaseValues.getActionPhaseMap().getStartFOVScale());
+
         // Setup renderer and other necessary stuff
         actionPhaseValues.getActionPhaseMap().getLevelMapTimeline().calculateXStartPosForEveryStack(
                 actionPhaseValues.getActionPhaseMap().getSpeed()
         );
-        actionPhaseRenderer.setupRenderer(startColorEffect, startRotationEffect);
+        actionPhaseRenderer.setupRenderer(startColorEffect, startRotationEffect, startFovScaleEffect);
 
         /* Only set the next second Color of there even is a second color.
          This needs to be executed AFTER the Renderer was set up,
@@ -217,6 +220,11 @@ public final class ActionPhaseController implements GrashEventListener {
         LevelMapEffect nextRotationAfterStartRotation = visualEffectValues.getNextRotation();
         if(nextRotationAfterStartRotation != null)
             actionPhaseRenderer.updateRotations(startRotationEffect, nextRotationAfterStartRotation);
+
+        LevelMapEffect nextFovScaleAfterStartFovScale = visualEffectValues.getNextFovScale();
+        if(nextFovScaleAfterStartFovScale != null) {
+            actionPhaseRenderer.updateFovScales(startFovScaleEffect, nextFovScaleAfterStartFovScale);
+        }
 
         actionPhaseLogicHandler.resetLogicHandler();
     }
@@ -281,6 +289,13 @@ public final class ActionPhaseController implements GrashEventListener {
             LevelMapEffect nextRotation = visualEffectValues.getNextRotation();
             if(nextRotation == null) nextRotation = currentRotation;
             actionPhaseRenderer.updateRotations(currentRotation, nextRotation);
+        }
+
+        LevelMapEffect currentFOVScale = visualEffectValues.getCurrentFovScale(secondsElapsedSinceStart);
+        if(currentFOVScale != null) {
+            LevelMapEffect nextFovScale = visualEffectValues.getNextFovScale();
+            if(nextFovScale == null) nextFovScale = currentFOVScale;
+            actionPhaseRenderer.updateFovScales(currentFOVScale, nextFovScale);
         }
     }
 }

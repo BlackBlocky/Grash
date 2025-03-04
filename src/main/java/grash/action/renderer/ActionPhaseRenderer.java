@@ -30,6 +30,7 @@ public final class ActionPhaseRenderer implements GrashEventListener {
 
     private RendererEffectData colorEffectData;
     private RendererEffectData rotationEffectData;
+    private RendererEffectData fovScaleEffectData;
 
     private double renderedBackgroundValue; // used in drawBackgroundGradient() ONLY
 
@@ -44,7 +45,8 @@ public final class ActionPhaseRenderer implements GrashEventListener {
     /**
      * This will be called every Time the Renderer starts, aka another level is starting
      */
-    public void setupRenderer(LevelMapEffect startColorEffect, LevelMapEffect startRotationEffect) {
+    public void setupRenderer(LevelMapEffect startColorEffect, LevelMapEffect startRotationEffect,
+                              LevelMapEffect startFovScaleEffect) {
         this.renderedBackgroundValue = 0.0;
 
         this.debug_renderGrid = false;
@@ -52,6 +54,7 @@ public final class ActionPhaseRenderer implements GrashEventListener {
 
         colorEffectData = new RendererEffectData(startColorEffect);
         rotationEffectData = new RendererEffectData(startRotationEffect);
+        fovScaleEffectData = new RendererEffectData(startFovScaleEffect);
 
         gameCanvas = (Canvas) game.getPrimaryStage().getScene().lookup("#gameCanvas");
     }
@@ -89,6 +92,11 @@ public final class ActionPhaseRenderer implements GrashEventListener {
         rotationEffectData.setNextEffect(nextRotationEffect);
         rotationEffectData.recalculate();
     }
+    public void updateFovScales(LevelMapEffect currentFovScale, LevelMapEffect nextFovScale) {
+        fovScaleEffectData.setCurrentEffect(currentFovScale);
+        fovScaleEffectData.setNextEffect(nextFovScale);
+        fovScaleEffectData.recalculate();
+    }
 
 
     public void updateCanvas(double deltaTime, double secondsElapsedSinceStart,
@@ -107,7 +115,9 @@ public final class ActionPhaseRenderer implements GrashEventListener {
         g.save();
         g.translate(Main.SCREEN_WIDTH / 2, Main.SCREEN_HEIGHT / 2);
         g.rotate(rotationEffectData.getValueBetweenBothEffectsByTime(secondsElapsedSinceStart));
-        System.out.println(rotationEffectData.getValueBetweenBothEffectsByTime(secondsElapsedSinceStart));
+        double scaleValue = fovScaleEffectData.getValueBetweenBothEffectsByTime(secondsElapsedSinceStart);
+        g.scale(scaleValue, scaleValue);
+        System.out.println(scaleValue);
         g.translate(-Main.SCREEN_WIDTH / 2, -Main.SCREEN_HEIGHT / 2);
 
         drawFloors(g, drawColor);
