@@ -4,8 +4,20 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.Button?>
 
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ScrollPane?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      alignment="TOP_CENTER" stylesheets="@../css/levelSelectorMenuStyle.css" styleClass="vbox-style">
-    <Text text="Test" fx:id="titleText" styleClass="title-text" />
-    <Button text="Start Game" fx:id="startButton" styleClass="start-button" />
+      alignment="CENTER" stylesheets="@../css/levelSelectorMenuStyle.css" styleClass="vbox-style">
+    <Text text="Select a Level" fx:id="titleText" styleClass="title-text" />
+    <ScrollPane styleClass="levels-list-scroll-pane" fitToWidth="true">
+        <HBox alignment="CENTER" fx:id="levelsList" styleClass="levels-list">
+            <VBox alignment="CENTER" styleClass="map-element">
+                <Text text="Level nr. 1" styleClass="map-header" />
+                <Text text="Difficulty: Hard" styleClass="map-info" />
+                <Button text="Start Level" minWidth="250" maxWidth="250" prefHeight="100" styleClass="map-start-button"/>
+                <Text text="A Song - A Person" styleClass="map-info" />
+                <Text text="Creator [V1]" styleClass="map-info" />
+            </VBox>
+        </HBox>
+    </ScrollPane>
 </VBox>

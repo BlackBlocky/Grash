@@ -100,7 +100,7 @@ public class LevelSelectorMenuController extends ScreenController {
         GraphicsContext g = renderingCanvas.getGraphicsContext2D();
 
         // Set Background
-        g.setFill(Color.web("#06060d"));
+        g.setFill(Color.web("#0b0b19"));
         g.fillRect(0, 0, renderingCanvas.getWidth(), renderingCanvas.getHeight());
 
         // Render Stars

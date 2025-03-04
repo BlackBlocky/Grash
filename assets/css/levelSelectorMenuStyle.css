@@ -1,0 +1,49 @@
+.title-text {
+    -fx-fill: #FFB347;
+    -fx-font-size: 70px;
+    -fx-font-weight: bold;
+}
+
+.levels-list {
+    -fx-spacing: 20px;
+}
+
+.levels-list-scroll-pane {
+    -fx-hbar-policy: ALWAYS;
+    -fx-vbar-policy: NEVER;
+
+    -fx-background: transparent;
+    -fx-background-color: transparent;
+}
+
+.levels-list-scroll-pane .thumb {
+    -fx-background-color: #FFB347;  /* Setzt die Farbe des Handles (Schieberegler) */
+}
+
+.levels-list-scroll-pane .track {
+    -fx-background-color: #0b0b19;  /* Setzt die Farbe des Handles (Schieberegler) */
+}
+
+.map-element {
+    -fx-background-color: rgba(0, 0, 0, 0.6);
+    -fx-background-radius: 20px;
+    -fx-padding: 10px;
+}
+
+.map-header {
+    -fx-fill: #FFB347;
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+}
+
+.map-info {
+    -fx-fill: white;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.map-start-button {
+    -fx-font-size: 35px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 50px;
+}
