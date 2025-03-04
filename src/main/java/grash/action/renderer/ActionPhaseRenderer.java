@@ -6,6 +6,7 @@ import grash.action.objects.ObstacleObject;
 import grash.action.objects.PlayerObject;
 import grash.assets.Sprite;
 import grash.core.GameController;
+import grash.core.Main;
 import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
 import grash.event.events.input.GrashEvent_KeyDown;
@@ -83,7 +84,11 @@ public final class ActionPhaseRenderer implements GrashEventListener {
         colorEffectData.setNextEffect(nextColorEffect);
         colorEffectData.recalculate();
     }
-
+    public void updateRotations(LevelMapEffect currentRotationEffect, LevelMapEffect nextRotationEffect) {
+        rotationEffectData.setCurrentEffect(currentRotationEffect);
+        rotationEffectData.setNextEffect(nextRotationEffect);
+        rotationEffectData.recalculate();
+    }
 
 
     public void updateCanvas(double deltaTime, double secondsElapsedSinceStart,
@@ -95,13 +100,24 @@ public final class ActionPhaseRenderer implements GrashEventListener {
                 colorEffectData.getNextEffect().getColor(),
                 colorEffectData.interpolateTime(secondsElapsedSinceStart));
 
+        // Actual rendering
         drawBackgroundGradient(deltaTime, g, drawColor);
+
+        // Apply Rotation and Stuff
+        g.save();
+        g.translate(Main.SCREEN_WIDTH / 2, Main.SCREEN_HEIGHT / 2);
+        g.rotate(rotationEffectData.getValueBetweenBothEffectsByTime(secondsElapsedSinceStart));
+        System.out.println(rotationEffectData.getValueBetweenBothEffectsByTime(secondsElapsedSinceStart));
+        g.translate(-Main.SCREEN_WIDTH / 2, -Main.SCREEN_HEIGHT / 2);
+
         drawFloors(g, drawColor);
         drawAllObstacleObjects(g, renderedObstacleObjects);
 
         if(player != null) drawSprite(g, player.getSprite(), player.getPosition(), Vec2.ONE());
         if(debug_renderGrid) drawGrid(g, drawColor);
         if(debug_renderHitbox) drawAllHitboxes(g, player, renderedObstacleObjects);
+
+        g.restore();
     }
 
     /**

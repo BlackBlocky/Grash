@@ -22,10 +22,20 @@ public final class RendererEffectData {
     /**
      * Interpolates the time between the current Effect with the next Effect by give current Time.
      * Example, if we are 1 sec between this transition that goes for 5 seconds, the return value would be around 0.2.
+     * !Returns 1.0 if the time between both effects is 0.0.
      */
     public double interpolateTime(double secondsElapsedSinceStart) {
         double progressSeconds =  secondsElapsedSinceStart - currentEffect.getTimeStart();
-        return progressSeconds / timeBetweenBothEffects;
+        if(timeBetweenBothEffects == 0.0) return 1.0;
+        else return progressSeconds / timeBetweenBothEffects;
+    }
+
+    /**
+     * Takes the secondsElapsedSinceStart and returns a value between both effects based by the current time process.
+     */
+    public double getValueBetweenBothEffectsByTime(double secondsElapsedSinceStart) {
+        double normalValue = interpolateTime(secondsElapsedSinceStart);
+        return valueBetweenMinMax(currentEffect.getValueDouble(), nextEffect.getValueDouble(), normalValue);
     }
 
     /**

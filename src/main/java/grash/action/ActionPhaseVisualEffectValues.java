@@ -42,4 +42,17 @@ public final class ActionPhaseVisualEffectValues {
     }
 
 
+    public LevelMapEffect getCurrentRotation(double time) {
+        LevelMapEffect nextRotationElement = rotationIncrementer.getNextEffectIfReady(time);
+        if(nextRotationElement != null) {
+            currentRotationEffect = nextRotationElement;
+        }
+
+        return this.currentRotationEffect;
+    }
+
+    public LevelMapEffect getNextRotation() {
+        return rotationIncrementer.justGetNextEffect();
+    }
+
 }

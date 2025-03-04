@@ -214,6 +214,10 @@ public final class ActionPhaseController implements GrashEventListener {
         if(nextColorAfterStartColor != null)
             actionPhaseRenderer.updateColors(startColorEffect, nextColorAfterStartColor);
 
+        LevelMapEffect nextRotationAfterStartRotation = visualEffectValues.getNextRotation();
+        if(nextRotationAfterStartRotation != null)
+            actionPhaseRenderer.updateRotations(startRotationEffect, nextRotationAfterStartRotation);
+
         actionPhaseLogicHandler.resetLogicHandler();
     }
 
@@ -271,5 +275,12 @@ public final class ActionPhaseController implements GrashEventListener {
             if(nextColor == null) nextColor = currentColor;
             actionPhaseRenderer.updateColors(currentColor, nextColor);
         };
+
+        LevelMapEffect currentRotation = visualEffectValues.getCurrentRotation(secondsElapsedSinceStart);
+        if(currentRotation != null) {
+            LevelMapEffect nextRotation = visualEffectValues.getNextRotation();
+            if(nextRotation == null) nextRotation = currentRotation;
+            actionPhaseRenderer.updateRotations(currentRotation, nextRotation);
+        }
     }
 }

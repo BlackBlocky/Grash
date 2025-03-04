@@ -11,13 +11,16 @@ public final class Main extends Application {
 
     public static final String WORKING_DIRECTORY = System.getProperty("user.dir");
 
+    public static final double SCREEN_WIDTH = 1600;
+    public static final double SCREEN_HEIGHT = 900;
+
     public static void main(String[] args) {
         launch(args);
     }
 
     public void start(Stage primaryStage) throws Exception {
-        primaryStage.setWidth(1600);
-        primaryStage.setHeight(900);
+        primaryStage.setWidth(SCREEN_WIDTH);
+        primaryStage.setHeight(SCREEN_HEIGHT);
         primaryStage.setResizable(false);
         //primaryStage.setScene(new Scene(new VBox(), 300, 200, Color.WHITE));
         primaryStage.initStyle(StageStyle.DECORATED);
