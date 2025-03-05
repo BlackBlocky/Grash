@@ -271,7 +271,7 @@ public final class ActionPhaseController implements GrashEventListener {
 
         LockSupport.parkNanos((long)(0.5 * 1_000_000_000.0));
 
-        game.getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.WelcomeScreen));
+        game.getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.LevelSelectorMenu));
     }
 
     private void updateVisualEffectRendererValues(double secondsElapsedSinceStart) {

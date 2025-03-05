@@ -1,7 +1,10 @@
 package grash.ui;
 
 import grash.core.GameController;
+import grash.core.WindowState;
+import grash.event.GrashEvent;
 import grash.event.events.level.GrashEvent_LoadLevel;
+import grash.event.events.scene.GrashEvent_SwitchScene;
 import javafx.animation.AnimationTimer;
 import javafx.animation.ScaleTransition;
 import javafx.geometry.Insets;
@@ -116,6 +119,6 @@ public final class WelcomeScreenController extends ScreenController {
 
     public void startGameButton_Handler() {
         System.out.println("Start Game!");
-        game.getEventBus().triggerEvent(new GrashEvent_LoadLevel("BlackBlocky::Welcome::Welcome_to_Grash::BlackBlocky::Version_1::Easy"));
+        game.getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.LevelSelectorMenu));
     }
 }
