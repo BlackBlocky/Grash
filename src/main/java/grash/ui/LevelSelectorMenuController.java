@@ -1,13 +1,18 @@
 package grash.ui;
 
+import grash.assets.MapMetadata;
 import grash.core.GameController;
+import grash.event.events.level.GrashEvent_LoadLevel;
 import javafx.animation.AnimationTimer;
+import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.*;
 import javafx.scene.paint.*;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Text;
 
 import java.util.Random;
 
@@ -22,6 +27,7 @@ public class LevelSelectorMenuController extends ScreenController {
     @Override
     public void init() {
         setupBackground();
+        generateMapButtons();
     }
 
     private void setupBackground() {
@@ -120,6 +126,64 @@ public class LevelSelectorMenuController extends ScreenController {
         WritableImage result = new WritableImage((int)renderingCanvas.getWidth(), (int)renderingCanvas.getHeight());
         renderingCanvas.snapshot(null, result);
         return result;
+    }
+
+    private void generateMapButtons() {
+        Pane levelSelectorMenuPane = (Pane) game.getPrimaryStage().getScene().getRoot();
+        HBox levelsList = (HBox) levelSelectorMenuPane.lookup("#levelsList");
+
+        // Clear all old Buttons
+        levelsList.getChildren().clear();
+
+        // Generate the new ones
+        String[] allMapKeys = game.getResourceLoader().getAllMapKeys();
+        for(String mapKey : allMapKeys) {
+            MapMetadata currentMetadata = game.getResourceLoader().getMapMetadata(mapKey);
+            VBox generatedElement = generateMapSelectionElement(currentMetadata);
+
+            levelsList.getChildren().add(generatedElement);
+        }
+    }
+
+    private VBox generateMapSelectionElement (MapMetadata mapMetadata) {
+        VBox mapElementContainer = new VBox();
+        mapElementContainer.setAlignment(Pos.CENTER);
+        mapElementContainer.getStyleClass().add("map-element");
+
+        Text headerText = new Text();
+        headerText.setText(mapMetadata.getMapName().replace('_', ' '));
+        headerText.getStyleClass().add("map-header");
+
+        Text difficultyText = new Text();
+        difficultyText.setText("Difficulty: " + mapMetadata.getMapDifficulty().replace('_', ' '));
+        difficultyText.getStyleClass().add("map-info");
+
+        Button playButton = new Button();
+        playButton.setText("Start Level");
+        playButton.setMinWidth(250);
+        playButton.setMaxWidth(250);
+        playButton.setPrefHeight(100);
+        playButton.getStyleClass().add("map-start-button");
+        playButton.setOnMousePressed(mouseEvent -> {
+            game.getEventBus().triggerEvent(new GrashEvent_LoadLevel(mapMetadata.getMapKey()));
+        });
+
+        Text songInfoText = new Text();
+        songInfoText.setText(mapMetadata.getSongName().replace('_', ' ') + " - " +
+                mapMetadata.getSongAuthor().replace('_', ' '));
+        songInfoText.getStyleClass().add("map-info");
+
+        Text creatorInfo = new Text();
+        creatorInfo.setText(mapMetadata.getMapAuthor().replace('_', ' '));
+        creatorInfo.getStyleClass().add("map-info");
+
+        mapElementContainer.getChildren().add(headerText);
+        mapElementContainer.getChildren().add(difficultyText);
+        mapElementContainer.getChildren().add(playButton);
+        mapElementContainer.getChildren().add(songInfoText);
+        mapElementContainer.getChildren().add(creatorInfo);
+
+        return mapElementContainer;
     }
 
 }

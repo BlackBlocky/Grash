@@ -43,6 +43,7 @@ public final class MapMetadata {
     public String getSongName() {
         return this.songName;
     }
+    public String getSongAuthor() { return this.songAuthor; }
     public String getMapVersion() {
         return this.mapVersion;
     }
