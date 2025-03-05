@@ -240,6 +240,9 @@ public final class ActionPhaseController implements GrashEventListener {
         if(event.getKeyCode() == KeyCode.NUMBER_SIGN) {
             this.useCustomPlayerHeight = true;
         }
+        if(event.getKeyCode() == KeyCode.ESCAPE) {
+            game.getEventBus().triggerEvent(new GrashEvent_ExitActionPhase());
+        }
     }
 
     private void onEvent_PlayerDied(GrashEvent_PlayerDied event) {

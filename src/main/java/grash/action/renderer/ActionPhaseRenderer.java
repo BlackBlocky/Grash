@@ -117,7 +117,6 @@ public final class ActionPhaseRenderer implements GrashEventListener {
         g.rotate(rotationEffectData.getValueBetweenBothEffectsByTime(secondsElapsedSinceStart));
         double scaleValue = fovScaleEffectData.getValueBetweenBothEffectsByTime(secondsElapsedSinceStart);
         g.scale(scaleValue, scaleValue);
-        System.out.println(scaleValue);
         g.translate(-Main.SCREEN_WIDTH / 2, -Main.SCREEN_HEIGHT / 2);
 
         drawFloors(g, drawColor);
