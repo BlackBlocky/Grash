@@ -41,4 +41,7 @@ public class LevelActionScreenController extends ScreenController {
         if(game.getWindowState() != WindowState.LevelAction) return null;
         return (Canvas) game.getPrimaryStage().getScene().lookup("#gameCanvas");
     }
+
+    @Override
+    public void close() {}
 }

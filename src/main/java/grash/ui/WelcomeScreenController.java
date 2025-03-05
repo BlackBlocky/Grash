@@ -18,9 +18,11 @@ import javafx.util.Duration;
 
 public final class WelcomeScreenController extends ScreenController {
     private GameController game;
+    private AnimationTimer currentBackgroundAnimationTimer;
 
     public WelcomeScreenController (GameController gameController) {
         this.game = gameController;
+        this.currentBackgroundAnimationTimer = null;
     }
 
     /**
@@ -32,10 +34,24 @@ public final class WelcomeScreenController extends ScreenController {
         setupBackground();
     }
 
+    @Override
+    public void close() {
+        stopBackgroundAnimationIfPossible();
+    }
+
+    private void stopBackgroundAnimationIfPossible() {
+        if(currentBackgroundAnimationTimer != null) {
+            currentBackgroundAnimationTimer.stop();
+            currentBackgroundAnimationTimer = null;
+        }
+    }
+
     /**
      * Adds the Animation to the Start Button if you hover with the mouse over it
      */
     private void setupStartButton() {
+        stopBackgroundAnimationIfPossible();
+
         Button startButton = (Button) game.getPrimaryStage().getScene().lookup("#startButton");
 
         double animSpeed = 0.05;

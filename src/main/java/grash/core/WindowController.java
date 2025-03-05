@@ -92,6 +92,11 @@ public final class WindowController implements GrashEventListener {
      * This Method decides what logic should be called when the Scene is switched
      */
     private void onEvent_SwitchScene(GrashEvent_SwitchScene event) {
+        // Calling the close() Method on the current ScreenController (if possible)
+        // (That works because the current WindowState is still the last one).
+        ScreenController lastScreenController = fxmlControllerByWindowState.get(this.windowState);
+        if(lastScreenController != null) lastScreenController.close();
+
         // The switch is for special loading stuff like the SplashScreen, if it is just a normal Scene, then the default option is called
         // noinspection EnumSwitchStatementWhichMissesCases,SwitchStatementWithTooFewBranches
         switch(event.getTargetWindowState()) {

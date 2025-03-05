@@ -19,9 +19,11 @@ import java.util.Random;
 public class LevelSelectorMenuController extends ScreenController {
 
     private final GameController game;
+    private AnimationTimer currentBackgroundAnimationTimer;
 
     public LevelSelectorMenuController(GameController gameController) {
         this.game = gameController;
+        this.currentBackgroundAnimationTimer = null;
     }
 
     @Override
@@ -30,7 +32,21 @@ public class LevelSelectorMenuController extends ScreenController {
         generateMapButtons();
     }
 
+    @Override
+    public void close() {
+        stopBackgroundAnimationIfPossible();
+    }
+
+    private void stopBackgroundAnimationIfPossible() {
+        if(currentBackgroundAnimationTimer != null) {
+            currentBackgroundAnimationTimer.stop();
+            currentBackgroundAnimationTimer = null;
+        }
+    }
+
     private void setupBackground() {
+        stopBackgroundAnimationIfPossible();
+
         Pane levelSelectorMenuPane = (Pane) game.getPrimaryStage().getScene().getRoot();
         final int STARS_COUNT = 225;
 
@@ -45,7 +61,7 @@ public class LevelSelectorMenuController extends ScreenController {
             stars[i] = newStar;
         }
 
-        AnimationTimer timer = new AnimationTimer() {
+        currentBackgroundAnimationTimer = new AnimationTimer() {
             private long lastTick = 0;
             private final double nanosecondsInSecond = 1000000000;
             private final double xSpeed = 100;
@@ -58,7 +74,7 @@ public class LevelSelectorMenuController extends ScreenController {
                     lastTick = l;
                     return;
                 }
-
+                System.out.println("Hi from " + this);
                 double deltaTimeSeconds = (double)(l - lastTick) / nanosecondsInSecond;
                 lastTick = l;
 
@@ -98,7 +114,7 @@ public class LevelSelectorMenuController extends ScreenController {
                 levelSelectorMenuPane.setBackground(new Background(backgroundImage));
             }
         };
-        timer.start();
+        currentBackgroundAnimationTimer.start();
     }
 
     private WritableImage createStarImage(Circle[] stars, Pane levelSelectorMenuPane) {
