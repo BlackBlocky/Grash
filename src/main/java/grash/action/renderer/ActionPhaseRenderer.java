@@ -2,6 +2,7 @@ package grash.action.renderer;
 
 import grash.action.ActionPhaseController;
 import grash.action.objects.Hitbox;
+import grash.action.objects.NoteObject;
 import grash.action.objects.ObstacleObject;
 import grash.action.objects.PlayerObject;
 import grash.assets.Sprite;
@@ -101,6 +102,7 @@ public final class ActionPhaseRenderer implements GrashEventListener {
 
     public void updateCanvas(double deltaTime, double secondsElapsedSinceStart,
                              List<ObstacleObject> renderedObstacleObjects,
+                             List<NoteObject> renderedNoteObjects,
                              PlayerObject player) {
 
         GraphicsContext g = gameCanvas.getGraphicsContext2D();
@@ -121,6 +123,7 @@ public final class ActionPhaseRenderer implements GrashEventListener {
 
         drawFloors(g, drawColor);
         drawAllObstacleObjects(g, renderedObstacleObjects);
+        drawAllNoteObjects(g, renderedNoteObjects);
 
         if(player != null) drawSprite(g, player.getSprite(), player.getPosition(), Vec2.ONE());
         if(debug_renderGrid) drawGrid(g, drawColor);
@@ -266,6 +269,20 @@ public final class ActionPhaseRenderer implements GrashEventListener {
 
         g.drawImage(sprite.getImage(), pixelPos.x, pixelPos.y,
                 PIXEL_GRID_SIZE * scale.x, PIXEL_GRID_SIZE * scale.y);
+    }
+
+    private void drawAllNoteObjects(GraphicsContext g, List<NoteObject> allNoteObjects) {
+        for(NoteObject noteObject : allNoteObjects) {
+            switch (noteObject.getLevelMapNote().getMapNoteType()) {
+                case TapNote:
+                    drawSprite(g, noteObject.getSprite(), noteObject.getPosition(), noteObject.getScale());
+                    break;
+                case GrowNote:
+                    break;
+                case SlideNote:
+                    break;
+            }
+        }
     }
 
     private void drawHitbox(GraphicsContext g, Vec2 gridPos, Hitbox hitbox) {

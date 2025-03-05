@@ -1,12 +1,15 @@
 package grash.action;
 
 import grash.action.objects.Hitbox;
+import grash.action.objects.NoteObject;
 import grash.action.objects.ObstacleObject;
 import grash.core.GameController;
 import grash.level.LevelMapTimeline;
 import grash.level.LevelMapTimelineStack;
 import grash.level.map.LevelMapElement;
+import grash.level.map.LevelMapNote;
 import grash.level.map.LevelMapThing;
+import grash.level.map.MapNoteType;
 import grash.math.Vec2;
 
 public final class ActionPhaseObjectHandler {
@@ -46,6 +49,7 @@ public final class ActionPhaseObjectHandler {
                     break;
                 }
                 case Note: {
+                    addNoteObjectToAction((LevelMapNote) thing, secondsElapsedSinceStart);
                     break;
                 }
                 case Effect: {
@@ -59,6 +63,30 @@ public final class ActionPhaseObjectHandler {
         return ((objectTime - secondsElapsedSinceStart)
                 * controller.getActionPhaseValues().getActionPhaseMap().getSpeed())
                 + controller.getActionPhaseValues().getPlayerObject().getPosition().x;
+    }
+
+    private void addNoteObjectToAction(LevelMapNote levelMapNote, double secondsElapsedSinceStart) {
+        ActionPhaseValues actionPhaseValues = controller.getActionPhaseValues();
+
+        switch (levelMapNote.getMapNoteType()) {
+            case TapNote: {
+                addNoteObjectToAction_TapNote(actionPhaseValues, levelMapNote, secondsElapsedSinceStart);
+                break;
+            }
+        }
+    }
+
+    private void addNoteObjectToAction_TapNote(ActionPhaseValues actionPhaseValues,
+                                               LevelMapNote levelMapNote, double secondsElapsedSinceStart) {
+        Vec2 spawnPos = Vec2.ZERO();
+        spawnPos.x = calculateObjectXStartPos(levelMapNote.getTimeStart(), secondsElapsedSinceStart);
+        switch (levelMapNote.getYType()) {
+            case 0: spawnPos.y = ActionPhaseController.Y_NOTE_DOWN; break;
+            case 1: spawnPos.y = ActionPhaseController.Y_MIDDLE; break;
+            case 2: spawnPos.y = ActionPhaseController.Y_NOTE_UP; break;
+        }
+
+        actionPhaseValues.getCurrentNoteObjects().add(new NoteObject(game, spawnPos, levelMapNote));
     }
 
     private void addObstacleObjectToAction(LevelMapElement levelMapElement, double secondsElapsedSinceStart) {

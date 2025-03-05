@@ -4,12 +4,17 @@ public final class LevelMapNote extends LevelMapThing {
     private final MapNoteType mapNoteType;
 
     private boolean isLeft;
-    private byte yType;
+    private boolean isVertical;
+    private byte yType; // y-type = 0=down;1=middle;2=up, time
     private double timeEnd;
 
     public LevelMapNote(MapNoteType mapNoteType) {
         super(MapThingType.Note);
         this.mapNoteType = mapNoteType;
+    }
+
+    public MapNoteType getMapNoteType() {
+        return this.mapNoteType;
     }
 
     public boolean getIsLeft() {
@@ -18,6 +23,14 @@ public final class LevelMapNote extends LevelMapThing {
 
     public void setIsLeft(boolean left) {
         isLeft = left;
+    }
+
+    public void setIsVertical(boolean vertical) {
+        this.isVertical = vertical;
+    }
+
+    public boolean getIsVertical() {
+        return this.isVertical;
     }
 
     public byte getYType() {

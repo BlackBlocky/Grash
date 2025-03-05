@@ -74,7 +74,7 @@ public class LevelSelectorMenuController extends ScreenController {
                     lastTick = l;
                     return;
                 }
-                System.out.println("Hi from " + this);
+
                 double deltaTimeSeconds = (double)(l - lastTick) / nanosecondsInSecond;
                 lastTick = l;
 

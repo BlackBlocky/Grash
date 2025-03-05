@@ -1,0 +1,15 @@
+[loader]{(v1)}
+
+[mapname]{(Notes_Test)}
+[difficulty]{(Ez)}
+[mapauthor]{(Dev)}
+[songname]{(no_Song)}
+[songauthor]{(no_one)}
+[mapversion]{(v.test)}
+[speed]{(12.0)}
+[growspeed]{(5)}
+[startcolor]{(50, 100, 50)}
+[startfovscale]{(1.0)}
+[startrotation]{(0.0)}
+
+[tapnote]{(2, 1.0)(2, 2.0)(2, 3.0)}

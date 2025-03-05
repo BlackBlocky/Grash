@@ -1,6 +1,7 @@
 package grash.action;
 
 import grash.action.objects.Hitbox;
+import grash.action.objects.NoteObject;
 import grash.action.objects.ObstacleObject;
 import grash.action.objects.PlayerObject;
 import grash.core.GameController;
@@ -19,6 +20,7 @@ public final class ActionPhaseValues {
     private int currentTimelineIndex;
 
     private final List<ObstacleObject> currentObstacleObjects;
+    private final List<NoteObject> currentNoteObjects;
     private final PlayerObject playerObject;
 
     /**
@@ -36,6 +38,7 @@ public final class ActionPhaseValues {
         this.currentTimelineIndex = -1;
 
         this.currentObstacleObjects = new ArrayList<>();
+        this.currentNoteObjects = new ArrayList<>();
 
         // Creating the PlayerObject
         Hitbox playerHitbox = new Hitbox(new Vec2(0.8, 0.7), new Vec2(0.1, 0.15));
@@ -93,6 +96,8 @@ public final class ActionPhaseValues {
     public List<ObstacleObject> getCurrentObstacleObjects() {
         return currentObstacleObjects;
     }
+
+    public List<NoteObject> getCurrentNoteObjects() { return this.currentNoteObjects; }
 
     public PlayerObject getPlayerObject() {
         return playerObject;

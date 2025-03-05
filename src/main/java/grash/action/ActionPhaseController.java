@@ -45,6 +45,9 @@ public final class ActionPhaseController implements GrashEventListener {
     public static final double Y_DOWN = 8;
     public static final double PLAYER_X = 8;
 
+    public static final double Y_NOTE_UP = 2;
+    public static final double Y_NOTE_DOWN = 10;
+
     private boolean useCustomTime;
     private double lastCustomTimeSeconds;
 
@@ -169,6 +172,7 @@ public final class ActionPhaseController implements GrashEventListener {
         updateVisualEffectRendererValues(secondsElapsedSinceStart);
         actionPhaseRenderer.updateCanvas(deltaTime, secondsElapsedSinceStart,
                 getActionPhaseValues().getCurrentObstacleObjects(),
+                getActionPhaseValues().getCurrentNoteObjects(),
                 actionPhaseValues.getPlayerObject());
     }
 

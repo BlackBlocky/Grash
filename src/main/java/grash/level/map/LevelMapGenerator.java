@@ -158,6 +158,7 @@ public final class LevelMapGenerator implements GrashEventListener {
 
         for (int i = 0; i < tapNotesString.length; i++) {
             convertedTapNotes[i] = new LevelMapNote(MapNoteType.TapNote);
+            convertedTapNotes[i].setIsVertical(true);
             convertedTapNotes[i].setYType(Byte.parseByte(tapNotesString[i][0]));
             convertedTapNotes[i].setTimeStart(Double.parseDouble(tapNotesString[i][1]));
         }
@@ -171,6 +172,7 @@ public final class LevelMapGenerator implements GrashEventListener {
 
         for (int i = 0; i < growNotesString.length; i++) {
             convertedGrowNotes[i] = new LevelMapNote(MapNoteType.GrowNote);
+            convertedGrowNotes[i].setIsVertical(false);
             convertedGrowNotes[i].setIsLeft(Boolean.parseBoolean(growNotesString[i][0]));
             convertedGrowNotes[i].setTimeStart(Double.parseDouble(growNotesString[i][1]));
         }
@@ -184,6 +186,7 @@ public final class LevelMapGenerator implements GrashEventListener {
 
         for (int i = 0; i < slideNotesString.length; i++) {
             convertedSlideNotes[i] = new LevelMapNote(MapNoteType.SlideNote);
+            convertedSlideNotes[i].setIsVertical(true);
             convertedSlideNotes[i].setYType(Byte.parseByte(slideNotesString[i][0]));
             convertedSlideNotes[i].setTimeStart(Double.parseDouble(slideNotesString[i][1]));
             convertedSlideNotes[i].setTimeEnd(Double.parseDouble(slideNotesString[i][2]));
