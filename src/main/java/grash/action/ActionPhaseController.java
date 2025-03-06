@@ -126,9 +126,16 @@ public final class ActionPhaseController implements GrashEventListener {
         if(actionPhaseState == ActionPhaseState.Inactive) return;
 
         // Waiting until the Song actually starts playing, so the Song and the Map are synced. (about 200 ms delay)
-        if(mapSong != null && lastSongStatus == MediaPlayer.Status.UNKNOWN) {
+        if(mapSong != null && (lastSongStatus == MediaPlayer.Status.UNKNOWN || lastSongStatus == MediaPlayer.Status.READY)) {
             lastSongStatus = mapSong.getStatus();
             if(lastSongStatus != MediaPlayer.Status.PLAYING) return;
+            else actionPhaseValues.setNanoTimeAtStart(System.nanoTime());
+        }
+
+        // Make sure that the Audio Player ACTUALLY playing, and not just pretending
+        if(mapSong != null && lastSongCurrentTimeSeconds == 0.0) {
+            lastSongCurrentTimeSeconds = mapSong.getCurrentTime().toSeconds();
+            if(lastSongCurrentTimeSeconds == 0.0) return;
             else actionPhaseValues.setNanoTimeAtStart(System.nanoTime());
         }
 
@@ -139,6 +146,9 @@ public final class ActionPhaseController implements GrashEventListener {
 //            deltaTime = secondsElapsedSinceStart - lastSongCurrentTimeSeconds;
 //            lastSongCurrentTimeSeconds = secondsElapsedSinceStart;
 //        }
+
+        //System.out.println(mapSong.getStatus());
+        //System.out.println(secondsElapsedSinceStart + " - " + mapSong.getCurrentTime());
 
         //System.out.println(secondsElapsedSinceStart + " - " + deltaTime + " :: " + mapSong.getCurrentTime().toSeconds());
 
