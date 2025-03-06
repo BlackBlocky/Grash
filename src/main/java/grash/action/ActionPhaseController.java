@@ -166,6 +166,8 @@ public final class ActionPhaseController implements GrashEventListener {
          when it spawned, because that would mess up the timing, I guess*/
         actionPhaseLogicHandler.moveAllObstacleObjects(actionPhaseValues.getCurrentObstacleObjects(),
                 actionPhaseValues.getActionPhaseMap().getSpeed(), deltaTime);
+        actionPhaseLogicHandler.moveAllNoteObjects(actionPhaseValues.getCurrentNoteObjects(),
+                actionPhaseValues.getActionPhaseMap().getSpeed(), deltaTime);
         actionPhaseObjectHandler.processLevelMapTimeline(secondsElapsedSinceStart);
 
         // Updating the renderer

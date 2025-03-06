@@ -1,9 +1,6 @@
 package grash.action;
 
-import grash.action.objects.Hitbox;
-import grash.action.objects.ObstacleObject;
-import grash.action.objects.PlayerObject;
-import grash.action.objects.PlayerState;
+import grash.action.objects.*;
 import grash.core.GameController;
 import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
@@ -11,6 +8,7 @@ import grash.event.events.input.GrashEvent_KeyDown;
 import grash.event.events.input.GrashEvent_KeyUp;
 import grash.level.map.LevelMapElement;
 import grash.level.map.MapElementType;
+import grash.level.map.MapNoteType;
 import grash.math.Vec2;
 import javafx.scene.input.KeyCode;
 
@@ -49,6 +47,14 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
             for(Vec2 additionalPos : obstacleObject.getAdditionalPositions()) {
                 additionalPos.x -= speed * deltaTime;
             }
+        }
+    }
+
+    public void moveAllNoteObjects(List<NoteObject> allNoteObjects, double speed, double deltaTime) {
+        for(NoteObject noteObject : allNoteObjects) {
+            if(noteObject.getLevelMapNote().getMapNoteType() == MapNoteType.GrowNote) continue;
+
+            noteObject.getPosition().x -= speed * deltaTime;
         }
     }
 
