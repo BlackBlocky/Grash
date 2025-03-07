@@ -177,6 +177,7 @@ public final class ActionPhaseController implements GrashEventListener {
 
         double secondsElapsedSinceStart = calculateTimeSinceStartInSeconds();
         double deltaTime = event.getDeltaTime();
+        //(System.out.println(1.0 / deltaTime);
 //        if(mapSong != null) {
 //            secondsElapsedSinceStart = mapSong.getCurrentTime().toMillis() / 1000.0;
 //            deltaTime = secondsElapsedSinceStart - lastSongCurrentTimeSeconds;

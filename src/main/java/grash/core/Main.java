@@ -4,7 +4,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-// VM Options: --module-path [FX-PATH] --add-modules javafx.controls,javafx.fxml,javafx.graphics
+// VM Options: --module-path [FX-PATH] --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.media -Djavafx.animation.fullspeed=true
 // GitHub Repo: https://github.com/BlackBlocky/Grash
 
 public final class Main extends Application {
