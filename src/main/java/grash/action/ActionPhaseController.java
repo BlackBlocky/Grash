@@ -8,6 +8,7 @@ import grash.core.WindowState;
 import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
 import grash.event.events.action.GrashEvent_ExitActionPhase;
+import grash.event.events.action.GrashEvent_NoteHit;
 import grash.event.events.action.GrashEvent_PlayerDied;
 import grash.event.events.action.GrashEvent_StartActionPhase;
 import grash.event.events.core.GrashEvent_Tick;
@@ -19,6 +20,8 @@ import grash.level.map.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.MediaPlayer;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.locks.LockSupport;
 
 public final class ActionPhaseController implements GrashEventListener {
@@ -48,6 +51,34 @@ public final class ActionPhaseController implements GrashEventListener {
     public static final double Y_NOTE_UP = 2;
     public static final double Y_NOTE_DOWN = 10;
 
+    public static final double PERFECT_NOTE_SECONDS_OFF = 0.1;
+    public static final double GOOD_NOTE_SECONDS_OFF = 0.2;
+    public static final double OK_NOTE_SECONDS_OFF = 0.3;
+    public static final double IGNORE_NOTE_SECONDS_OFF = 1.0;
+
+    public static final double PERFECT_POINTS = 300;
+    public static final double GOOD_POINTS = 100;
+    public static final double OK_POINTS = 50;
+    public static final double FAILED_POINTS = 0;
+
+    public static final double PERFECT_ACCURACY = 1.0;
+    public static final double GOOD_ACCURACY = 1.0/3.0;
+    public static final double OK_ACCURACY = 1.0/6.0;
+    public static final double FAILED_ACCURACY = 0.0;
+
+    public static final HashMap<NoteAccuracy, Double> NOTE_HIT_TO_POINTS_MAP = new HashMap<>(Map.ofEntries(
+            Map.entry(NoteAccuracy.Perfect, PERFECT_POINTS),
+            Map.entry(NoteAccuracy.Good,    GOOD_POINTS),
+            Map.entry(NoteAccuracy.Ok,      OK_POINTS),
+            Map.entry(NoteAccuracy.Failed,  FAILED_POINTS)
+    ));
+    public static final HashMap<NoteAccuracy, Double> NOTE_HIT_TO_ACCURACY_MAP = new HashMap<>(Map.ofEntries(
+            Map.entry(NoteAccuracy.Perfect, PERFECT_ACCURACY),
+            Map.entry(NoteAccuracy.Good,    GOOD_ACCURACY),
+            Map.entry(NoteAccuracy.Ok,      OK_ACCURACY),
+            Map.entry(NoteAccuracy.Failed,  FAILED_ACCURACY)
+    ));
+
     private boolean useCustomTime;
     private double lastCustomTimeSeconds;
 
@@ -74,6 +105,7 @@ public final class ActionPhaseController implements GrashEventListener {
         game.getEventBus().registerListener(GrashEvent_KeyDown.class, this);
         game.getEventBus().registerListener(GrashEvent_PlayerDied.class, this);
         game.getEventBus().registerListener(GrashEvent_ExitActionPhase.class, this);
+        game.getEventBus().registerListener(GrashEvent_NoteHit.class, this);
     }
 
     public ActionPhaseValues getActionPhaseValues() { return this.actionPhaseValues; }
@@ -114,6 +146,10 @@ public final class ActionPhaseController implements GrashEventListener {
             }
             case "ExitActionPhase": {
                 onEvent_ExitActionPhase((GrashEvent_ExitActionPhase) event);
+                break;
+            }
+            case "NoteHit": {
+                onEvent_NoteHit((GrashEvent_NoteHit) event);;
                 break;
             }
         }
@@ -272,6 +308,11 @@ public final class ActionPhaseController implements GrashEventListener {
 
     private double calculateTimeSinceStartInSeconds() {
         return (System.nanoTime() - actionPhaseValues.getNanoTimeAtStart()) / 1_000_000_000.0;
+    }
+
+    private void onEvent_NoteHit(GrashEvent_NoteHit event) {
+        System.out.println("Points: " + NOTE_HIT_TO_POINTS_MAP.get(event.getNoteAccuracy()) + ", Acc: " +
+                NOTE_HIT_TO_ACCURACY_MAP.get(event.getNoteAccuracy()));
     }
 
     /**

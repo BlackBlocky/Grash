@@ -4,17 +4,18 @@ import grash.action.objects.*;
 import grash.core.GameController;
 import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
+import grash.event.events.action.GrashEvent_NoteHit;
 import grash.event.events.input.GrashEvent_KeyDown;
 import grash.event.events.input.GrashEvent_KeyUp;
-import grash.level.map.LevelMapElement;
 import grash.level.map.MapElementType;
 import grash.level.map.MapNoteType;
 import grash.math.Vec2;
 import javafx.scene.input.KeyCode;
 
-import java.lang.annotation.ElementType;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public final class ActionPhaseLogicHandler implements GrashEventListener {
 
@@ -93,6 +94,32 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
         return CollisionInfo.noneCollision;
     }
 
+    public CollisionInfo checkIfPlayerIsCollidingWithNote(PlayerObject player, List<NoteObject> allNoteObjects) {
+        if(allNoteObjects.isEmpty()) return CollisionInfo.noneCollision;
+
+        /* If the note is not the next note (at index 0), it won't be hittable
+        *  So that means that we only need to check the Note at index 0.
+        *  (We check somewhere else if the Note was missed)*/
+
+        NoteObject checkedNote = allNoteObjects.get(0);
+        double distanceToPlayerSeconds = (checkedNote.getPosition().x - player.getPosition().x) /
+                controller.getActionPhaseValues().getActionPhaseMap().getSpeed();
+        if(distanceToPlayerSeconds >= ActionPhaseController.IGNORE_NOTE_SECONDS_OFF) return CollisionInfo.noneCollision;
+
+        distanceToPlayerSeconds = Math.abs(distanceToPlayerSeconds);
+        if(distanceToPlayerSeconds <= ActionPhaseController.PERFECT_NOTE_SECONDS_OFF)
+            return new CollisionInfo(CollisionType.PerfectNote, checkedNote);
+        else if(distanceToPlayerSeconds <= ActionPhaseController.GOOD_NOTE_SECONDS_OFF)
+            return new CollisionInfo(CollisionType.GoodNote, checkedNote);
+        else if(distanceToPlayerSeconds <= ActionPhaseController.OK_NOTE_SECONDS_OFF)
+            return new CollisionInfo(CollisionType.OkNote, checkedNote);
+        else
+            // The Note is in between ok and Ignore
+            // It can also happen that the note is just at failed to the left,
+            // but its still failed so... yeah.
+            return new CollisionInfo(CollisionType.FailedNote, checkedNote);
+    }
+
     /**
      * Checks if a Rope currently at the Y-Level with the Player. So basically, if it is colliding at Y.
      * @return Null if there is no Rope, otherwise the Rope object.
@@ -127,6 +154,22 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
         );
     }
 
+    private void hitNextNote() {
+        CollisionInfo noteCollisionInfo = checkIfPlayerIsCollidingWithNote(controller.getActionPhaseValues().getPlayerObject(),
+                controller.getActionPhaseValues().getCurrentNoteObjects());
+
+        final HashMap<CollisionType, NoteAccuracy> collisionTypeToNoteAccuracy = new HashMap<>(Map.ofEntries(
+                Map.entry(CollisionType.PerfectNote, NoteAccuracy.Perfect),
+                Map.entry(CollisionType.GoodNote, NoteAccuracy.Good),
+                Map.entry(CollisionType.OkNote, NoteAccuracy.Ok),
+                Map.entry(CollisionType.FailedNote, NoteAccuracy.Failed)
+        ));
+
+        NoteAccuracy noteAccuracy = collisionTypeToNoteAccuracy.get(noteCollisionInfo.getCollisionType());
+        game.getEventBus().triggerEvent(
+                new GrashEvent_NoteHit(noteAccuracy,(NoteObject) noteCollisionInfo.getActionObject()));
+    }
+
     private void onEvent_KeyDown(GrashEvent_KeyDown event) {
         if(controller.getActionPhaseState() != ActionPhaseState.Active) return;
 
@@ -153,6 +196,11 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
         }
         else if(event.getKeyCode() == KeyCode.SHIFT || event.getKeyCode() == KeyCode.CONTROL) {
             controller.getActionPhaseValues().getPlayerObject().doSwitchSneakStateNextTick();
+        }
+
+        // Note hits
+        if(event.getKeyCode() == KeyCode.UP) {
+            hitNextNote();
         }
     }
 

@@ -172,8 +172,8 @@ public final class PlayerObject {
         if (checkedCollision.getCollisionType() != CollisionType.DoubleJump && playerState == PlayerState.Jumping) return;
 
         if (checkedCollision.getCollisionType() == CollisionType.DoubleJump) {
-            if(checkedCollision.getObstacleObject() == lastUsedDoubleJump) return;
-            lastUsedDoubleJump = checkedCollision.getObstacleObject();
+            if(checkedCollision.getActionObject() == lastUsedDoubleJump) return;
+            lastUsedDoubleJump = (ObstacleObject) checkedCollision.getActionObject();
         }
 
         this.playerState = PlayerState.Jumping;

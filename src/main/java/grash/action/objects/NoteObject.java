@@ -7,6 +7,8 @@ import grash.level.map.LevelMapThing;
 import grash.level.map.MapNoteType;
 import grash.math.Vec2;
 
+import java.util.List;
+
 public class NoteObject extends ActionObject {
 
     public NoteObject(GameController game, Vec2 spawnPos, LevelMapNote myLevelMapNote) {
@@ -15,6 +17,11 @@ public class NoteObject extends ActionObject {
 
     public double getHitTimeSeconds() { return this.levelMapThing.getTimeStart(); }
     public LevelMapNote getLevelMapNote() { return (LevelMapNote) this.levelMapThing; }
+
+    public void tapTapped() {
+
+
+    }
 
     @Override
     protected Sprite setupSprite() {

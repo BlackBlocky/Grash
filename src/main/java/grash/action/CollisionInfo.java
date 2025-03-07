@@ -1,23 +1,23 @@
 package grash.action;
 
-import grash.action.objects.ObstacleObject;
+import grash.action.objects.ActionObject;
 
 public class CollisionInfo {
     public final static CollisionInfo noneCollision = new CollisionInfo(CollisionType.None, null);
 
     private final CollisionType collisionType;
-    private final ObstacleObject obstacleObject;
+    private final ActionObject actionObject;
 
-    public CollisionInfo(CollisionType collisionType, ObstacleObject obstacleObject) {
+    public CollisionInfo(CollisionType collisionType, ActionObject obstacleObject) {
         this.collisionType = collisionType;
-        this.obstacleObject = obstacleObject;
+        this.actionObject = obstacleObject;
     }
 
     public CollisionType getCollisionType() {
         return collisionType;
     }
 
-    public ObstacleObject getObstacleObject() {
-        return obstacleObject;
+    public ActionObject getActionObject() {
+        return actionObject;
     }
 }

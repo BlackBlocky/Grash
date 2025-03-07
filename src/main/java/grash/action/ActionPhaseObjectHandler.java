@@ -65,6 +65,10 @@ public final class ActionPhaseObjectHandler {
                 + controller.getActionPhaseValues().getPlayerObject().getPosition().x;
     }
 
+    /**
+     * Important Note: The Note will be added at the end of the NotesList,
+     * because the other notes are in the queue to be hit.
+     */
     private void addNoteObjectToAction(LevelMapNote levelMapNote, double secondsElapsedSinceStart) {
         ActionPhaseValues actionPhaseValues = controller.getActionPhaseValues();
 

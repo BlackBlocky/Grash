@@ -3,5 +3,9 @@ package grash.action;
 public enum CollisionType {
     None,
     Deadly,
-    DoubleJump
+    DoubleJump,
+    PerfectNote,
+    GoodNote,
+    OkNote,
+    FailedNote
 }
