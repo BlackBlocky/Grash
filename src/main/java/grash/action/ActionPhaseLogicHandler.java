@@ -158,6 +158,8 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
         CollisionInfo noteCollisionInfo = checkIfPlayerIsCollidingWithNote(controller.getActionPhaseValues().getPlayerObject(),
                 controller.getActionPhaseValues().getCurrentNoteObjects());
 
+        if(noteCollisionInfo == CollisionInfo.noneCollision) return;
+
         final HashMap<CollisionType, NoteAccuracy> collisionTypeToNoteAccuracy = new HashMap<>(Map.ofEntries(
                 Map.entry(CollisionType.PerfectNote, NoteAccuracy.Perfect),
                 Map.entry(CollisionType.GoodNote, NoteAccuracy.Good),

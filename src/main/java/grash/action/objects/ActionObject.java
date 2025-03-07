@@ -5,6 +5,10 @@ import grash.core.GameController;
 import grash.level.map.LevelMapThing;
 import grash.math.Vec2;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public abstract class ActionObject {
     private Vec2 position;
     private Vec2 scale;
@@ -35,6 +39,14 @@ public abstract class ActionObject {
      * This Method is supposed to do Object Specific stuff, like calculating the end Pos for a Rope Object
      */
     protected abstract void setupObject();
+
+    public void destroyObject(long delayMillis) {
+        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+        scheduler.schedule(() -> {
+            game.getActionPhaseController().destroyObject(this);
+        }, delayMillis, TimeUnit.MILLISECONDS);
+        scheduler.shutdown();
+    }
 
     public Vec2 getPosition() {
         return position;

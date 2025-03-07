@@ -66,7 +66,7 @@ public class LevelSelectorMenuController extends ScreenController {
             private final double nanosecondsInSecond = 1000000000;
             private final double xSpeed = 100;
             private final double ySpeed = 250;
-            private final double yWiggleStrength = 0.2;
+            private final double yWiggleStrength = 0.08;
 
             @Override
             public void handle(long l) {

@@ -1,5 +1,7 @@
 package grash.action;
 
+import grash.action.objects.ActionObject;
+import grash.action.objects.NoteObject;
 import grash.action.objects.ObstacleObject;
 import grash.action.renderer.ActionPhaseRenderer;
 import grash.core.GameController;
@@ -155,6 +157,16 @@ public final class ActionPhaseController implements GrashEventListener {
         }
     }
 
+    public void destroyObject(ActionObject actionObject) {
+        if(actionPhaseState != ActionPhaseState.Active) return;
+        if(actionPhaseValues == null) return;
+
+        if(actionObject instanceof ObstacleObject)
+            actionPhaseValues.getCurrentObstacleObjects().remove((ObstacleObject) actionObject);
+        else
+            actionPhaseValues.getCurrentNoteObjects().remove((NoteObject) actionObject);
+    }
+
     /**
      * Simply the Update Method for the ActionPhase
      */
@@ -177,7 +189,7 @@ public final class ActionPhaseController implements GrashEventListener {
 
         double secondsElapsedSinceStart = calculateTimeSinceStartInSeconds();
         double deltaTime = event.getDeltaTime();
-        //(System.out.println(1.0 / deltaTime);
+        //System.out.println(1.0 / deltaTime);
 //        if(mapSong != null) {
 //            secondsElapsedSinceStart = mapSong.getCurrentTime().toMillis() / 1000.0;
 //            deltaTime = secondsElapsedSinceStart - lastSongCurrentTimeSeconds;
@@ -312,8 +324,18 @@ public final class ActionPhaseController implements GrashEventListener {
     }
 
     private void onEvent_NoteHit(GrashEvent_NoteHit event) {
-        System.out.println("Points: " + NOTE_HIT_TO_POINTS_MAP.get(event.getNoteAccuracy()) + ", Acc: " +
-                NOTE_HIT_TO_ACCURACY_MAP.get(event.getNoteAccuracy()));
+        System.out.println(event.getNoteAccuracy());
+        double scoreAdd = NOTE_HIT_TO_POINTS_MAP.get(event.getNoteAccuracy());
+        double accuracyAdd = NOTE_HIT_TO_ACCURACY_MAP.get(event.getNoteAccuracy());
+
+        actionPhaseValues.countNoteHit(event.getNoteAccuracy());
+        actionPhaseValues.addScore(scoreAdd);
+        actionPhaseValues.addAccuracy(accuracyAdd);
+
+        event.getNoteObject().doTapAnimation();
+        event.getNoteObject().destroyObject(200);
+
+        System.out.println(actionPhaseValues.getScore() + " - " + actionPhaseValues.calculateCurrentAccuracy() + " - " + actionPhaseValues.getTotalHitNotes());
     }
 
     /**

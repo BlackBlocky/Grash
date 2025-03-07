@@ -18,8 +18,7 @@ public class NoteObject extends ActionObject {
     public double getHitTimeSeconds() { return this.levelMapThing.getTimeStart(); }
     public LevelMapNote getLevelMapNote() { return (LevelMapNote) this.levelMapThing; }
 
-    public void tapTapped() {
-
+    public void doTapAnimation() {
 
     }
 

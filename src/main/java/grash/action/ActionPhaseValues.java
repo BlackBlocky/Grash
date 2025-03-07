@@ -16,8 +16,15 @@ public final class ActionPhaseValues {
 
     private double timeProgress;
     private double score;
+    private double accuracy;
     private double countdownLeft;
     private int currentTimelineIndex;
+
+    private int perfectNoteHits;
+    private int goodNoteHits;
+    private int okNoteHits;
+    private int failedNoteHits;
+    private int totalHitNotes;
 
     private final List<ObstacleObject> currentObstacleObjects;
     private final List<NoteObject> currentNoteObjects;
@@ -34,8 +41,15 @@ public final class ActionPhaseValues {
         this.actionPhaseMap = actionPhaseMap;
         this.timeProgress = 0.0;
         this.score = 0.0;
+        this.accuracy = 0.0;
         this.countdownLeft = countdownLeft;
         this.currentTimelineIndex = -1;
+
+        this.perfectNoteHits = 0;
+        this.goodNoteHits = 0;
+        this.okNoteHits = 0;
+        this.failedNoteHits = 0;
+        this.totalHitNotes = 0;
 
         this.currentObstacleObjects = new ArrayList<>();
         this.currentNoteObjects = new ArrayList<>();
@@ -54,6 +68,11 @@ public final class ActionPhaseValues {
     public void addScore(double value) {
         this.score += value;
     }
+
+    public void addAccuracy(double value) {
+        this.accuracy += value;
+    }
+
     public void addTimeProgress(double value) {
         this.timeProgress += value;
     }
@@ -113,5 +132,30 @@ public final class ActionPhaseValues {
 
     public void modifyCustomTime(double amount) {
         this.customTime += amount;
+    }
+
+    public void countNoteHit(NoteAccuracy noteAccuracy) {
+        switch (noteAccuracy) {
+            case Perfect -> perfectNoteHits++;
+            case Good -> goodNoteHits++;
+            case Ok -> okNoteHits++;
+            case Failed -> failedNoteHits++;
+        }
+
+        totalHitNotes++;
+    }
+
+    public int getPerfectNoteHits() { return perfectNoteHits; }
+    public int getGoodNoteHits() { return goodNoteHits; }
+    public int getOkNoteHits() { return okNoteHits; }
+    public int getFailedNoteHits() { return failedNoteHits; }
+
+    public int getTotalHitNotes() {
+        return totalHitNotes;
+    }
+
+    public double calculateCurrentAccuracy() {
+        // This is an easier "on the fly" calculation, at the end a more precise calculation is done.
+        return accuracy / (double)totalHitNotes;
     }
 }
