@@ -101,10 +101,13 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
         *  So that means that we only need to check the Note at index 0.
         *  (We check somewhere else if the Note was missed)*/
 
-        NoteObject checkedNote = allNoteObjects.get(0);
+        NoteObject checkedNote = getNextNotTappedNote(allNoteObjects);
+        if(checkedNote == null) return CollisionInfo.noneCollision;
         double distanceToPlayerSeconds = (checkedNote.getPosition().x - player.getPosition().x) /
                 controller.getActionPhaseValues().getActionPhaseMap().getSpeed();
         if(distanceToPlayerSeconds >= ActionPhaseController.IGNORE_NOTE_SECONDS_OFF) return CollisionInfo.noneCollision;
+
+        checkedNote.setTapped(true);
 
         distanceToPlayerSeconds = Math.abs(distanceToPlayerSeconds);
         if(distanceToPlayerSeconds <= ActionPhaseController.PERFECT_NOTE_SECONDS_OFF)
@@ -118,6 +121,15 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
             // It can also happen that the note is just at failed to the left,
             // but its still failed so... yeah.
             return new CollisionInfo(CollisionType.FailedNote, checkedNote);
+    }
+    private NoteObject getNextNotTappedNote(List<NoteObject> allNoteObjects) {
+        // Looping from first to last "in queue"
+        for(NoteObject noteObject : allNoteObjects) {
+            if(!noteObject.isTapped()) return noteObject;
+        }
+
+        // No available notes are left
+        return null;
     }
 
     /**

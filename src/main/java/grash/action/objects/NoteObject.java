@@ -11,17 +11,21 @@ public class NoteObject extends ActionObject {
 
     private String scoreText; // Only contains a value if it needs to display a value
     private NoteAccuracy tappedNoteHitAccuracy; // Its null until the note is tapped
+    private boolean isTapped;
 
     public NoteObject(GameController game, Vec2 spawnPos, LevelMapNote myLevelMapNote) {
         super(game, spawnPos, Vec2.ONE(), Vec2.ZERO(), myLevelMapNote, null);
         scoreText = "";
         tappedNoteHitAccuracy = null;
+        isTapped = false;
     }
 
     public double getHitTimeSeconds() { return this.levelMapThing.getTimeStart(); }
     public LevelMapNote getLevelMapNote() { return (LevelMapNote) this.levelMapThing; }
     public String getScoreText() { return this.scoreText; }
     public NoteAccuracy getTappedNoteHitAccuracy() { return tappedNoteHitAccuracy; }
+    public boolean isTapped() { return isTapped; }
+    public void setTapped(boolean tapped) { isTapped = tapped; }
 
     public void doTapAnimation(NoteAccuracy tappedAccuracy) {
         this.tappedNoteHitAccuracy = tappedAccuracy;
