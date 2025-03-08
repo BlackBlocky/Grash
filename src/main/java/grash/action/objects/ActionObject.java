@@ -18,7 +18,7 @@ public abstract class ActionObject {
 
     protected final LevelMapThing levelMapThing;
 
-    private final Sprite sprite;
+    private Sprite sprite;
 
     public ActionObject(GameController gameController, Vec2 startPos, Vec2 scale, Vec2 drawOffset,
                         LevelMapThing levelMapThing, Hitbox hitbox) {
@@ -34,6 +34,10 @@ public abstract class ActionObject {
     }
 
     protected abstract Sprite setupSprite();
+
+    public void setSprite(Sprite newSprite) {
+        this.sprite = newSprite;
+    }
 
     /**
      * This Method is supposed to do Object Specific stuff, like calculating the end Pos for a Rope Object

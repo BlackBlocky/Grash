@@ -21,6 +21,7 @@ import grash.level.LevelMapTimelineStack;
 import grash.level.map.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,6 +69,11 @@ public final class ActionPhaseController implements GrashEventListener {
     public static final double OK_ACCURACY = 1.0/6.0;
     public static final double FAILED_ACCURACY = 0.0;
 
+    public static final Color PERFECT_COLOR = Color.CYAN;
+    public static final Color GOOD_COLOR = Color.LIMEGREEN;
+    public static final Color OK_COLOR = Color.ORANGE;
+    public static final Color FAILED_COLOR = Color.RED;
+
     public static final HashMap<NoteAccuracy, Double> NOTE_HIT_TO_POINTS_MAP = new HashMap<>(Map.ofEntries(
             Map.entry(NoteAccuracy.Perfect, PERFECT_POINTS),
             Map.entry(NoteAccuracy.Good,    GOOD_POINTS),
@@ -79,6 +85,12 @@ public final class ActionPhaseController implements GrashEventListener {
             Map.entry(NoteAccuracy.Good,    GOOD_ACCURACY),
             Map.entry(NoteAccuracy.Ok,      OK_ACCURACY),
             Map.entry(NoteAccuracy.Failed,  FAILED_ACCURACY)
+    ));
+    public static final HashMap<NoteAccuracy, Color> NOTE_HIT_TO_COLOR_MAP = new HashMap<>(Map.ofEntries(
+            Map.entry(NoteAccuracy.Perfect, PERFECT_COLOR),
+            Map.entry(NoteAccuracy.Good,    GOOD_COLOR),
+            Map.entry(NoteAccuracy.Ok,      OK_COLOR),
+            Map.entry(NoteAccuracy.Failed,  FAILED_COLOR)
     ));
 
     private boolean useCustomTime;
@@ -332,7 +344,7 @@ public final class ActionPhaseController implements GrashEventListener {
         actionPhaseValues.addScore(scoreAdd);
         actionPhaseValues.addAccuracy(accuracyAdd);
 
-        event.getNoteObject().doTapAnimation();
+        event.getNoteObject().doTapAnimation(event.getNoteAccuracy());
         event.getNoteObject().destroyObject(200);
 
         System.out.println(actionPhaseValues.getScore() + " - " + actionPhaseValues.calculateCurrentAccuracy() + " - " + actionPhaseValues.getTotalHitNotes());

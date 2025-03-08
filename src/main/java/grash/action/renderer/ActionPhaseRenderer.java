@@ -18,6 +18,9 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import java.util.List;
 
@@ -28,6 +31,8 @@ public final class ActionPhaseRenderer implements GrashEventListener {
     private static final double PIXEL_GRID_SIZE = 66;
     private GameController game;
     private Canvas gameCanvas;
+
+    private Font mainFont;
 
     private RendererEffectData colorEffectData;
     private RendererEffectData rotationEffectData;
@@ -52,6 +57,9 @@ public final class ActionPhaseRenderer implements GrashEventListener {
 
         this.debug_renderGrid = false;
         this.debug_renderHitbox = false;
+
+        this.mainFont =
+                Font.loadFont("file:" + Main.WORKING_DIRECTORY + "\\assets\\fonts\\VT323\\VT323-Regular.ttf", 24);
 
         colorEffectData = new RendererEffectData(startColorEffect);
         rotationEffectData = new RendererEffectData(startRotationEffect);
@@ -271,11 +279,44 @@ public final class ActionPhaseRenderer implements GrashEventListener {
                 PIXEL_GRID_SIZE * scale.x, PIXEL_GRID_SIZE * scale.y);
     }
 
+    /**
+     * This Method will draw a Text on the GameCanvas.
+     * @param drawCentered if it is true, the text will be drawn centered at gridPos, otherwise it will we be
+     *                     drawn starting at the top left.
+     */
+    private void drawText(GraphicsContext g, String textValue, Font font, double fontSize, Color color,
+                          Vec2 gridPos, boolean drawCentered) {
+        Font drawingFont = new Font(font.getName(), fontSize);
+        Vec2 drawPosPixels = calculateGridPixelsPos(gridPos);
+
+        // Calculate the centered offset
+        Text text = new Text(textValue);
+        text.setFont(drawingFont);
+        // times 0.6 cause the text is too high normally, I guess
+        double textHeightPixels = text.getBoundsInLocal().getHeight() * 0.6;
+        drawPosPixels.y += (drawCentered) ? textHeightPixels / 2.0 : textHeightPixels;
+
+        g.setFill(color);
+        g.setGlobalAlpha(1.0);
+
+        g.setFont(drawingFont);
+        g.setTextAlign((drawCentered) ? TextAlignment.CENTER : TextAlignment.LEFT);
+        g.fillText(textValue, drawPosPixels.x, drawPosPixels.y);
+    }
+
     private void drawAllNoteObjects(GraphicsContext g, List<NoteObject> allNoteObjects) {
         for(NoteObject noteObject : allNoteObjects) {
             switch (noteObject.getLevelMapNote().getMapNoteType()) {
                 case TapNote:
                     drawSprite(g, noteObject.getSprite(), noteObject.getPosition(), noteObject.getScale());
+                    // Draw the Score if the scoreText isn't empty. (Aka the Tap anim)
+                    if(!noteObject.getScoreText().isEmpty()) {
+                        drawText(g, noteObject.getScoreText(), mainFont, 50,
+                                ActionPhaseController.NOTE_HIT_TO_COLOR_MAP.get(noteObject.getTappedNoteHitAccuracy()),
+                                noteObject.getPosition().add(new Vec2(0.5, 0)), // Moving text in the middle
+                                true);
+                    }
+//                    drawText(g, "HelloWorld", mainFont, 50, Color.RED, Vec2.ONE().multiply(6),  false);
                     break;
                 case GrowNote:
                     break;

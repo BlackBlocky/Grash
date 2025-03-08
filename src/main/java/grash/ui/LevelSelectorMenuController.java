@@ -61,6 +61,8 @@ public class LevelSelectorMenuController extends ScreenController {
             stars[i] = newStar;
         }
 
+        // TODO Not use a Animation Timer, use the MainLoop for that (GrashEvent_Tick),
+        //  and create something like a Background Profile
         currentBackgroundAnimationTimer = new AnimationTimer() {
             private long lastTick = 0;
             private final double nanosecondsInSecond = 1000000000;

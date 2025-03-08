@@ -1,25 +1,32 @@
 package grash.action.objects;
 
+import grash.action.ActionPhaseController;
+import grash.action.NoteAccuracy;
 import grash.assets.Sprite;
 import grash.core.GameController;
 import grash.level.map.LevelMapNote;
-import grash.level.map.LevelMapThing;
-import grash.level.map.MapNoteType;
 import grash.math.Vec2;
-
-import java.util.List;
 
 public class NoteObject extends ActionObject {
 
+    private String scoreText; // Only contains a value if it needs to display a value
+    private NoteAccuracy tappedNoteHitAccuracy; // Its null until the note is tapped
+
     public NoteObject(GameController game, Vec2 spawnPos, LevelMapNote myLevelMapNote) {
         super(game, spawnPos, Vec2.ONE(), Vec2.ZERO(), myLevelMapNote, null);
+        scoreText = "";
+        tappedNoteHitAccuracy = null;
     }
 
     public double getHitTimeSeconds() { return this.levelMapThing.getTimeStart(); }
     public LevelMapNote getLevelMapNote() { return (LevelMapNote) this.levelMapThing; }
+    public String getScoreText() { return this.scoreText; }
+    public NoteAccuracy getTappedNoteHitAccuracy() { return tappedNoteHitAccuracy; }
 
-    public void doTapAnimation() {
-
+    public void doTapAnimation(NoteAccuracy tappedAccuracy) {
+        this.tappedNoteHitAccuracy = tappedAccuracy;
+        this.scoreText = String.valueOf(ActionPhaseController.NOTE_HIT_TO_POINTS_MAP.get(tappedAccuracy).intValue());
+        setSprite(game.getResourceLoader().getSprite("NoteHitSuccess"));
     }
 
     @Override
