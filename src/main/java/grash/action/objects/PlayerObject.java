@@ -84,6 +84,7 @@ public final class PlayerObject {
     public Sprite getSprite() { return this.sprite; }
     public Hitbox getHitbox() { return this.hitbox; }
     public PlayerState getPlayerState() { return this.playerState; }
+    public boolean isDown() { return this.isDown; }
 
     public void setHeightChangeMultiplier(double heightChangeMultiplier) {
         this.heightChangeMultiplier = heightChangeMultiplier; }

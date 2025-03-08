@@ -82,15 +82,26 @@ public final class ActionPhaseObjectHandler {
 
     private void addNoteObjectToAction_TapNote(ActionPhaseValues actionPhaseValues,
                                                LevelMapNote levelMapNote, double secondsElapsedSinceStart) {
+        NoteTapInput noteTapInput = null;
         Vec2 spawnPos = Vec2.ZERO();
+
         spawnPos.x = calculateObjectXStartPos(levelMapNote.getTimeStart(), secondsElapsedSinceStart);
         switch (levelMapNote.getYType()) {
-            case 0: spawnPos.y = ActionPhaseController.Y_NOTE_DOWN; break;
-            case 1: spawnPos.y = ActionPhaseController.Y_MIDDLE; break;
-            case 2: spawnPos.y = ActionPhaseController.Y_NOTE_UP; break;
+            case 0 -> {
+                spawnPos.y = ActionPhaseController.Y_NOTE_DOWN;
+                noteTapInput = NoteTapInput.Down;
+            }
+            case 1 -> {
+                spawnPos.y = ActionPhaseController.Y_MIDDLE;
+                noteTapInput = NoteTapInput.UpAndDown;
+            }
+            case 2 -> {
+                spawnPos.y = ActionPhaseController.Y_NOTE_UP;
+                noteTapInput = NoteTapInput.Up;
+            }
         }
 
-        actionPhaseValues.getCurrentNoteObjects().add(new NoteObject(game, spawnPos, levelMapNote));
+        actionPhaseValues.getCurrentNoteObjects().add(new NoteObject(game, spawnPos, levelMapNote, noteTapInput));
     }
 
     private void addObstacleObjectToAction(LevelMapElement levelMapElement, double secondsElapsedSinceStart) {

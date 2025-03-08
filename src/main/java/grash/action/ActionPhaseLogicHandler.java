@@ -166,26 +166,44 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
         );
     }
 
-    private void hitNextNote() {
+    private void hitNextNote(NoteTapInput triggerdNoteTapInput, PlayerObject player) {
         CollisionInfo noteCollisionInfo = checkIfPlayerIsCollidingWithNote(controller.getActionPhaseValues().getPlayerObject(),
                 controller.getActionPhaseValues().getCurrentNoteObjects());
 
         if(noteCollisionInfo == CollisionInfo.noneCollision) return;
 
+        // Converting the CollisionType to a usable NoteAccuracy.
         final HashMap<CollisionType, NoteAccuracy> collisionTypeToNoteAccuracy = new HashMap<>(Map.ofEntries(
                 Map.entry(CollisionType.PerfectNote, NoteAccuracy.Perfect),
                 Map.entry(CollisionType.GoodNote, NoteAccuracy.Good),
                 Map.entry(CollisionType.OkNote, NoteAccuracy.Ok),
                 Map.entry(CollisionType.FailedNote, NoteAccuracy.Failed)
         ));
-
         NoteAccuracy noteAccuracy = collisionTypeToNoteAccuracy.get(noteCollisionInfo.getCollisionType());
+
+        // Make sure that the note was hit with the correct Input (ArrayKey), otherwise the hit is failed
+        NoteObject tappedNoteObject = (NoteObject) noteCollisionInfo.getActionObject();
+        boolean areTapsInputsMatching = checkIfTapInputsMatch(tappedNoteObject.getRequiredTapInput(),
+                triggerdNoteTapInput, player.isDown());
+        if(!areTapsInputsMatching) noteAccuracy = NoteAccuracy.Failed;
+
         game.getEventBus().triggerEvent(
                 new GrashEvent_NoteHit(noteAccuracy,(NoteObject) noteCollisionInfo.getActionObject()));
     }
 
+    private boolean checkIfTapInputsMatch(NoteTapInput noteRequiredInput, NoteTapInput pressedInput,
+                                       boolean isPlayerDown) {
+        if(noteRequiredInput == NoteTapInput.UpAndDown) {
+            if(isPlayerDown) return pressedInput == NoteTapInput.Up;
+            else return pressedInput == NoteTapInput.Down;
+        }
+
+        return noteRequiredInput == pressedInput;
+    }
+
     private void onEvent_KeyDown(GrashEvent_KeyDown event) {
         if(controller.getActionPhaseState() != ActionPhaseState.Active) return;
+        ActionPhaseValues actionPhaseValues = controller.getActionPhaseValues();
 
         // Custom Time controls (only active when custom time is used)
         if(controller.getUseCustomTime()) {
@@ -214,7 +232,10 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
 
         // Note hits
         if(event.getKeyCode() == KeyCode.UP) {
-            hitNextNote();
+            hitNextNote(NoteTapInput.Up, actionPhaseValues.getPlayerObject());
+        }
+        else if(event.getKeyCode() == KeyCode.DOWN) {
+            hitNextNote(NoteTapInput.Down, actionPhaseValues.getPlayerObject());
         }
     }
 

@@ -177,11 +177,15 @@ public final class ActionPhaseController implements GrashEventListener {
     private void processDestroyQueue(HashSet<ActionObject> queue) {
         if(actionPhaseValues == null) return;
 
-        for(ActionObject actionObject : queue) {
-            if(actionObject instanceof ObstacleObject)
-                actionPhaseValues.getCurrentObstacleObjects().remove((ObstacleObject) actionObject);
+        // Solving this with a while loop because otherwise it could happen that during the foreach a new element
+        //  is being added to the destroyQueue
+        while(!queue.isEmpty()) {
+            ActionObject next = queue.iterator().next();
+            if(next instanceof ObstacleObject)
+                actionPhaseValues.getCurrentObstacleObjects().remove((ObstacleObject) next);
             else
-                actionPhaseValues.getCurrentNoteObjects().remove((NoteObject) actionObject);
+                actionPhaseValues.getCurrentNoteObjects().remove((NoteObject) next);
+            queue.remove(next);
         }
     }
 
