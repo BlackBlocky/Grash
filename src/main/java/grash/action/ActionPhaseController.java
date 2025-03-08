@@ -19,9 +19,11 @@ import grash.event.events.scene.GrashEvent_SwitchScene;
 import grash.level.LevelMapTimeline;
 import grash.level.LevelMapTimelineStack;
 import grash.level.map.*;
+import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -45,6 +47,9 @@ public final class ActionPhaseController implements GrashEventListener {
     private MediaPlayer mapSong;
     private double lastSongCurrentTimeSeconds;
     private MediaPlayer.Status lastSongStatus;
+
+    private Label guiScoreText;
+    private Label guiAccuracyText;
 
     public static final double PRE_GENERATED_DISTANCE = 25;
     public static final double Y_UP = 4;
@@ -266,12 +271,16 @@ public final class ActionPhaseController implements GrashEventListener {
     /**
      * This method setups everything so that the Level can be played.
      * The setupNewActionPhase() method was already called when this is going to be called.
+     * This Method is called, after the Scene was switched.
+     * So the Window is already loaded.
      */
     private void onEvent_StartActionPhase(GrashEvent_StartActionPhase event) {
         if(game.getGameState() != GameState.GameActionPhase) {
             System.out.println("ERROR: Tried to render something without being in the GameActionPhase!!");
             return;
         }
+
+        setupGUI();
 
         actionPhaseState = ActionPhaseState.Countdown;
         actionPhaseValues.setNanoTimeAtStart(System.nanoTime()); // TODO This should not be here, but yeah
@@ -361,7 +370,21 @@ public final class ActionPhaseController implements GrashEventListener {
         event.getNoteObject().doTapAnimation(event.getNoteAccuracy());
         event.getNoteObject().destroyObject(200);
 
+        updateGUI();
         System.out.println(actionPhaseValues.getScore() + " - " + actionPhaseValues.calculateCurrentAccuracy() + " - " + actionPhaseValues.getTotalHitNotes());
+    }
+
+    private void setupGUI() {
+        guiScoreText = (Label) game.getPrimaryStage().getScene().lookup("#scoreText");
+        guiAccuracyText = (Label) game.getPrimaryStage().getScene().lookup("#accuracyText");
+    }
+
+    private void updateGUI() {
+        double displayedScore = actionPhaseValues.getScore();
+        double displayedAccuracy = actionPhaseValues.calculateCurrentAccuracy() * 100;
+
+        guiScoreText.setText(String.format("%09.0f", displayedScore));
+        guiAccuracyText.setText(String.format("%03.2f", displayedAccuracy) + "%");
     }
 
     /**
