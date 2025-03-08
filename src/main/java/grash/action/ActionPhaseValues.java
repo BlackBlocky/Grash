@@ -1,14 +1,12 @@
 package grash.action;
 
-import grash.action.objects.Hitbox;
-import grash.action.objects.NoteObject;
-import grash.action.objects.ObstacleObject;
-import grash.action.objects.PlayerObject;
+import grash.action.objects.*;
 import grash.core.GameController;
 import grash.level.map.LevelMap;
 import grash.math.Vec2;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 public final class ActionPhaseValues {
@@ -29,6 +27,8 @@ public final class ActionPhaseValues {
     private final List<ObstacleObject> currentObstacleObjects;
     private final List<NoteObject> currentNoteObjects;
     private final PlayerObject playerObject;
+
+    private final HashSet<ActionObject> destroyQueue;
 
     /**
      * This is the measured time AFTER the Countdown is done!
@@ -61,6 +61,8 @@ public final class ActionPhaseValues {
         this.playerObject = new PlayerObject(gameController,
                 new Vec2(ActionPhaseController.PLAYER_X, ActionPhaseController.Y_DOWN),
                 playerHitbox, playerSneakHitboxDown, playerSneakHitboxUp);
+
+        this.destroyQueue = new HashSet<ActionObject>();
 
         this.customTime = 0.0;
     }
@@ -121,6 +123,8 @@ public final class ActionPhaseValues {
     public PlayerObject getPlayerObject() {
         return playerObject;
     }
+
+    public HashSet<ActionObject> getDestroyQueue() { return this.destroyQueue; }
 
     public double getCustomTime() {
         return customTime;

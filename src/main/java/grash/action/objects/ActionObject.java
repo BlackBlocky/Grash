@@ -47,7 +47,7 @@ public abstract class ActionObject {
     public void destroyObject(long delayMillis) {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         scheduler.schedule(() -> {
-            game.getActionPhaseController().destroyObject(this);
+            game.getActionPhaseController().addToDestroyQueue(this);
         }, delayMillis, TimeUnit.MILLISECONDS);
         scheduler.shutdown();
     }

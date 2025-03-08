@@ -24,6 +24,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.locks.LockSupport;
 
@@ -169,14 +170,19 @@ public final class ActionPhaseController implements GrashEventListener {
         }
     }
 
-    public void destroyObject(ActionObject actionObject) {
-        if(actionPhaseState != ActionPhaseState.Active) return;
+    public void addToDestroyQueue(ActionObject actionObject) {
+        actionPhaseValues.getDestroyQueue().add(actionObject);
+    }
+
+    private void processDestroyQueue(HashSet<ActionObject> queue) {
         if(actionPhaseValues == null) return;
 
-        if(actionObject instanceof ObstacleObject)
-            actionPhaseValues.getCurrentObstacleObjects().remove((ObstacleObject) actionObject);
-        else
-            actionPhaseValues.getCurrentNoteObjects().remove((NoteObject) actionObject);
+        for(ActionObject actionObject : queue) {
+            if(actionObject instanceof ObstacleObject)
+                actionPhaseValues.getCurrentObstacleObjects().remove((ObstacleObject) actionObject);
+            else
+                actionPhaseValues.getCurrentNoteObjects().remove((NoteObject) actionObject);
+        }
     }
 
     /**
@@ -215,6 +221,10 @@ public final class ActionPhaseController implements GrashEventListener {
 
         //System.out.println(secondsElapsedSinceStart + " - " + mapSong.getCurrentTime().toSeconds());
 
+        // Doing the destroyQueue first, so that all Objects are removed that are supposed to be removed in this frame.
+        processDestroyQueue(actionPhaseValues.getDestroyQueue());
+
+        // Manipulate the Time when useCustomTime is true. (Going backwards and forwards)
         if(useCustomTime) {
             actionPhaseLogicHandler.updateCustomTime(event.getDeltaTime());
             secondsElapsedSinceStart = actionPhaseValues.getCustomTime();
