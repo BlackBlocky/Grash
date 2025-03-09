@@ -8,8 +8,8 @@
 [mapversion]{(1.0)}
 [speed]{(16.0)}
 [growspeed]{(5)}
-[startcolor]{(50, 100, 50)}
-[startfovscale]{(0.5)}
+[startcolor]{(228, 178, 14)}
+[startfovscale]{(1.0)}
 [startrotation]{(0.0)}
 
 [tapnote]{
@@ -64,4 +64,7 @@
     (0.5, 20, 20.4)(0.5, 22, 22.4)
 }
 
-[DackelDanielxEvergreen]
+[color]{
+    (52, 196, 218, 2)(228, 178, 14, 4)
+
+}
