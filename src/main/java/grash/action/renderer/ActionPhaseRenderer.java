@@ -308,7 +308,8 @@ public final class ActionPhaseRenderer implements GrashEventListener {
         for(NoteObject noteObject : allNoteObjects) {
             switch (noteObject.getLevelMapNote().getMapNoteType()) {
                 case TapNote:
-                    drawSprite(g, noteObject.getSprite(), noteObject.getPosition(), noteObject.getScale());
+                    drawSprite(g, noteObject.getSprite(), // Adding a 0.5 so that you hit it in the middle
+                            noteObject.getPosition().add(new Vec2(-0.5, 0)), noteObject.getScale());
                     // Draw the Score if the scoreText isn't empty. (Aka the Tap anim)
                     if(!noteObject.getScoreText().isEmpty()) {
                         drawText(g, noteObject.getScoreText(), mainFont, 50,
