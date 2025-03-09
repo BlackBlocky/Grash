@@ -2,16 +2,20 @@
 
 [mapname]{(Showcase)}
 [difficulty]{(Easy)}
-[mapauthor]{(Dev)}
-[songname]{(Super_Mario_Bros._Theme_Remix)}
-[songauthor]{(ApproachingNirvana)}
-[mapversion]{(Version_1)}
-[speed]{(8.0)}
+[mapauthor]{(BlackBlocky)}
+[songname]{(Showcase_Beat)}
+[songauthor]{(BlackBlocky)}
+[mapversion]{(1.0)}
+[speed]{(12.0)}
 [growspeed]{(5)}
 [startcolor]{(50, 50, 50)}
 [startfovscale]{(1.0)}
 [startrotation]{(0.0)}
 
-[rope]{(0.5, 2.0, 5.0)}
-[spike]{(false, 6, 6)(true, 7, 7)}
-[wall]{(false, 8, 8)(true, 9, 9)}
+[spike]{(false, 1.0, 0)(true, 2.0, 0)}
+[wall]{(false, 3.0)(true, 4.0)}
+[doublejump]{(0.3, 5)(0.7, 6)(0.5, 7)}
+[rope]{(0.3, 8, 10)}
+[slide]{(false, 11.0, 12.0)(true, 13.0, 14.0)}
+
+[tapnote]{(2, 15)(2, 15.5)(1, 16)(1, 16.5)(0, 17)(0, 17.5)}
