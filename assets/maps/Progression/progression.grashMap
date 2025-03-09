@@ -9,7 +9,7 @@
 [speed]{(16.0)}
 [growspeed]{(5)}
 [startcolor]{(50, 100, 50)}
-[startfovscale]{(1.0)}
+[startfovscale]{(0.5)}
 [startrotation]{(0.0)}
 
 [tapnote]{

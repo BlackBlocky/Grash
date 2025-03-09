@@ -107,8 +107,6 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
                 controller.getActionPhaseValues().getActionPhaseMap().getSpeed();
         if(distanceToPlayerSeconds >= ActionPhaseController.IGNORE_NOTE_SECONDS_OFF) return CollisionInfo.noneCollision;
 
-        checkedNote.setTapped(true);
-
         distanceToPlayerSeconds = Math.abs(distanceToPlayerSeconds);
         if(distanceToPlayerSeconds <= ActionPhaseController.PERFECT_NOTE_SECONDS_OFF)
             return new CollisionInfo(CollisionType.PerfectNote, checkedNote);
@@ -166,6 +164,36 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
         );
     }
 
+    public void destroyUnneededObjects(List<ObstacleObject> allObstacleObjects, List<NoteObject> allNoteObjects,
+                                       PlayerObject player) {
+        for(ObstacleObject obstacleObject : allObstacleObjects) {
+            // Get Highest X (With additional Positions for some Objects)
+            double highestX = obstacleObject.getPosition().x;
+            MapElementType obstacleType = obstacleObject.getLevelMapElement().getMapElementType();
+            if(obstacleType == MapElementType.Rope || obstacleType == MapElementType.Slide)
+                highestX = obstacleObject.getAdditionalPositions()[0].x;
+
+            // Check if it's time to destroy it
+            if(highestX < ActionPhaseController.DESTROY_DISTANCE)
+                controller.addToDestroyQueue(obstacleObject);
+        }
+        for(NoteObject noteObject : allNoteObjects) {
+            if(noteObject.isTapped()) continue;
+
+            // Get Highest X
+            double highestX = noteObject.getPosition().x;
+
+            // Check if the Note is already Failed
+            double distanceToPlayer = highestX - player.getPosition().x;
+            if(distanceToPlayer > 0) continue; // Note is in front of the player
+
+            CollisionInfo noteCollisionInfo = checkIfPlayerIsCollidingWithNote(player, allNoteObjects);
+            if(noteCollisionInfo.getCollisionType() == CollisionType.FailedNote) {
+                hitNextNote(NoteTapInput.none, player);
+            }
+        }
+    }
+
     private void hitNextNote(NoteTapInput triggerdNoteTapInput, PlayerObject player) {
         CollisionInfo noteCollisionInfo = checkIfPlayerIsCollidingWithNote(controller.getActionPhaseValues().getPlayerObject(),
                 controller.getActionPhaseValues().getCurrentNoteObjects());
@@ -187,6 +215,7 @@ public final class ActionPhaseLogicHandler implements GrashEventListener {
                 triggerdNoteTapInput, player.isDown());
         if(!areTapsInputsMatching) noteAccuracy = NoteAccuracy.Failed;
 
+        tappedNoteObject.setTapped(true);
         game.getEventBus().triggerEvent(
                 new GrashEvent_NoteHit(noteAccuracy,(NoteObject) noteCollisionInfo.getActionObject()));
     }

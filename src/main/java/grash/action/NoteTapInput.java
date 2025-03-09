@@ -5,5 +5,6 @@ public enum NoteTapInput {
     Down,
     Left,
     Right,
-    UpAndDown
+    UpAndDown,
+    none // used for failed notes
 }

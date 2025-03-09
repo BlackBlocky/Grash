@@ -52,6 +52,7 @@ public final class ActionPhaseController implements GrashEventListener {
     private Label guiAccuracyText;
 
     public static final double PRE_GENERATED_DISTANCE = 25;
+    public static final double DESTROY_DISTANCE = -3;
     public static final double Y_UP = 4;
     public static final double Y_MIDDLE = 6;
     public static final double Y_DOWN = 8;
@@ -231,6 +232,11 @@ public final class ActionPhaseController implements GrashEventListener {
         //System.out.println(secondsElapsedSinceStart + " - " + mapSong.getCurrentTime().toSeconds());
 
         // Doing the destroyQueue first, so that all Objects are removed that are supposed to be removed in this frame.
+        getActionPhaseLogicHandler().destroyUnneededObjects(
+                actionPhaseValues.getCurrentObstacleObjects(),
+                actionPhaseValues.getCurrentNoteObjects(),
+                actionPhaseValues.getPlayerObject()
+        );
         processDestroyQueue(actionPhaseValues.getDestroyQueue());
 
         // Manipulate the Time when useCustomTime is true. (Going backwards and forwards)
