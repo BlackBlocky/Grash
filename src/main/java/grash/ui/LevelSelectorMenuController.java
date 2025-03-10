@@ -2,6 +2,7 @@ package grash.ui;
 
 import grash.assets.MapMetadata;
 import grash.core.GameController;
+import grash.core.Main;
 import grash.event.events.level.GrashEvent_LoadLevel;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Pos;
@@ -10,10 +11,14 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.*;
 import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 public class LevelSelectorMenuController extends ScreenController {
@@ -21,20 +26,48 @@ public class LevelSelectorMenuController extends ScreenController {
     private final GameController game;
     private AnimationTimer currentBackgroundAnimationTimer;
 
+    private MediaPlayer backgroundMusic;
+
     public LevelSelectorMenuController(GameController gameController) {
         this.game = gameController;
         this.currentBackgroundAnimationTimer = null;
+        this.backgroundMusic = null;
     }
 
     @Override
     public void init() {
         setupBackground();
         generateMapButtons();
+
+        startMusic();
     }
 
     @Override
     public void close() {
         stopBackgroundAnimationIfPossible();
+
+        stopMusic();
+    }
+
+    private void startMusic() {
+        try {
+            File songFile =
+                    new File(Main.WORKING_DIRECTORY + "\\assets\\audio\\music\\MenuBackgroundMusic.mp3");
+            if(!songFile.exists())
+                throw new IOException("Cant find the Background-Music-File inside assets Folder");
+
+            this.backgroundMusic = new MediaPlayer(new Media(songFile.toURI().toString()));
+        } catch (Exception e) {
+            System.out.println("An error happend while loading the Background-Music");
+        }
+        backgroundMusic.setCycleCount(MediaPlayer.INDEFINITE);
+        backgroundMusic.play();
+    }
+
+    private void stopMusic() {
+        backgroundMusic.stop();
+        backgroundMusic.dispose();
+        backgroundMusic = null;
     }
 
     private void stopBackgroundAnimationIfPossible() {
