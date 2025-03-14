@@ -7,4 +7,7 @@ public enum WindowState {
     MainMenu,
     LevelAction,
     LevelSelectorMenu,
+
+    EditorSelector,
+    Editor
 }

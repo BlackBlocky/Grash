@@ -37,6 +37,7 @@ public final class WindowController implements GrashEventListener {
         put(WindowState.WelcomeScreen, "welcomeScreen.fxml");
         put(WindowState.LevelAction, "levelAction.fxml");
         put(WindowState.LevelSelectorMenu, "levelSelectorMenu.fxml");
+        put(WindowState.EditorSelector, "editorSelector.fxml");
     }};
 
     /**

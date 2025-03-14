@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.Button?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      alignment="CENTER" stylesheets="@../css/editorSelectorStyle.css" styleClass="vbox-style" spacing="70">
+    <VBox styleClass="selector-container" alignment="CENTER_LEFT">
+        <Text text="Select a level to Edit" fx:id="titleText" styleClass="title-text" />
+        <VBox styleClass="content-box" maxWidth="900" minWidth="900" maxHeight="600" minHeight="600">
+            <ListView prefHeight="500" prefWidth="500" styleClass="maps-list-view">
+                <Text text="BlackBlocky::Showcase::Showcase_Beat::BlackBlocky::1.0::Easy" styleClass="map-list-text" />
+                <Text text="Some_Person::My_Cool_Map::Cool_Song::Testman_1::Version_1::Normal" styleClass="map-list-text" />
+                <Text text="BlackBlocky::Welcome::Welcome_to_Grash::BlackBlocky::Version_1::Easy" styleClass="map-list-text" />
+                <Text text="Dev::Spikes::no_Song::no_one::final::Easy" styleClass="map-list-text" />
+                <Text text="Test!" styleClass="map-list-text" />
+                <Text text="Test!" styleClass="map-list-text" />
+                <Text text="Test!" styleClass="map-list-text" />
+                <Text text="Test!" styleClass="map-list-text" />
+                <Text text="Test!" styleClass="map-list-text" />
+                <Text text="Test!" styleClass="map-list-text" />
+            </ListView>
+            <HBox translateY="10" spacing="20">
+                <Button text="Go Back" styleClass="default-button"/>
+                <Button text="Edit Selected Level" styleClass="default-button"/>
+                <Button text="Create new Map" styleClass="default-button"/>
+            </HBox>
+        </VBox>
+    </VBox>
+    <VBox styleClass="creator-container" alignment="CENTER_RIGHT">
+        <Text text="Create new Map" styleClass="title-text" />
+        <VBox styleClass="content-box" maxWidth="500" minWidth="500" maxHeight="600" minHeight="600">
+            <VBox spacing="10">
+                <VBox>
+                    <Label text="Map Name:" styleClass="input-label" />
+                    <TextField promptText="Enter Value..." styleClass="input-field" />
+                </VBox>
+                <VBox>
+                    <Label text="Difficulty:" styleClass="input-label" />
+                    <TextField promptText="Enter Value..." styleClass="input-field" />
+                </VBox>
+                <VBox>
+                    <Label text="Map Author:" styleClass="input-label" />
+                    <TextField promptText="Enter Value..." styleClass="input-field" />
+                </VBox>
+                <VBox>
+                    <Label text="Song name:" styleClass="input-label" />
+                    <TextField promptText="Enter Value..." styleClass="input-field" />
+                </VBox>
+                <VBox>
+                    <Label text="Song Author:" styleClass="input-label" />
+                    <TextField promptText="Enter Value..." styleClass="input-field" />
+                </VBox>
+                <VBox>
+                    <Label text="Song BPM:" styleClass="input-label" />
+                    <TextField promptText="Enter Value..." styleClass="input-field" />
+                </VBox>
+                <VBox>
+                    <Label text="Map Speed:" styleClass="input-label" />
+                    <TextField promptText="Enter Value..." styleClass="input-field" />
+                </VBox>
+                <VBox>
+                    <Label text="Grow Speed:" styleClass="input-label" />
+                    <TextField promptText="Enter Value..." styleClass="input-field" />
+                </VBox>
+
+                <Button text="Create Map" styleClass="default-button" translateY="22"/>
+            </VBox>
+        </VBox>
+    </VBox>
+</HBox>

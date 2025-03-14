@@ -1,0 +1,70 @@
+@font-face {
+    font-family: VT323;
+    src: url('../fonts/VT323/VT323-Regular.ttf');
+}
+
+.vbox-style {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #751d8b, #011655);
+    -fx-font-family: "VT323";
+}
+
+.selector-container {
+    -fx-alignment: center;
+}
+
+.creator-container {
+    -fx-alignment: center;
+}
+
+.content-box {
+    -fx-background-color: rgba(0, 0, 0, 0.4);
+    -fx-background-radius: 30px;
+    -fx-padding: 20px;
+}
+
+.title-text {
+    -fx-fill: white;
+    -fx-font-size: 50px;
+}
+
+.default-button {
+    -fx-background-color: #d6693a;
+    -fx-text-fill: white;
+    -fx-font-size: 28px;
+}
+.default-button:hover {
+    -fx-background-color: white;
+    -fx-text-fill: #d6693a;
+}
+
+.maps-list-view {
+    -fx-background-color: transparent;
+    -fx-base: transparent;
+
+    -fx-border-color: #d6693a;
+    -fx-border-width: 3px;
+}
+
+.maps-list-view .scroll-bar:vertical .thumb {
+    -fx-background-color: #d6693a;
+}
+
+.map-list-text {
+    -fx-font-size: 21px;
+    -fx-fill: white;
+}
+
+.input-label {
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+}
+
+.input-field {
+    -fx-font-size: 20px;
+
+    -fx-min-height: 30px;
+    -fx-max-height: 30px;
+
+    -fx-background-color: rgb(70, 70, 70);
+    -fx-text-fill: white;
+}
