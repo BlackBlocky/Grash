@@ -5,10 +5,7 @@ import grash.event.events.core.GrashEvent_InitializationDone;
 import grash.event.events.core.GrashEvent_Initialize;
 import grash.event.events.scene.GrashEvent_SceneSwitched;
 import grash.event.events.scene.GrashEvent_SwitchScene;
-import grash.ui.LevelActionScreenController;
-import grash.ui.LevelSelectorMenuController;
-import grash.ui.ScreenController;
-import grash.ui.WelcomeScreenController;
+import grash.ui.*;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -82,6 +79,7 @@ public final class WindowController implements GrashEventListener {
         fxmlControllerByWindowState.put(WindowState.WelcomeScreen, new WelcomeScreenController(this.game));
         fxmlControllerByWindowState.put(WindowState.LevelAction, new LevelActionScreenController(this.game));
         fxmlControllerByWindowState.put(WindowState.LevelSelectorMenu, new LevelSelectorMenuController(this.game));
+        fxmlControllerByWindowState.put(WindowState.EditorSelector, new EditorSelectorScreenController(this.game));
     }
 
     private void onEvent_InitializeDone(GrashEvent_InitializationDone event) {

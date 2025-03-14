@@ -13,63 +13,54 @@
     <VBox styleClass="selector-container" alignment="CENTER_LEFT">
         <Text text="Select a level to Edit" fx:id="titleText" styleClass="title-text" />
         <VBox styleClass="content-box" maxWidth="900" minWidth="900" maxHeight="600" minHeight="600">
-            <ListView prefHeight="500" prefWidth="500" styleClass="maps-list-view">
-                <Text text="BlackBlocky::Showcase::Showcase_Beat::BlackBlocky::1.0::Easy" styleClass="map-list-text" />
-                <Text text="Some_Person::My_Cool_Map::Cool_Song::Testman_1::Version_1::Normal" styleClass="map-list-text" />
-                <Text text="BlackBlocky::Welcome::Welcome_to_Grash::BlackBlocky::Version_1::Easy" styleClass="map-list-text" />
-                <Text text="Dev::Spikes::no_Song::no_one::final::Easy" styleClass="map-list-text" />
-                <Text text="Test!" styleClass="map-list-text" />
-                <Text text="Test!" styleClass="map-list-text" />
-                <Text text="Test!" styleClass="map-list-text" />
-                <Text text="Test!" styleClass="map-list-text" />
-                <Text text="Test!" styleClass="map-list-text" />
-                <Text text="Test!" styleClass="map-list-text" />
+            <ListView prefHeight="500" prefWidth="500" styleClass="maps-list-view" fx:id="mapsList">
+                <Text text="Some Value" styleClass="map-list-text" />
             </ListView>
             <HBox translateY="10" spacing="20">
-                <Button text="Go Back" styleClass="default-button"/>
-                <Button text="Edit Selected Level" styleClass="default-button"/>
-                <Button text="Create new Map" styleClass="default-button"/>
+                <Button text="Go Back" styleClass="default-button" fx:id="goBackButton"/>
+                <Button text="Edit Selected Level" styleClass="default-button" fx:id="loadSelectedMapButton"/>
+                <Button text="Create new Map" styleClass="default-button" fx:id="openMapCreatorButton"/>
             </HBox>
         </VBox>
     </VBox>
-    <VBox styleClass="creator-container" alignment="CENTER_RIGHT">
+    <VBox styleClass="creator-container" alignment="CENTER_RIGHT" fx:id="newMapPanel">
         <Text text="Create new Map" styleClass="title-text" />
         <VBox styleClass="content-box" maxWidth="500" minWidth="500" maxHeight="600" minHeight="600">
             <VBox spacing="10">
                 <VBox>
                     <Label text="Map Name:" styleClass="input-label" />
-                    <TextField promptText="Enter Value..." styleClass="input-field" />
+                    <TextField promptText="Enter Value..." styleClass="input-field" fx:id="mapNameInput"/>
                 </VBox>
                 <VBox>
                     <Label text="Difficulty:" styleClass="input-label" />
-                    <TextField promptText="Enter Value..." styleClass="input-field" />
+                    <TextField promptText="Enter Value..." styleClass="input-field" fx:id="difficultyInput"/>
                 </VBox>
                 <VBox>
                     <Label text="Map Author:" styleClass="input-label" />
-                    <TextField promptText="Enter Value..." styleClass="input-field" />
+                    <TextField promptText="Enter Value..." styleClass="input-field" fx:id="mapAuthorInput"/>
                 </VBox>
                 <VBox>
                     <Label text="Song name:" styleClass="input-label" />
-                    <TextField promptText="Enter Value..." styleClass="input-field" />
+                    <TextField promptText="Enter Value..." styleClass="input-field" fx:id="songNameInput"/>
                 </VBox>
                 <VBox>
                     <Label text="Song Author:" styleClass="input-label" />
-                    <TextField promptText="Enter Value..." styleClass="input-field" />
+                    <TextField promptText="Enter Value..." styleClass="input-field" fx:id="songAuthorInput"/>
                 </VBox>
                 <VBox>
                     <Label text="Song BPM:" styleClass="input-label" />
-                    <TextField promptText="Enter Value..." styleClass="input-field" />
+                    <TextField promptText="Enter Value..." styleClass="input-field" fx:id="songBpmInput"/>
                 </VBox>
                 <VBox>
                     <Label text="Map Speed:" styleClass="input-label" />
-                    <TextField promptText="Enter Value..." styleClass="input-field" />
+                    <TextField promptText="Enter Value..." styleClass="input-field" fx:id="mapSpeedInput"/>
                 </VBox>
                 <VBox>
                     <Label text="Grow Speed:" styleClass="input-label" />
-                    <TextField promptText="Enter Value..." styleClass="input-field" />
+                    <TextField promptText="Enter Value..." styleClass="input-field" fx:id="growSpeedInput"/>
                 </VBox>
 
-                <Button text="Create Map" styleClass="default-button" translateY="22"/>
+                <Button text="Create Map" styleClass="default-button" translateY="22" fx:id="createNewMapButton"/>
             </VBox>
         </VBox>
     </VBox>
