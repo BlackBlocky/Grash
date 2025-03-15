@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.control.Label?>
+<Pane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      stylesheets="@../css/editorStyle.css" styleClass="vbox-style">
+    <GridPane alignment="BOTTOM_LEFT" hgap="5" vgap="5">
+        <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <Image url="@../sprites/editor/keys/keyA.png"/>
+        </ImageView>
+        <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <Image url="@../sprites/editor/keys/keyD.png"/>
+        </ImageView>
+        <Label text="Scroll Left/Right" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+
+        <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <Image url="@../sprites/editor/keys/keyLeft.png"/>
+        </ImageView>
+        <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Image url="@../sprites/editor/keys/keyRight.png"/>
+        </ImageView>
+        <Label text="Move Left/Right" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+
+        <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="0" GridPane.rowIndex="2">
+            <Image url="@../sprites/editor/keys/keyUp.png"/>
+        </ImageView>
+        <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Image url="@../sprites/editor/keys/keyDown.png"/>
+        </ImageView>
+        <Label text="Move Up/Down" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+
+        <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="0" GridPane.rowIndex="3">
+            <Image url="@../sprites/editor/keys/keySpace.png"/>
+        </ImageView>
+        <Label text="Switch isUp" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+
+        <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="0" GridPane.rowIndex="4">
+            <Image url="@../sprites/editor/keys/keyShift.png"/>
+        </ImageView>
+        <Label text="Switch Sides" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
+
+
+        <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="3" GridPane.rowIndex="0">
+            <Image url="@../sprites/editor/keys/keyDot.png"/>
+        </ImageView>
+        <Label text="Next" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
+
+        <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="3" GridPane.rowIndex="1">
+            <Image url="@../sprites/editor/keys/keyComma.png"/>
+        </ImageView>
+        <Label text="Last" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+
+        <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="3" GridPane.rowIndex="2">
+            <Image url="@../sprites/editor/keys/keyE.png"/>
+        </ImageView>
+        <Label text="Add Obstacle" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
+
+        <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="3" GridPane.rowIndex="3">
+            <Image url="@../sprites/editor/keys/keyR.png"/>
+        </ImageView>
+        <Label text="Add Note" GridPane.columnIndex="4" GridPane.rowIndex="3"/>
+
+        <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="3" GridPane.rowIndex="4">
+            <Image url="@../sprites/editor/keys/keyT.png"/>
+        </ImageView>
+        <Label text="Add Effect" GridPane.columnIndex="4" GridPane.rowIndex="4"/>
+    </GridPane>
+</Pane>
