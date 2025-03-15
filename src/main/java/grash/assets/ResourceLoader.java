@@ -137,7 +137,11 @@ public final class ResourceLoader implements GrashEventListener {
             File grashMapFile = getDotGrashMapFileInMapFolder(mapFolder);
             if(grashMapFile == null) continue;
 
-            loadedMapMetadatas.add(mapLoader.loadMapMetadata(mapFolder.toPath(), grashMapFile.getName()));
+            try {
+                loadedMapMetadatas.add(mapLoader.loadMapMetadata(mapFolder.toPath(), grashMapFile.getName()));
+            } catch (Exception e) {
+                System.out.println("Error on loading the Map: \"" + grashMapFile.getAbsolutePath() + "\"");
+            }
         }
 
         return loadedMapMetadatas.toArray(new MapMetadata[0]);

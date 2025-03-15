@@ -13,6 +13,7 @@ public final class MapMetadata {
     private final String mapVersion;
     private final String songName;
     private final String songAuthor;
+    private final double songBPM;
 
     private final Path folderPath;
     private final String fileName;
@@ -23,13 +24,14 @@ public final class MapMetadata {
     private final Media songMetadata;
 
     public MapMetadata(String mapName, String mapDifficulty, String mapAuthor, String mapVersion,
-                       String songName, String songAuthor, Path folderPath, String fileName) {
+                       String songName, String songAuthor, String songBPM, Path folderPath, String fileName) {
         this.mapName = mapName;
         this.mapDifficulty = mapDifficulty;
         this.mapAuthor = mapAuthor;
         this.mapVersion = mapVersion;
         this.songName = songName;
         this.songAuthor = songAuthor;
+        this.songBPM = Double.parseDouble(songBPM);
         this.folderPath = folderPath;
         this.fileName = fileName;
 
