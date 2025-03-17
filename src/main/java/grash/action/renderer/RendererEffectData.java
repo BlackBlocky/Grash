@@ -12,7 +12,7 @@ public final class RendererEffectData {
         this.currentEffect = startEffect;
         this.nextEffect = startEffect;
 
-        recalculate();
+        if(startEffect != null) recalculate();
     }
 
     public void recalculate() {

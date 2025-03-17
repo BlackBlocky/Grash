@@ -169,7 +169,7 @@ public final class GameController implements GrashEventListener {
                 gameLoop.start();
 
                 getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.EditorSelector));
-                //getEventBus().triggerEvent(new GrashEvent_LoadLevel("BlackBlocky::Showcase::Showcase_Beat::BlackBlocky::1.0::Easy"));
+                getEventBus().triggerEvent(new GrashEvent_LoadLevel("BlackBlocky::Showcase::Showcase_Beat::BlackBlocky::1.0::Easy"));
                 //getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.LevelSelectorMenu));
                 //getEventBus().triggerEvent(new GrashEvent_LoadLevel("Dev::Spikes::no_Song::no_one::final::Easy"));
                 break;
@@ -195,8 +195,8 @@ public final class GameController implements GrashEventListener {
 
         // If we are Selecting a Map to edit, we don't need to generate a Timeline, and we can just hop into the Editor.
         if(gameState == GameState.SelectingEditorMap) {
-            getEventBus().triggerEvent(new GrashEvent_SetupEditor(event.getLevelMap()));
             getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.Editor));
+            getEventBus().triggerEvent(new GrashEvent_SetupEditor(event.getLevelMap()));
         }
         else {
             getEventBus().triggerEvent(new GrashEvent_InitLevel(event.getLevelMap()));
