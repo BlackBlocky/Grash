@@ -11,6 +11,7 @@ import grash.event.events.core.GrashEvent_InitializationDone;
 import grash.event.events.core.GrashEvent_Initialize;
 import grash.event.events.core.GrashEvent_LoadResources;
 import grash.event.events.core.GrashEvent_Tick;
+import grash.event.events.editor.GrashEvent_SetupEditor;
 import grash.event.events.level.GrashEvent_InitLevel;
 import grash.event.events.level.GrashEvent_LevelGoingToStart;
 import grash.event.events.level.GrashEvent_LevelReadyToInit;
@@ -174,13 +175,27 @@ public final class GameController implements GrashEventListener {
                 getEventBus().triggerEvent(new GrashEvent_StartActionPhase());
                 break;
             }
+            case LevelSelectorMenu: {
+                gameState = GameState.LevelMenu;
+                break;
+            }
+            case EditorSelector: {
+                gameState = GameState.SelectingEditorMap;
+            }
         }
     }
 
     private void onEvent_LevelReadyToInit(GrashEvent_LevelReadyToInit event) {
         System.out.println("Level " + event.getLevelMap().getMapMetadata().getMapName() + " is ready!");
         //getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.LevelAction));
-        getEventBus().triggerEvent(new GrashEvent_InitLevel(event.getLevelMap()));
+
+        // If we are Selecting a Map to edit, we don't need to generate a Timeline, and we can just hop into the Editor.
+        if(gameState == GameState.SelectingEditorMap) {
+            getEventBus().triggerEvent(new GrashEvent_SetupEditor(event.getLevelMap()));
+        }
+        else {
+            getEventBus().triggerEvent(new GrashEvent_InitLevel(event.getLevelMap()));
+        }
     }
 
     private void onEvent_LevelGoingToStart(GrashEvent_LevelGoingToStart event) {

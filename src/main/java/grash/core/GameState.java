@@ -8,5 +8,7 @@ public enum GameState {
     LevelMenu,
     StoryMenu,
 
+    SelectingEditorMap,
+
     GameActionPhase,
 }
