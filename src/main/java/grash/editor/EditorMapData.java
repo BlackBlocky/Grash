@@ -43,22 +43,23 @@ public class EditorMapData {
         this.startFOVScale = targetClone.getStartFOVScale();
         this.startRotation = targetClone.getStartRotation();
 
-        this.spikes = deepCopyArray(targetClone.getSpikes(), n -> new LevelMapElement(n.getMapElementType()));
-        this.slides = slides.clone();
-        this.walls = walls.clone();
-        this.doubleJumps = doubleJumps.clone();
-        this.ropes = ropes.clone();
+        // Were gonna modify the Originals, but because all of that Data is deleted anyways, we can just modify it.
+        this.spikes = targetClone.getSpikes();
+        this.slides = targetClone.getSlides();
+        this.walls = targetClone.getWalls();
+        this.doubleJumps = targetClone.getDoubleJumps();
+        this.ropes = targetClone.getRopes();
 
-        this.tapNotes = tapNotes.clone();
-        this.growNotes = growNotes.clone();
-        this.slideNotes = slideNotes.clone();
+        this.tapNotes = targetClone.getTapNotes();
+        this.growNotes = targetClone.getGrowNotes();
+        this.slideNotes = targetClone.getSlideNotes();
 
-        this.colors = colors.clone();
-        this.fovScales = fovScales.clone();
-        this.rotates = rotates.clone();
+        this.colors = targetClone.getColors();
+        this.fovScales = targetClone.getFovScales();
+        this.rotates = targetClone.getRotates();
 
-        this.bImages = bImages.clone();
-        this.lasershows = lasershows.clone();
+        this.bImages = targetClone.getbImages();
+        this.lasershows = targetClone.getLasershows();
     }
 
     private <T> T[] deepCopyArray(T[] original, java.util.function.Function<T, T> copyFunction) {

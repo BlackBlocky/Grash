@@ -31,7 +31,7 @@ public class EditorController implements GrashEventListener {
     }
 
     private void event_SetupEditor(GrashEvent_SetupEditor event) {
-
+        System.out.println("Setup Editor");
     }
 
     private void setupRenderer() {
