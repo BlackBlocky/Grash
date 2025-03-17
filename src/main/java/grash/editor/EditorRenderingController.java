@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 
 public class EditorRenderingController {
 
-    private static final double renderingRangeSeconds = 5.0;
+    private static final double renderingRangeSeconds = 2.0;
 
     private final GameController game;
     private final ActionPhaseRenderer editorRenderer;
@@ -40,7 +40,7 @@ public class EditorRenderingController {
 
     public void newFrame(EditorMapData editorMapData, double time) {
         setCurrentEffects(editorMapData, time);
-        editorRenderer.updateCanvas(1.0/60.0, time,
+        editorRenderer.updateCanvas(1/1000.0, time,
                 getRelevantObstacles(editorMapData, time),
                 getRelevantNotes(editorMapData, time),
                 null);
