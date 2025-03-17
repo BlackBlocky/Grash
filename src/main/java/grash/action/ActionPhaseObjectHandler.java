@@ -9,7 +9,6 @@ import grash.level.LevelMapTimelineStack;
 import grash.level.map.LevelMapElement;
 import grash.level.map.LevelMapNote;
 import grash.level.map.LevelMapThing;
-import grash.level.map.MapNoteType;
 import grash.math.Vec2;
 
 public final class ActionPhaseObjectHandler {
@@ -42,10 +41,16 @@ public final class ActionPhaseObjectHandler {
     }
 
     private void addLevelMapThingsToAction(LevelMapThing[] newLevelMapThings, double secondsElapsedSinceStart) {
+        ActionPhaseValues actionPhaseValues = controller.getActionPhaseValues();
+
         for(LevelMapThing thing : newLevelMapThings) {
             switch (thing.getMapThingType()) {
                 case Element: {
-                    addObstacleObjectToAction((LevelMapElement) thing, secondsElapsedSinceStart);
+                    ObstacleObject newObstacle = createObstacleObject(
+                            actionPhaseValues.getActionPhaseMap().getSpeed(),
+                            actionPhaseValues.getPlayerObject().getPosition().x,
+                            (LevelMapElement) thing, secondsElapsedSinceStart, game);
+                    actionPhaseValues.getCurrentObstacleObjects().add(newObstacle);
                     break;
                 }
                 case Note: {
@@ -60,9 +65,14 @@ public final class ActionPhaseObjectHandler {
     }
 
     private double calculateObjectXStartPos(double objectTime, double secondsElapsedSinceStart) {
-        return ((objectTime - secondsElapsedSinceStart)
-                * controller.getActionPhaseValues().getActionPhaseMap().getSpeed())
-                + controller.getActionPhaseValues().getPlayerObject().getPosition().x;
+        return calculateObjectXStartPos(objectTime, secondsElapsedSinceStart,
+                controller.getActionPhaseValues().getActionPhaseMap().getSpeed(),
+                controller.getActionPhaseValues().getPlayerObject().getPosition().x);
+    }
+
+    public static double calculateObjectXStartPos(double objectTime, double secondsElapsedSinceStart,
+                                           double mapSpeed, double playerX) {
+        return ((objectTime - secondsElapsedSinceStart) * mapSpeed) + playerX;
     }
 
     /**
@@ -104,110 +114,121 @@ public final class ActionPhaseObjectHandler {
         actionPhaseValues.getCurrentNoteObjects().add(new NoteObject(game, spawnPos, levelMapNote, noteTapInput));
     }
 
-    private void addObstacleObjectToAction(LevelMapElement levelMapElement, double secondsElapsedSinceStart) {
-        ActionPhaseValues actionPhaseValues = controller.getActionPhaseValues();
+    public static ObstacleObject createObstacleObject(double mapSpeed, double playerX,
+                                                LevelMapElement levelMapElement, double secondsElapsedSinceStart,
+                                                      GameController game) {
+        ObstacleObject result = null;
 
         switch (levelMapElement.getMapElementType()) {
             case Spike: {
-                addObstacleObjectToAction_Spike(actionPhaseValues, levelMapElement, secondsElapsedSinceStart);
+                result = createObstacleObject_Spike(mapSpeed, playerX, levelMapElement, secondsElapsedSinceStart,
+                        game);
                 break;
             }
             case Wall: {
-                addObstacleObjectToAction_Wall(actionPhaseValues, levelMapElement, secondsElapsedSinceStart);
+                result = createObstacleObject_Wall(mapSpeed, playerX, levelMapElement, secondsElapsedSinceStart,
+                        game);
                 break;
             }
             case Rope: {
-                addObstacleObjectToAction_Rope(actionPhaseValues, levelMapElement, secondsElapsedSinceStart);
+                result = createObstacleObject_Rope(mapSpeed, playerX, levelMapElement, secondsElapsedSinceStart,
+                        game);
                 break;
             }
             case DoubleJump: {
-                addObstacleObjectToAction_DoubleJump(actionPhaseValues, levelMapElement, secondsElapsedSinceStart);
+                result = createObstacleObject_DoubleJump(mapSpeed, playerX, levelMapElement, secondsElapsedSinceStart,
+                        game);
                 break;
             }
             case Slide: {
-                addObstacleObjectToAction_Slide(actionPhaseValues, levelMapElement, secondsElapsedSinceStart);
+                result = createObstacleObject_Slide(mapSpeed, playerX, levelMapElement, secondsElapsedSinceStart,
+                        game);
                 break;
             }
         }
+
+        return result;
     }
 
-    private void addObstacleObjectToAction_Spike(ActionPhaseValues actionPhaseValues,
-                                                 LevelMapElement levelMapElement, double secondsElapsedSinceStart) {
+    private static ObstacleObject createObstacleObject_Spike(double mapSpeed, double playerX,
+                                                      LevelMapElement levelMapElement, double secondsElapsedSinceStart,
+                                                             GameController game) {
         Vec2 spawnPos = Vec2.ZERO();
-        spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart);
+        spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart, mapSpeed, playerX);
         spawnPos.y = (levelMapElement.getIsUp()) ? ActionPhaseController.Y_UP : ActionPhaseController.Y_DOWN;
 
         Hitbox hitbox = new Hitbox(new Vec2(0.4, 0.6),
                 new Vec2(0.3, (levelMapElement.getIsUp()) ? 0.0 : 0.4));
 
-        actionPhaseValues.getCurrentObstacleObjects().add(new ObstacleObject(game,
-                spawnPos,new Vec2(1, 1), Vec2.ZERO(), levelMapElement, hitbox));
+        return new ObstacleObject(game, spawnPos,new Vec2(1, 1), Vec2.ZERO(), levelMapElement, hitbox);
     }
 
-    private void addObstacleObjectToAction_Wall(ActionPhaseValues actionPhaseValues,
-                                                 LevelMapElement levelMapElement, double secondsElapsedSinceStart) {
+    private static ObstacleObject createObstacleObject_Wall(double mapSpeed, double playerX,
+                                                     LevelMapElement levelMapElement, double secondsElapsedSinceStart,
+                                                            GameController game) {
         Vec2 spawnPos = Vec2.ZERO();
-        spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart);
+        spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart, mapSpeed, playerX);
         spawnPos.y = (levelMapElement.getIsUp()) ? ActionPhaseController.Y_UP : ActionPhaseController.Y_DOWN;
 
         Vec2 drawOffset = (levelMapElement.getIsUp()) ? Vec2.ZERO() : new Vec2(0, -2);
         Hitbox hitbox = new Hitbox(new Vec2(1, 2.5),
                 (levelMapElement.getIsUp()) ? Vec2.ZERO() : new Vec2(0, -1.5));
 
-        actionPhaseValues.getCurrentObstacleObjects().add(new ObstacleObject(game,
-                spawnPos, new Vec2(1, 3), drawOffset, levelMapElement, hitbox));
+        return new ObstacleObject(game, spawnPos, new Vec2(1, 3), drawOffset, levelMapElement, hitbox);
     }
 
-    private void addObstacleObjectToAction_Rope(ActionPhaseValues actionPhaseValues,
-                                                LevelMapElement levelMapElement, double secondsElapsedSinceStart) {
+    private static ObstacleObject createObstacleObject_Rope(double mapSpeed, double playerX,
+                                                     LevelMapElement levelMapElement, double secondsElapsedSinceStart,
+                                                            GameController game) {
         Vec2 spawnPos = Vec2.ZERO();
-        spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart);
+        spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart, mapSpeed, playerX);
         spawnPos.y = ActionPhaseController.Y_MIDDLE;
 
         ObstacleObject newRopeObject = new ObstacleObject(game,
                 spawnPos, Vec2.ONE(), Vec2.ZERO(), levelMapElement, null);
 
         Vec2 ropeEndPos = Vec2.ZERO();
-        ropeEndPos.x = calculateObjectXStartPos(levelMapElement.getTimeEnd(), secondsElapsedSinceStart);
+        ropeEndPos.x = calculateObjectXStartPos(levelMapElement.getTimeEnd(), secondsElapsedSinceStart, mapSpeed, playerX);
         ropeEndPos.y = ActionPhaseController.Y_MIDDLE;
 
         Vec2[] ropeEndPosArray = new Vec2[1]; // It's an array because the ObstacleObject works with arrays
         ropeEndPosArray[0] = ropeEndPos;
         newRopeObject.setAdditionalPositions(ropeEndPosArray);
 
-        actionPhaseValues.getCurrentObstacleObjects().add(newRopeObject);
+        return newRopeObject;
     }
 
-    private void addObstacleObjectToAction_DoubleJump(ActionPhaseValues actionPhaseValues,
-                                                      LevelMapElement levelMapElement,
-                                                      double secondsElapsedSinceStart) {
+    private static ObstacleObject createObstacleObject_DoubleJump(double mapSpeed, double playerX,
+                                                           LevelMapElement levelMapElement,
+                                                           double secondsElapsedSinceStart,
+                                                                  GameController game) {
         Vec2 spawnPos = Vec2.ZERO();
-        spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart);
+        spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart, mapSpeed, playerX);
         spawnPos.y = calculateHeightFromNormalizedValue(levelMapElement.getHeightNormalized());
 
         Hitbox hitbox = new Hitbox(new Vec2(0.36, 0.36),
                 new Vec2(0, 0.32));
 
-        actionPhaseValues.getCurrentObstacleObjects().add(new ObstacleObject(game,
-                spawnPos,new Vec2(1, 1), Vec2.ZERO(), levelMapElement, hitbox));
+        return new ObstacleObject(game, spawnPos,new Vec2(1, 1), Vec2.ZERO(), levelMapElement, hitbox);
     }
 
-    private void addObstacleObjectToAction_Slide(ActionPhaseValues actionPhaseValues,
-                                                 LevelMapElement levelMapElement, double secondsElapsedSinceStart) {
+    private static ObstacleObject createObstacleObject_Slide(double mapSped, double playerX,
+                                                      LevelMapElement levelMapElement, double secondsElapsedSinceStart,
+                                                             GameController game) {
         Vec2 spawnPos = Vec2.ZERO();
-        spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart);
+        spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart, mapSped, playerX);
         final double slideHeight = 1.0;
         spawnPos.y = (levelMapElement.getIsUp()) ?
                 ActionPhaseController.Y_UP + slideHeight - 0.4 : ActionPhaseController.Y_DOWN - slideHeight + 0.4;
 
         Vec2 endPos = Vec2.ZERO();
-        endPos.x = calculateObjectXStartPos(levelMapElement.getTimeEnd(), secondsElapsedSinceStart);
+        endPos.x = calculateObjectXStartPos(levelMapElement.getTimeEnd(), secondsElapsedSinceStart, mapSped, playerX);
         endPos.y = spawnPos.y;
 
         double slideDuration = levelMapElement.getTimeEnd() - levelMapElement.getTimeStart();
         Hitbox slideHitbox = new Hitbox(
                 new Vec2(
-                        slideDuration * actionPhaseValues.getActionPhaseMap().getSpeed(),
+                        slideDuration * mapSped,
                         4.4),
                 new Vec2(
                         0,
@@ -220,10 +241,10 @@ public final class ActionPhaseObjectHandler {
         Vec2[] ropeEndPosArray = new Vec2[]{endPos}; // It's an array because the ObstacleObject works with arrays
         newSlideObject.setAdditionalPositions(ropeEndPosArray);
 
-        actionPhaseValues.getCurrentObstacleObjects().add(newSlideObject);
+        return newSlideObject;
     }
 
-    private double calculateHeightFromNormalizedValue(double normalizedHeight) {
+    private static double calculateHeightFromNormalizedValue(double normalizedHeight) {
         // Linear Interpolation
         return ActionPhaseController.Y_UP +
                 (ActionPhaseController.Y_DOWN - ActionPhaseController.Y_UP) * normalizedHeight;

@@ -54,15 +54,15 @@ public class EditorRenderingController {
         return relevantObstacles;
     }
     private ObstacleObject generateObstacleObject(LevelMapElement element) {
-        
+        return null;
     }
 
     private List<NoteObject> getRelevantNotes(EditorMapData editorMapData, double time) {
-
+        return null;
     }
 
     private boolean isInRange(double value, double range) {
-
+        return false;
     }
 
 }
