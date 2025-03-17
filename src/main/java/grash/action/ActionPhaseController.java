@@ -19,6 +19,7 @@ import grash.event.events.scene.GrashEvent_SwitchScene;
 import grash.level.LevelMapTimeline;
 import grash.level.LevelMapTimelineStack;
 import grash.level.map.*;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.MediaPlayer;
@@ -314,7 +315,8 @@ public final class ActionPhaseController implements GrashEventListener {
         actionPhaseValues.getActionPhaseMap().getLevelMapTimeline().calculateXStartPosForEveryStack(
                 actionPhaseValues.getActionPhaseMap().getSpeed()
         );
-        actionPhaseRenderer.setupRenderer(startColorEffect, startRotationEffect, startFovScaleEffect);
+        Canvas gameCanvas = (Canvas) game.getPrimaryStage().getScene().lookup("#gameCanvas");
+        actionPhaseRenderer.setupRenderer(startColorEffect, startRotationEffect, startFovScaleEffect, gameCanvas);
 
         /* Only set the next second Color of there even is a second color.
          This needs to be executed AFTER the Renderer was set up,

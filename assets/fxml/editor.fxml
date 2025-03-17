@@ -8,8 +8,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.canvas.Canvas?>
 <Pane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       stylesheets="@../css/editorStyle.css" styleClass="vbox-style">
+    <Canvas fx:id="editorCanvas" width="1600" height="900"/>
     <GridPane alignment="BOTTOM_LEFT" hgap="5" vgap="5">
         <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="0" GridPane.rowIndex="0">
             <Image url="@../sprites/editor/keys/keyA.png"/>

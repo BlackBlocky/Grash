@@ -52,7 +52,7 @@ public final class ActionPhaseRenderer implements GrashEventListener {
      * This will be called every Time the Renderer starts, aka another level is starting
      */
     public void setupRenderer(LevelMapEffect startColorEffect, LevelMapEffect startRotationEffect,
-                              LevelMapEffect startFovScaleEffect) {
+                              LevelMapEffect startFovScaleEffect, Canvas targetCanvas) {
         this.renderedBackgroundValue = 0.0;
 
         this.debug_renderGrid = false;
@@ -65,7 +65,7 @@ public final class ActionPhaseRenderer implements GrashEventListener {
         rotationEffectData = new RendererEffectData(startRotationEffect);
         fovScaleEffectData = new RendererEffectData(startFovScaleEffect);
 
-        gameCanvas = (Canvas) game.getPrimaryStage().getScene().lookup("#gameCanvas");
+        gameCanvas = targetCanvas;
     }
 
     @Override

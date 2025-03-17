@@ -8,14 +8,14 @@ import grash.event.events.editor.GrashEvent_SetupEditor;
 
 public class EditorController implements GrashEventListener {
 
-    private GameController game;
-    private ActionPhaseRenderer editorRenderer;
+    private final GameController game;
+    private final EditorRenderingController renderingController;
 
     private EditorMapData currentEditorMapData;
 
     public EditorController(GameController gameController) {
         this.game = gameController;
-        this.editorRenderer = new ActionPhaseRenderer(game);
+        this.renderingController = new EditorRenderingController(game);
 
         game.getEventBus().registerListener(GrashEvent_SetupEditor.class, this);
     }
@@ -31,10 +31,13 @@ public class EditorController implements GrashEventListener {
     }
 
     private void event_SetupEditor(GrashEvent_SetupEditor event) {
-        System.out.println("Setup Editor");
+        this.currentEditorMapData = new EditorMapData(event.getEditingLevelMap());
+
+        renderingController.setup();
+        updateMapPreviewRender(0.0);
     }
 
-    private void setupRenderer() {
-
+    private void updateMapPreviewRender(double time) {
+        renderingController.newFrame(this.currentEditorMapData, time);
     }
 }
