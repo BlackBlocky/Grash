@@ -45,6 +45,10 @@ public class EditorController implements GrashEventListener {
         return editorState;
     }
 
+    public EditorSelectionController getSelectionController() {
+        return selectionController;
+    }
+
     @Override
     public void onEvent(GrashEvent event) {
         switch (event.getEventKey()) {
@@ -102,19 +106,23 @@ public class EditorController implements GrashEventListener {
     }
 
     private void event_KeyDown(GrashEvent_KeyDown event) {
+        if(editorState == EditorState.inactive) return;
+
         if(event.getKeyCode() == KeyCode.D) currentScrollValue = SCROLL_SPEED;
         if(event.getKeyCode() == KeyCode.A) currentScrollValue = -SCROLL_SPEED;
-
-
     }
 
     private void event_KeyUp(GrashEvent_KeyUp event) {
+        if(editorState == EditorState.inactive) return;
+
         if((event.getKeyCode() == KeyCode.A && currentScrollValue != SCROLL_SPEED) ||
                 (event.getKeyCode() == KeyCode.D && currentScrollValue != -SCROLL_SPEED))
             currentScrollValue = 0.0;
     }
 
     private void event_Tick(GrashEvent_Tick event) {
+        if(editorState == EditorState.inactive) return;
+
         moveView(event.getDeltaTime());
     }
 
