@@ -30,7 +30,7 @@ public class EditorController implements GrashEventListener {
 
     public EditorController(GameController gameController) {
         this.game = gameController;
-        this.renderingController = new EditorRenderingController(game);
+        this.renderingController = new EditorRenderingController(game, this);
         this.selectionController = new EditorSelectionController(game, this);
         this.editorState = EditorState.inactive;
         this.currentPreviewTime = 0.0;
@@ -124,6 +124,7 @@ public class EditorController implements GrashEventListener {
         if(editorState == EditorState.inactive) return;
 
         moveView(event.getDeltaTime());
+        updateMapPreviewRender(currentPreviewTime);
     }
 
     private void moveView(double deltaTime) {
@@ -135,5 +136,9 @@ public class EditorController implements GrashEventListener {
 
     private void updateMapPreviewRender(double time) {
         renderingController.newFrame(this.currentEditorMapData, time);
+    }
+
+    public void selectionChanged() {
+        updateMapPreviewRender(currentPreviewTime);
     }
 }

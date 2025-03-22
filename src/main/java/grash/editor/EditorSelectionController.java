@@ -47,6 +47,8 @@ public class EditorSelectionController implements GrashEventListener {
         else {
             setSelectionToNull();
         }
+
+        editorController.selectionChanged();
     }
 
     @Override
@@ -72,6 +74,7 @@ public class EditorSelectionController implements GrashEventListener {
         );
 
         selectedLevelMapThing = currentEditorMapData.allThings.get(selectedLevelMapThingIndex);
+        editorController.selectionChanged();
     }
 
     private void setSelectionToNull() {

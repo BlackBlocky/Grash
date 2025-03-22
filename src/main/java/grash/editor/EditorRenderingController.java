@@ -2,15 +2,13 @@ package grash.editor;
 
 import grash.action.ActionPhaseController;
 import grash.action.ActionPhaseObjectHandler;
+import grash.action.objects.ActionObject;
 import grash.action.objects.NoteObject;
 import grash.action.objects.ObstacleObject;
 import grash.action.objects.PlayerObject;
 import grash.action.renderer.ActionPhaseRenderer;
 import grash.core.GameController;
-import grash.level.map.LevelMapEffect;
-import grash.level.map.LevelMapElement;
-import grash.level.map.LevelMapNote;
-import grash.level.map.MapEffectType;
+import grash.level.map.*;
 import grash.math.Vec2;
 import javafx.scene.canvas.Canvas;
 
@@ -24,14 +22,16 @@ public class EditorRenderingController {
     private static final double renderingRangeSeconds = 2.0;
 
     private final GameController game;
+    private final EditorController editorController;
     private final ActionPhaseRenderer editorRenderer;
 
     private Canvas editorCanvas;
 
     private PlayerObject dummyPlayer;
 
-    public EditorRenderingController(GameController gameController) {
+    public EditorRenderingController(GameController gameController, EditorController editorController) {
         this.game = gameController;
+        this.editorController = editorController;
         this.editorRenderer = new ActionPhaseRenderer(game);
     }
 
@@ -61,7 +61,10 @@ public class EditorRenderingController {
                 null, null, null);
     }
 
+    private ActionObject currentSelectedActionObject; // set in getRelevantObstacles() or getRelevantNotes()
     public void newFrame(EditorMapData editorMapData, double time) {
+        currentSelectedActionObject = null;
+
         setCurrentEffects(editorMapData, time);
         editorRenderer.updateCanvas(1/1000.0, time,
                 getRelevantObstacles(editorMapData, time),
@@ -70,7 +73,8 @@ public class EditorRenderingController {
 
         editorRenderer.renderEditorOverdraw(time,
                 editorMapData.mapMetadata.getSongBPM(),
-                editorMapData.speed, ActionPhaseController.PLAYER_X);
+                editorMapData.speed, ActionPhaseController.PLAYER_X,
+                currentSelectedActionObject);
     }
 
     private void setCurrentEffects(EditorMapData editorMapData, double time) {
@@ -110,6 +114,10 @@ public class EditorRenderingController {
         return indexOfNext;
     }
 
+    /**
+     * Important Note: The resulting List is UNSORTED by the time (Because it would be unnecessary).
+     * This Method also sets the currentSelectedActionObject.
+     */
     private List<ObstacleObject> getRelevantObstacles(EditorMapData editorMapData, double time) {
         ArrayList<ObstacleObject> relevantObstacles = new ArrayList<>();
 
@@ -117,8 +125,15 @@ public class EditorRenderingController {
                         editorMapData.ropes, editorMapData.doubleJumps)
                 .flatMap(List::stream).forEach(item -> {
             double itemTime = item.getTimeStart();
-            if(isInRange(itemTime, renderingRangeSeconds, time))
-                relevantObstacles.add(generateObstacleObject(editorMapData, item, time));
+            if(isInRange(itemTime, renderingRangeSeconds, time)) {
+                ObstacleObject newObstacleObject = generateObstacleObject(editorMapData, item, time);
+                relevantObstacles.add(newObstacleObject);
+
+                if(editorController.getSelectionController().getSelectedLevelMapThing() == item) {
+                    currentSelectedActionObject = newObstacleObject;
+                }
+            }
+
         });
 
         return relevantObstacles;
@@ -133,14 +148,25 @@ public class EditorRenderingController {
         );
     }
 
+    /**
+     * Important Note: The resulting List is UNSORTED by the time (Because it would be unnecessary).
+     * This Method also sets the currentSelectedActionObject.
+     */
     private List<NoteObject> getRelevantNotes(EditorMapData editorMapData, double time) {
         ArrayList<NoteObject> relevantNotes = new ArrayList<>();
 
         Stream.of(editorMapData.tapNotes, editorMapData.growNotes, editorMapData.slideNotes)
             .flatMap(List::stream).forEach(item -> {
             double itemTime = item.getTimeStart();
-            if(isInRange(itemTime, renderingRangeSeconds, time))
-                relevantNotes.add(generateNoteObject(editorMapData, item, time));
+            if(isInRange(itemTime, renderingRangeSeconds, time)) {
+                NoteObject newNoteObject = generateNoteObject(editorMapData, item, time);
+                relevantNotes.add(newNoteObject);
+
+                if(editorController.getSelectionController().getSelectedLevelMapThing() == item) {
+                    currentSelectedActionObject = newNoteObject;
+                }
+            }
+
         });
 
 

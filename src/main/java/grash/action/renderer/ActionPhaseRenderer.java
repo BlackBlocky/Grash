@@ -1,10 +1,7 @@
 package grash.action.renderer;
 
 import grash.action.ActionPhaseController;
-import grash.action.objects.Hitbox;
-import grash.action.objects.NoteObject;
-import grash.action.objects.ObstacleObject;
-import grash.action.objects.PlayerObject;
+import grash.action.objects.*;
 import grash.assets.Sprite;
 import grash.core.GameController;
 import grash.core.Main;
@@ -139,7 +136,8 @@ public final class ActionPhaseRenderer implements GrashEventListener {
     /**
      * This Method is only used by the Editor. It Visualises things such as bpm etc.
      */
-    public void renderEditorOverdraw(double secondsElapsedSinceStart, double bpm, double mapSpeed, double playerX) {
+    public void renderEditorOverdraw(double secondsElapsedSinceStart, double bpm, double mapSpeed, double playerX,
+                                     ActionObject selectedObject) {
         GraphicsContext g = gameCanvas.getGraphicsContext2D();
         Color drawColor = colorEffectData.getCurrentEffect().getColor().interpolate(
                 colorEffectData.getNextEffect().getColor(),
@@ -151,6 +149,9 @@ public final class ActionPhaseRenderer implements GrashEventListener {
 
         // Do the rendering
         drawBPM(g, secondsElapsedSinceStart, bpm, mapSpeed, drawColor, playerX);
+        if(selectedObject != null) drawEditorSelectionOutline(g,
+                selectedObject.getPosition().add(selectedObject.getDrawOffset()),
+                selectedObject.getScale());
 
         g.restore();
     }
@@ -178,6 +179,7 @@ public final class ActionPhaseRenderer implements GrashEventListener {
             g.setStroke(drawColor.brighter());
             g.setLineWidth(2);
             g.setLineDashes();
+            g.setLineDashOffset(0);
             g.strokeLine(beatScreenPos.x, 0, beatScreenPos.x, Main.SCREEN_HEIGHT);
 
             double betweenLineOffset = beatDurationSeconds / 2.0 * mapSpeed * PIXEL_GRID_SIZE;
@@ -185,6 +187,18 @@ public final class ActionPhaseRenderer implements GrashEventListener {
             g.strokeLine(beatScreenPos.x + betweenLineOffset, 0,
                         beatScreenPos.x + betweenLineOffset, Main.SCREEN_HEIGHT);
         }
+    }
+
+    private void drawEditorSelectionOutline(GraphicsContext g, Vec2 pos, Vec2 scale) {
+        Vec2 pixelDrawPos = calculateGridPixelsPos(pos);
+        Vec2 objectSizePixels = calculateGridPixelsPos(scale);
+
+        double colorBlinkTime = ((double)System.currentTimeMillis() % 1000.0) / 1000.0;
+        g.setStroke(Color.hsb(colorBlinkTime * 360, 1, 1));
+        g.setLineWidth(3);
+        g.setLineDashes(10, 8);
+        g.setLineDashOffset(((double)System.currentTimeMillis() * 0.05) % 18.0);
+        g.strokeRect(pixelDrawPos.x, pixelDrawPos.y, objectSizePixels.x, objectSizePixels.y);
     }
 
     /**
