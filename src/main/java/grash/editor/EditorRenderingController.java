@@ -4,12 +4,14 @@ import grash.action.ActionPhaseController;
 import grash.action.ActionPhaseObjectHandler;
 import grash.action.objects.NoteObject;
 import grash.action.objects.ObstacleObject;
+import grash.action.objects.PlayerObject;
 import grash.action.renderer.ActionPhaseRenderer;
 import grash.core.GameController;
 import grash.level.map.LevelMapEffect;
 import grash.level.map.LevelMapElement;
 import grash.level.map.LevelMapNote;
 import grash.level.map.MapEffectType;
+import grash.math.Vec2;
 import javafx.scene.canvas.Canvas;
 
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ public class EditorRenderingController {
     private final ActionPhaseRenderer editorRenderer;
 
     private Canvas editorCanvas;
+
+    private PlayerObject dummyPlayer;
 
     public EditorRenderingController(GameController gameController) {
         this.game = gameController;
@@ -51,6 +55,10 @@ public class EditorRenderingController {
         startFOVScale.setValueDouble(editorMapData.startFOVScale);
 
         editorRenderer.setupRenderer(startColor, startRotation, startFOVScale, editorCanvas);
+
+        // Create a dummyPlayer object
+        dummyPlayer = new PlayerObject(game, new Vec2(ActionPhaseController.PLAYER_X, ActionPhaseController.Y_DOWN),
+                null, null, null);
     }
 
     public void newFrame(EditorMapData editorMapData, double time) {
@@ -58,7 +66,7 @@ public class EditorRenderingController {
         editorRenderer.updateCanvas(1/1000.0, time,
                 getRelevantObstacles(editorMapData, time),
                 getRelevantNotes(editorMapData, time),
-                null);
+                dummyPlayer);
     }
 
     private void setCurrentEffects(EditorMapData editorMapData, double time) {
