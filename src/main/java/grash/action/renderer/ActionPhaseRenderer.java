@@ -177,7 +177,13 @@ public final class ActionPhaseRenderer implements GrashEventListener {
 
             g.setStroke(drawColor.brighter());
             g.setLineWidth(2);
+            g.setLineDashes(null);
             g.strokeLine(beatScreenPos.x, 0, beatScreenPos.x, Main.SCREEN_HEIGHT);
+
+            double betweenLineOffset = beatDurationSeconds / 2.0 * mapSpeed * PIXEL_GRID_SIZE;
+            g.setLineDashes(5, 20);
+            g.strokeLine(beatScreenPos.x + betweenLineOffset, 0,
+                        beatScreenPos.x + betweenLineOffset, Main.SCREEN_HEIGHT);
         }
     }
 
