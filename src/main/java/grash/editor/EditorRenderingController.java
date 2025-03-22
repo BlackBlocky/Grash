@@ -8,6 +8,7 @@ import grash.action.renderer.ActionPhaseRenderer;
 import grash.core.GameController;
 import grash.level.map.LevelMapEffect;
 import grash.level.map.LevelMapElement;
+import grash.level.map.LevelMapNote;
 import grash.level.map.MapEffectType;
 import javafx.scene.canvas.Canvas;
 
@@ -87,7 +88,26 @@ public class EditorRenderingController {
     }
 
     private List<NoteObject> getRelevantNotes(EditorMapData editorMapData, double time) {
-        return new ArrayList<NoteObject>();
+        ArrayList<NoteObject> relevantNotes = new ArrayList<>();
+
+        Stream.of(editorMapData.getTapNotes(), editorMapData.getGrowNotes(), editorMapData.getGrowNotes())
+            .flatMap(Arrays::stream).forEach(item -> {
+            double itemTime = item.getTimeStart();
+            if(isInRange(itemTime, renderingRangeSeconds, time))
+                relevantNotes.add(generateNoteObject(editorMapData, item, time));
+        });
+
+
+        return relevantNotes;
+    }
+    private NoteObject generateNoteObject(EditorMapData editorMapData, LevelMapNote levelMapNote, double time) {
+        return ActionPhaseObjectHandler.createNoteObject(
+                editorMapData.speed,
+                ActionPhaseController.PLAYER_X,
+                levelMapNote,
+                time,
+                this.game
+        );
     }
 
     private boolean isInRange(double value, double range, double baseValue) {

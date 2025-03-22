@@ -50,11 +50,15 @@ public final class ActionPhaseObjectHandler {
                             actionPhaseValues.getActionPhaseMap().getSpeed(),
                             actionPhaseValues.getPlayerObject().getPosition().x,
                             (LevelMapElement) thing, secondsElapsedSinceStart, game);
-                    actionPhaseValues.getCurrentObstacleObjects().add(newObstacle);
+                    if(newObstacle != null) actionPhaseValues.getCurrentObstacleObjects().add(newObstacle);
                     break;
                 }
                 case Note: {
-                    addNoteObjectToAction((LevelMapNote) thing, secondsElapsedSinceStart);
+                    NoteObject newNote = createNoteObject(
+                            actionPhaseValues.getActionPhaseMap().getSpeed(),
+                            actionPhaseValues.getPlayerObject().getPosition().x,
+                            (LevelMapNote) thing, secondsElapsedSinceStart, game);
+                    if(newNote != null) actionPhaseValues.getCurrentNoteObjects().add(newNote);
                     break;
                 }
                 case Effect: {
@@ -76,26 +80,27 @@ public final class ActionPhaseObjectHandler {
     }
 
     /**
-     * Important Note: The Note will be added at the end of the NotesList,
+     * Important Note: The Note must be added at the end of the NotesList,
      * because the other notes are in the queue to be hit.
      */
-    private void addNoteObjectToAction(LevelMapNote levelMapNote, double secondsElapsedSinceStart) {
-        ActionPhaseValues actionPhaseValues = controller.getActionPhaseValues();
+    public static NoteObject createNoteObject(double mapSpeed, double playerX, LevelMapNote levelMapNote,
+                                               double secondsElapsedSinceStart, GameController game) {
 
         switch (levelMapNote.getMapNoteType()) {
             case TapNote: {
-                addNoteObjectToAction_TapNote(actionPhaseValues, levelMapNote, secondsElapsedSinceStart);
-                break;
+               return createNoteObject_TapNote(levelMapNote, secondsElapsedSinceStart, mapSpeed, playerX, game);
             }
         }
+
+        return null;
     }
 
-    private void addNoteObjectToAction_TapNote(ActionPhaseValues actionPhaseValues,
-                                               LevelMapNote levelMapNote, double secondsElapsedSinceStart) {
+    private static NoteObject createNoteObject_TapNote(LevelMapNote levelMapNote, double secondsElapsedSinceStart,
+                                                double mapSpeed, double playerX, GameController game) {
         NoteTapInput noteTapInput = null;
         Vec2 spawnPos = Vec2.ZERO();
 
-        spawnPos.x = calculateObjectXStartPos(levelMapNote.getTimeStart(), secondsElapsedSinceStart);
+        spawnPos.x = calculateObjectXStartPos(levelMapNote.getTimeStart(), secondsElapsedSinceStart, mapSpeed, playerX);
         switch (levelMapNote.getYType()) {
             case 0 -> {
                 spawnPos.y = ActionPhaseController.Y_NOTE_DOWN;
@@ -111,7 +116,7 @@ public final class ActionPhaseObjectHandler {
             }
         }
 
-        actionPhaseValues.getCurrentNoteObjects().add(new NoteObject(game, spawnPos, levelMapNote, noteTapInput));
+        return new NoteObject(game, spawnPos, levelMapNote, noteTapInput);
     }
 
     public static ObstacleObject createObstacleObject(double mapSpeed, double playerX,
