@@ -70,7 +70,7 @@ public class EditorRenderingController {
 
         editorRenderer.renderEditorOverdraw(time,
                 editorMapData.mapMetadata.getSongBPM(),
-                editorMapData.speed);
+                editorMapData.speed, ActionPhaseController.PLAYER_X);
     }
 
     private void setCurrentEffects(EditorMapData editorMapData, double time) {

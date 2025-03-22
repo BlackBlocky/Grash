@@ -139,7 +139,7 @@ public final class ActionPhaseRenderer implements GrashEventListener {
     /**
      * This Method is only used by the Editor. It Visualises things such as bpm etc.
      */
-    public void renderEditorOverdraw(double secondsElapsedSinceStart, double bpm, double mapSpeed) {
+    public void renderEditorOverdraw(double secondsElapsedSinceStart, double bpm, double mapSpeed, double playerX) {
         GraphicsContext g = gameCanvas.getGraphicsContext2D();
         Color drawColor = colorEffectData.getCurrentEffect().getColor().interpolate(
                 colorEffectData.getNextEffect().getColor(),
@@ -150,7 +150,7 @@ public final class ActionPhaseRenderer implements GrashEventListener {
         applyRendererEffects(g, secondsElapsedSinceStart);
 
         // Do the rendering
-        drawBPM(g, secondsElapsedSinceStart, bpm, mapSpeed, drawColor);
+        drawBPM(g, secondsElapsedSinceStart, bpm, mapSpeed, drawColor, playerX);
 
         g.restore();
     }
@@ -163,14 +163,16 @@ public final class ActionPhaseRenderer implements GrashEventListener {
         g.translate(-Main.SCREEN_WIDTH / 2, -Main.SCREEN_HEIGHT / 2);
     }
 
+    private final double BPM_DRAW_BEFORE_OFFSET = 1.0, BPM_DRAW_AFTER_OFFSET = 4.0;
     private void drawBPM(GraphicsContext g, double secondsElapsedSinceStart, double bpm, double mapSpeed,
-                         Color drawColor) {
+                         Color drawColor, double playerX) {
         double beatDurationSeconds = 1.0 / (bpm / 60.0);
         double timeLeftForCurrentBeat = secondsElapsedSinceStart % beatDurationSeconds;
         double beatsOffsetsSeconds = beatDurationSeconds - timeLeftForCurrentBeat;
 
-        for(double beatTime = beatsOffsetsSeconds; beatTime < 5.0; beatTime += beatDurationSeconds) {
-            double beatX = beatTime * mapSpeed;
+        for(double beatTime = beatsOffsetsSeconds - BPM_DRAW_BEFORE_OFFSET; beatTime < BPM_DRAW_AFTER_OFFSET;
+                beatTime += beatDurationSeconds) {
+            double beatX = beatTime * mapSpeed + playerX;
             Vec2 beatScreenPos = calculateGridPixelsPos(new Vec2(beatX, ActionPhaseController.Y_MIDDLE));
 
             g.setStroke(drawColor.brighter());
