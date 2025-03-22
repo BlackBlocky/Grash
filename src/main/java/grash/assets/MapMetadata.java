@@ -74,6 +74,10 @@ public final class MapMetadata {
 
     public Media getSongMetadata() { return this.songMetadata; }
 
+    public double getSongBPM() {
+        return songBPM;
+    }
+
     /**
      * Returns null if there is no song
      */

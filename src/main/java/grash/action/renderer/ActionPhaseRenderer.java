@@ -122,12 +122,8 @@ public final class ActionPhaseRenderer implements GrashEventListener {
         drawBackgroundGradient(deltaTime, g, drawColor);
 
         // Apply Rotation and Stuff
-        g.save();
-        g.translate(Main.SCREEN_WIDTH / 2, Main.SCREEN_HEIGHT / 2);
-        g.rotate(rotationEffectData.getValueBetweenBothEffectsByTime(secondsElapsedSinceStart));
-        double scaleValue = fovScaleEffectData.getValueBetweenBothEffectsByTime(secondsElapsedSinceStart);
-        g.scale(scaleValue, scaleValue);
-        g.translate(-Main.SCREEN_WIDTH / 2, -Main.SCREEN_HEIGHT / 2);
+        g.save(); // saving the state before the effects
+        applyRendererEffects(g, secondsElapsedSinceStart);
 
         drawFloors(g, drawColor);
         drawAllObstacleObjects(g, renderedObstacleObjects);
@@ -137,7 +133,50 @@ public final class ActionPhaseRenderer implements GrashEventListener {
         if(debug_renderGrid) drawGrid(g, drawColor);
         if(debug_renderHitbox) drawAllHitboxes(g, player, renderedObstacleObjects);
 
+        g.restore(); // reverts all the effects
+    }
+
+    /**
+     * This Method is only used by the Editor. It Visualises things such as bpm etc.
+     */
+    public void renderEditorOverdraw(double secondsElapsedSinceStart, double bpm, double mapSpeed) {
+        GraphicsContext g = gameCanvas.getGraphicsContext2D();
+        Color drawColor = colorEffectData.getCurrentEffect().getColor().interpolate(
+                colorEffectData.getNextEffect().getColor(),
+                colorEffectData.interpolateTime(secondsElapsedSinceStart));
+
+        // Apply Effects
+        g.save();
+        applyRendererEffects(g, secondsElapsedSinceStart);
+
+        // Do the rendering
+        drawBPM(g, secondsElapsedSinceStart, bpm, mapSpeed, drawColor);
+
         g.restore();
+    }
+
+    private void applyRendererEffects(GraphicsContext g, double secondsElapsedSinceStart) {
+        g.translate(Main.SCREEN_WIDTH / 2, Main.SCREEN_HEIGHT / 2);
+        g.rotate(rotationEffectData.getValueBetweenBothEffectsByTime(secondsElapsedSinceStart));
+        double scaleValue = fovScaleEffectData.getValueBetweenBothEffectsByTime(secondsElapsedSinceStart);
+        g.scale(scaleValue, scaleValue);
+        g.translate(-Main.SCREEN_WIDTH / 2, -Main.SCREEN_HEIGHT / 2);
+    }
+
+    private void drawBPM(GraphicsContext g, double secondsElapsedSinceStart, double bpm, double mapSpeed,
+                         Color drawColor) {
+        double beatDurationSeconds = 1.0 / (bpm / 60.0);
+        double timeLeftForCurrentBeat = secondsElapsedSinceStart % beatDurationSeconds;
+        double beatsOffsetsSeconds = beatDurationSeconds - timeLeftForCurrentBeat;
+
+        for(double beatTime = beatsOffsetsSeconds; beatTime < 5.0; beatTime += beatDurationSeconds) {
+            double beatX = beatTime * mapSpeed;
+            Vec2 beatScreenPos = calculateGridPixelsPos(new Vec2(beatX, ActionPhaseController.Y_MIDDLE));
+
+            g.setStroke(drawColor.brighter());
+            g.setLineWidth(2);
+            g.strokeLine(beatScreenPos.x, 0, beatScreenPos.x, Main.SCREEN_HEIGHT);
+        }
     }
 
     /**

@@ -67,6 +67,10 @@ public class EditorRenderingController {
                 getRelevantObstacles(editorMapData, time),
                 getRelevantNotes(editorMapData, time),
                 dummyPlayer);
+
+        editorRenderer.renderEditorOverdraw(time,
+                editorMapData.mapMetadata.getSongBPM(),
+                editorMapData.speed);
     }
 
     private void setCurrentEffects(EditorMapData editorMapData, double time) {

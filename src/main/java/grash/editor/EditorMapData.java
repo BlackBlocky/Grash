@@ -1,18 +1,19 @@
 package grash.editor;
 
-import grash.assets.MapData;
+import grash.assets.MapMetadata;
 import grash.level.map.LevelMap;
 import grash.level.map.LevelMapEffect;
 import grash.level.map.LevelMapElement;
 import grash.level.map.LevelMapNote;
 import javafx.scene.paint.Color;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class EditorMapData {
+
+    protected MapMetadata mapMetadata;
 
     protected double speed;
     protected double growspeed;
@@ -39,6 +40,8 @@ public class EditorMapData {
     protected ArrayList<LevelMapEffect> lasershows;
 
     public EditorMapData(LevelMap targetClone) {
+        this.mapMetadata = targetClone.getMapMetadata();
+
         this.speed = targetClone.getSpeed();
         this.growspeed = targetClone.getGrowspeed();
         Color targetColor = targetClone.getStartColor();
