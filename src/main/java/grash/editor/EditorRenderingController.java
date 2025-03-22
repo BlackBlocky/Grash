@@ -64,6 +64,19 @@ public class EditorRenderingController {
         editorRenderer.updateFovScales(fovScaleEffect, fovScaleEffect);
     }
 
+    private LevelMapEffect getNextEffectAtTime(double time, LevelMapEffect[] searchingArray) {
+        LevelMapEffect next = null;
+
+        for(LevelMapEffect item : searchingArray) {
+            if(item.getTimeStart() > time) {
+                next = item;
+                break;
+            }
+        }
+
+        return next;
+    }
+
     private List<ObstacleObject> getRelevantObstacles(EditorMapData editorMapData, double time) {
         ArrayList<ObstacleObject> relevantObstacles = new ArrayList<>();
 

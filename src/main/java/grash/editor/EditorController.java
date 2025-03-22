@@ -10,6 +10,8 @@ import grash.event.events.input.GrashEvent_KeyDown;
 import grash.event.events.input.GrashEvent_KeyUp;
 import javafx.scene.input.KeyCode;
 
+import java.util.Arrays;
+
 public class EditorController implements GrashEventListener {
 
     private static final double SCROLL_SPEED = 2.0;
@@ -59,6 +61,7 @@ public class EditorController implements GrashEventListener {
 
     private void event_SetupEditor(GrashEvent_SetupEditor event) {
         this.currentEditorMapData = new EditorMapData(event.getEditingLevelMap());
+        sortAllArraysByTime(currentEditorMapData);
 
         this.currentPreviewTime = 0.0;
         this.currentScrollValue = 0.0;
@@ -67,6 +70,10 @@ public class EditorController implements GrashEventListener {
         updateMapPreviewRender(currentPreviewTime);
 
         editorState = EditorState.active;
+    }
+
+    private void sortAllArraysByTime(EditorMapData editorMapData) {
+
     }
 
     private void event_KeyDown(GrashEvent_KeyDown event) {
