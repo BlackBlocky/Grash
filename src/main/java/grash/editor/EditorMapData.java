@@ -1,15 +1,15 @@
 package grash.editor;
 
 import grash.assets.MapMetadata;
-import grash.level.map.LevelMap;
-import grash.level.map.LevelMapEffect;
-import grash.level.map.LevelMapElement;
-import grash.level.map.LevelMapNote;
+import grash.level.map.*;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class EditorMapData {
 
@@ -39,6 +39,8 @@ public class EditorMapData {
     protected ArrayList<LevelMapEffect> bImages;
     protected ArrayList<LevelMapEffect> lasershows;
 
+    protected ArrayList<LevelMapThing> allThings;
+
     public EditorMapData(LevelMap targetClone) {
         this.mapMetadata = targetClone.getMapMetadata();
 
@@ -66,6 +68,25 @@ public class EditorMapData {
 
         this.bImages = new ArrayList<>(List.of(targetClone.getbImages()));
         this.lasershows = new ArrayList<>(List.of(targetClone.getLasershows()));
+
+        this.allThings = new ArrayList<>();
+        reassembleAllThingsList();
+    }
+
+    protected void reassembleAllThingsList() {
+        List<List<? extends LevelMapThing>> allThingsUntyped = Arrays.asList(
+                spikes, slides, walls, doubleJumps, ropes,
+                tapNotes, growNotes, slideNotes,
+                colors, fovScales, rotates,
+                bImages, lasershows
+        );
+
+        this.allThings.clear();
+        for(List<? extends LevelMapThing> thingsList : allThingsUntyped) {
+            this.allThings.addAll(thingsList);
+        }
+
+        this.allThings.sort(Comparator.comparingDouble(LevelMapThing::getTimeStart));
     }
 
     private <T> T[] deepCopyArray(T[] original, java.util.function.Function<T, T> copyFunction) {

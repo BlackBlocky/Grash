@@ -1,6 +1,5 @@
 package grash.editor;
 
-import grash.action.renderer.ActionPhaseRenderer;
 import grash.core.GameController;
 import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
@@ -13,8 +12,6 @@ import grash.level.map.LevelMapElement;
 import grash.level.map.LevelMapNote;
 import javafx.scene.input.KeyCode;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Comparator;
 
 public class EditorController implements GrashEventListener {
@@ -23,6 +20,7 @@ public class EditorController implements GrashEventListener {
 
     private final GameController game;
     private final EditorRenderingController renderingController;
+    private final EditorSelectionController selectionController;
 
     private EditorMapData currentEditorMapData;
     private EditorState editorState;
@@ -33,6 +31,7 @@ public class EditorController implements GrashEventListener {
     public EditorController(GameController gameController) {
         this.game = gameController;
         this.renderingController = new EditorRenderingController(game);
+        this.selectionController = new EditorSelectionController(game, this);
         this.editorState = EditorState.inactive;
         this.currentPreviewTime = 0.0;
 
@@ -40,6 +39,10 @@ public class EditorController implements GrashEventListener {
         game.getEventBus().registerListener(GrashEvent_KeyDown.class, this);
         game.getEventBus().registerListener(GrashEvent_KeyUp.class, this);
         game.getEventBus().registerListener(GrashEvent_Tick.class, this);
+    }
+
+    public EditorState getEditorState() {
+        return editorState;
     }
 
     @Override
@@ -71,6 +74,8 @@ public class EditorController implements GrashEventListener {
         this.currentPreviewTime = 0.0;
         this.currentScrollValue = 0.0;
 
+        selectionController.resetAndSetup(currentEditorMapData);
+
         renderingController.setup(currentEditorMapData);
         updateMapPreviewRender(currentPreviewTime);
 
@@ -99,6 +104,8 @@ public class EditorController implements GrashEventListener {
     private void event_KeyDown(GrashEvent_KeyDown event) {
         if(event.getKeyCode() == KeyCode.D) currentScrollValue = SCROLL_SPEED;
         if(event.getKeyCode() == KeyCode.A) currentScrollValue = -SCROLL_SPEED;
+
+
     }
 
     private void event_KeyUp(GrashEvent_KeyUp event) {
