@@ -80,9 +80,9 @@ public class EditorRenderingController {
     private List<ObstacleObject> getRelevantObstacles(EditorMapData editorMapData, double time) {
         ArrayList<ObstacleObject> relevantObstacles = new ArrayList<>();
 
-        Stream.of(editorMapData.getSpikes(), editorMapData.getSlides(), editorMapData.getWalls(),
-                        editorMapData.getRopes(), editorMapData.getDoubleJumps())
-                .flatMap(Arrays::stream).forEach(item -> {
+        Stream.of(editorMapData.spikes, editorMapData.slides, editorMapData.walls,
+                        editorMapData.ropes, editorMapData.doubleJumps)
+                .flatMap(List::stream).forEach(item -> {
             double itemTime = item.getTimeStart();
             if(isInRange(itemTime, renderingRangeSeconds, time))
                 relevantObstacles.add(generateObstacleObject(editorMapData, item, time));
@@ -103,8 +103,8 @@ public class EditorRenderingController {
     private List<NoteObject> getRelevantNotes(EditorMapData editorMapData, double time) {
         ArrayList<NoteObject> relevantNotes = new ArrayList<>();
 
-        Stream.of(editorMapData.getTapNotes(), editorMapData.getGrowNotes(), editorMapData.getGrowNotes())
-            .flatMap(Arrays::stream).forEach(item -> {
+        Stream.of(editorMapData.tapNotes, editorMapData.growNotes, editorMapData.slideNotes)
+            .flatMap(List::stream).forEach(item -> {
             double itemTime = item.getTimeStart();
             if(isInRange(itemTime, renderingRangeSeconds, time))
                 relevantNotes.add(generateNoteObject(editorMapData, item, time));

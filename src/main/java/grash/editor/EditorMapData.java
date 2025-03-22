@@ -8,7 +8,9 @@ import grash.level.map.LevelMapNote;
 import javafx.scene.paint.Color;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class EditorMapData {
 
@@ -18,22 +20,22 @@ public class EditorMapData {
     protected double startFOVScale;
     protected double startRotation;
 
-    protected LevelMapElement[] spikes;
-    protected LevelMapElement[] slides;
-    protected LevelMapElement[] walls;
-    protected LevelMapElement[] doubleJumps;
-    protected LevelMapElement[] ropes;
+    protected ArrayList<LevelMapElement> spikes;
+    protected ArrayList<LevelMapElement> slides;
+    protected ArrayList<LevelMapElement> walls;
+    protected ArrayList<LevelMapElement> doubleJumps;
+    protected ArrayList<LevelMapElement> ropes;
 
-    protected LevelMapNote[] tapNotes;
-    protected LevelMapNote[] growNotes;
-    protected LevelMapNote[] slideNotes;
+    protected ArrayList<LevelMapNote> tapNotes;
+    protected ArrayList<LevelMapNote> growNotes;
+    protected ArrayList<LevelMapNote> slideNotes;
 
-    protected LevelMapEffect[] colors;
-    protected LevelMapEffect[] fovScales;
-    protected LevelMapEffect[] rotates;
+    protected ArrayList<LevelMapEffect> colors;
+    protected ArrayList<LevelMapEffect> fovScales;
+    protected ArrayList<LevelMapEffect> rotates;
 
-    protected LevelMapEffect[] bImages;
-    protected LevelMapEffect[] lasershows;
+    protected ArrayList<LevelMapEffect> bImages;
+    protected ArrayList<LevelMapEffect> lasershows;
 
     public EditorMapData(LevelMap targetClone) {
         this.speed = targetClone.getSpeed();
@@ -44,22 +46,22 @@ public class EditorMapData {
         this.startRotation = targetClone.getStartRotation();
 
         // Were gonna modify the Originals, but because all of that Data is deleted anyways, we can just modify it.
-        this.spikes = targetClone.getSpikes();
-        this.slides = targetClone.getSlides();
-        this.walls = targetClone.getWalls();
-        this.doubleJumps = targetClone.getDoubleJumps();
-        this.ropes = targetClone.getRopes();
+        this.spikes = new ArrayList<>(List.of(targetClone.getSpikes()));
+        this.slides = new ArrayList<>(List.of(targetClone.getSlides()));
+        this.walls = new ArrayList<>(List.of(targetClone.getWalls()));
+        this.doubleJumps = new ArrayList<>(List.of(targetClone.getDoubleJumps()));
+        this.ropes = new ArrayList<>(List.of(targetClone.getRopes()));
 
-        this.tapNotes = targetClone.getTapNotes();
-        this.growNotes = targetClone.getGrowNotes();
-        this.slideNotes = targetClone.getSlideNotes();
+        this.tapNotes = new ArrayList<>(List.of(targetClone.getTapNotes()));
+        this.growNotes = new ArrayList<>(List.of(targetClone.getGrowNotes()));
+        this.slideNotes = new ArrayList<>(List.of(targetClone.getSlideNotes()));
 
-        this.colors = targetClone.getColors();
-        this.fovScales = targetClone.getFovScales();
-        this.rotates = targetClone.getRotates();
+        this.colors = new ArrayList<>(List.of(targetClone.getColors()));
+        this.fovScales = new ArrayList<>(List.of(targetClone.getFovScales()));
+        this.rotates = new ArrayList<>(List.of(targetClone.getRotates()));
 
-        this.bImages = targetClone.getbImages();
-        this.lasershows = targetClone.getLasershows();
+        this.bImages = new ArrayList<>(List.of(targetClone.getbImages()));
+        this.lasershows = new ArrayList<>(List.of(targetClone.getLasershows()));
     }
 
     private <T> T[] deepCopyArray(T[] original, java.util.function.Function<T, T> copyFunction) {
@@ -73,77 +75,5 @@ public class EditorMapData {
         }
 
         return copyArray;
-    }
-
-    public double getSpeed() {
-        return speed;
-    }
-
-    public double getGrowspeed() {
-        return growspeed;
-    }
-
-    public Color getStartColor() {
-        return startColor;
-    }
-
-    public double getStartFOVScale() {
-        return startFOVScale;
-    }
-
-    public double getStartRotation() {
-        return startRotation;
-    }
-
-    public LevelMapElement[] getSpikes() {
-        return spikes;
-    }
-
-    public LevelMapElement[] getSlides() {
-        return slides;
-    }
-
-    public LevelMapElement[] getWalls() {
-        return walls;
-    }
-
-    public LevelMapElement[] getDoubleJumps() {
-        return doubleJumps;
-    }
-
-    public LevelMapElement[] getRopes() {
-        return ropes;
-    }
-
-    public LevelMapNote[] getTapNotes() {
-        return tapNotes;
-    }
-
-    public LevelMapNote[] getGrowNotes() {
-        return growNotes;
-    }
-
-    public LevelMapNote[] getSlideNotes() {
-        return slideNotes;
-    }
-
-    public LevelMapEffect[] getColors() {
-        return colors;
-    }
-
-    public LevelMapEffect[] getFovScales() {
-        return fovScales;
-    }
-
-    public LevelMapEffect[] getRotates() {
-        return rotates;
-    }
-
-    public LevelMapEffect[] getbImages() {
-        return bImages;
-    }
-
-    public LevelMapEffect[] getLasershows() {
-        return lasershows;
     }
 }

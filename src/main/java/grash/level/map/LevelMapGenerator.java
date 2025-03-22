@@ -70,7 +70,7 @@ public final class LevelMapGenerator implements GrashEventListener {
                     convertFOVScale(mapData.getFovscale()),
                     convertRotates(mapData.getRotate()),
 
-                    null,
+                    new LevelMapEffect[0],
                     convertLaserShows(mapData.getLasershow())
             );
         } catch(Exception e) {
