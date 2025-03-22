@@ -19,6 +19,7 @@ import javafx.scene.text.Text;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Random;
 
 public class LevelSelectorMenuController extends ScreenController {
@@ -187,8 +188,9 @@ public class LevelSelectorMenuController extends ScreenController {
         levelsList.getChildren().clear();
 
         // Generate the new ones
-        String[] allMapKeys = game.getResourceLoader().getAllMapKeys();
-        for(String mapKey : allMapKeys) {
+        String[] allMapKeysClone = game.getResourceLoader().getAllMapKeys();
+        Arrays.sort(allMapKeysClone);
+        for(String mapKey : allMapKeysClone) {
             MapMetadata currentMetadata = game.getResourceLoader().getMapMetadata(mapKey);
             VBox generatedElement = generateMapSelectionElement(currentMetadata);
 

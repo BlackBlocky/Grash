@@ -9,11 +9,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.converter.DoubleStringConverter;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 
@@ -86,8 +87,9 @@ public class EditorSelectorScreenController extends ScreenController{
         mapsList.getItems().clear();
 
         // Generate the new Elements
-        String[] allMapKeys = game.getResourceLoader().getAllMapKeys();
-        for(String key : allMapKeys) {
+        String[] allMapKeysClone = game.getResourceLoader().getAllMapKeys().clone();
+        Arrays.sort(allMapKeysClone);
+        for(String key : allMapKeysClone) {
             Text newListElement = new Text();
             newListElement.setText(key);
             newListElement.getStyleClass().add("map-list-text");
