@@ -34,9 +34,23 @@ public class EditorRenderingController {
     /**
      * This is called every time the Editor is booted up
      */
-    public void setup() {
+    public void setup(EditorMapData editorMapData) {
         editorCanvas = (Canvas) game.getPrimaryStage().getScene().lookup("#editorCanvas");
-        editorRenderer.setupRenderer(null, null, null, editorCanvas);
+
+        // Create the init Effects for the Renderer
+        LevelMapEffect startColor = new LevelMapEffect(MapEffectType.Color);
+        startColor.setTimeStart(0.0);
+        startColor.setColor(editorMapData.startColor);
+
+        LevelMapEffect startRotation = new LevelMapEffect(MapEffectType.Rotate);
+        startRotation.setTimeStart(0.0);
+        startRotation.setValueDouble(editorMapData.startRotation);
+
+        LevelMapEffect startFOVScale = new LevelMapEffect(MapEffectType.FOVScale);
+        startFOVScale.setTimeStart(0.0);
+        startFOVScale.setValueDouble(editorMapData.startFOVScale);
+
+        editorRenderer.setupRenderer(startColor, startRotation, startFOVScale, editorCanvas);
     }
 
     public void newFrame(EditorMapData editorMapData, double time) {
@@ -48,33 +62,40 @@ public class EditorRenderingController {
     }
 
     private void setCurrentEffects(EditorMapData editorMapData, double time) {
-        LevelMapEffect colorEffect = new LevelMapEffect(MapEffectType.Color);
-        colorEffect.setColor(editorMapData.startColor);
-        colorEffect.setTimeStart(0.0);
-        editorRenderer.updateColors(colorEffect, colorEffect);
+        int nextColorEffectIndex = getIndexOfNextEffectAtTime(time, editorMapData.colors);
+        if(nextColorEffectIndex > 0) { // Cancels out -1 and 0
+            editorRenderer.updateColors(
+                    editorMapData.colors.get(nextColorEffectIndex - 1),
+                    editorMapData.colors.get(nextColorEffectIndex));
+        }
 
-        LevelMapEffect rotationEffect = new LevelMapEffect(MapEffectType.Rotate);
-        rotationEffect.setValueDouble(editorMapData.startRotation);
-        rotationEffect.setTimeStart(0.0);
-        editorRenderer.updateRotations(rotationEffect, rotationEffect);
+        int nextRotationEffectIndex = getIndexOfNextEffectAtTime(time, editorMapData.rotates);
+        if(nextRotationEffectIndex > 0) {
+            editorRenderer.updateRotations(
+                    editorMapData.rotates.get(nextRotationEffectIndex -1),
+                    editorMapData.rotates.get(nextRotationEffectIndex));
+        }
 
-        LevelMapEffect fovScaleEffect = new LevelMapEffect(MapEffectType.FOVScale);
-        fovScaleEffect.setValueDouble(editorMapData.startFOVScale);
-        fovScaleEffect.setTimeStart(0.0);
-        editorRenderer.updateFovScales(fovScaleEffect, fovScaleEffect);
+        int nextFovScaleEffectIndex = getIndexOfNextEffectAtTime(time, editorMapData.fovScales);
+        if(nextFovScaleEffectIndex > 0) {
+            editorRenderer.updateFovScales(
+                    editorMapData.fovScales.get(nextFovScaleEffectIndex -1),
+                    editorMapData.fovScales.get(nextFovScaleEffectIndex)
+            );
+        }
     }
 
-    private LevelMapEffect getNextEffectAtTime(double time, LevelMapEffect[] searchingArray) {
-        LevelMapEffect next = null;
+    private int getIndexOfNextEffectAtTime(double time, ArrayList<LevelMapEffect> searchingArray) {
+        int indexOfNext = -1;
 
-        for(LevelMapEffect item : searchingArray) {
-            if(item.getTimeStart() > time) {
-                next = item;
+        for(int i = 0; i < searchingArray.size(); i++) {
+            if(searchingArray.get(i).getTimeStart() > time) {
+                indexOfNext = i;
                 break;
             }
         }
 
-        return next;
+        return indexOfNext;
     }
 
     private List<ObstacleObject> getRelevantObstacles(EditorMapData editorMapData, double time) {

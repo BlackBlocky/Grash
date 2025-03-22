@@ -20,6 +20,7 @@ public class EditorMapData {
     protected double startFOVScale;
     protected double startRotation;
 
+    // Note: all the ArrayLists are going to be sorted, by any time
     protected ArrayList<LevelMapElement> spikes;
     protected ArrayList<LevelMapElement> slides;
     protected ArrayList<LevelMapElement> walls;

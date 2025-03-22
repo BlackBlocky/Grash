@@ -8,9 +8,14 @@ import grash.event.events.core.GrashEvent_Tick;
 import grash.event.events.editor.GrashEvent_SetupEditor;
 import grash.event.events.input.GrashEvent_KeyDown;
 import grash.event.events.input.GrashEvent_KeyUp;
+import grash.level.map.LevelMapEffect;
+import grash.level.map.LevelMapElement;
+import grash.level.map.LevelMapNote;
 import javafx.scene.input.KeyCode;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Comparator;
 
 public class EditorController implements GrashEventListener {
 
@@ -66,14 +71,29 @@ public class EditorController implements GrashEventListener {
         this.currentPreviewTime = 0.0;
         this.currentScrollValue = 0.0;
 
-        renderingController.setup();
+        renderingController.setup(currentEditorMapData);
         updateMapPreviewRender(currentPreviewTime);
 
         editorState = EditorState.active;
     }
 
     private void sortAllArraysByTime(EditorMapData editorMapData) {
+        editorMapData.spikes.sort(Comparator.comparingDouble(LevelMapElement::getTimeStart));
+        editorMapData.slides.sort(Comparator.comparingDouble(LevelMapElement::getTimeStart));
+        editorMapData.walls.sort(Comparator.comparingDouble(LevelMapElement::getTimeStart));
+        editorMapData.doubleJumps.sort(Comparator.comparingDouble(LevelMapElement::getTimeStart));
+        editorMapData.ropes.sort(Comparator.comparingDouble(LevelMapElement::getTimeStart));
 
+        editorMapData.tapNotes.sort(Comparator.comparingDouble(LevelMapNote::getTimeStart));
+        editorMapData.growNotes.sort(Comparator.comparingDouble(LevelMapNote::getTimeStart));
+        editorMapData.slideNotes.sort(Comparator.comparingDouble(LevelMapNote::getTimeStart));
+
+        editorMapData.colors.sort(Comparator.comparingDouble(LevelMapEffect::getTimeStart));
+        editorMapData.fovScales.sort(Comparator.comparingDouble(LevelMapEffect::getTimeStart));
+        editorMapData.rotates.sort(Comparator.comparingDouble(LevelMapEffect::getTimeStart));
+
+        editorMapData.bImages.sort(Comparator.comparingDouble(LevelMapEffect::getTimeStart));
+        editorMapData.lasershows.sort(Comparator.comparingDouble(LevelMapEffect::getTimeStart));
     }
 
     private void event_KeyDown(GrashEvent_KeyDown event) {
