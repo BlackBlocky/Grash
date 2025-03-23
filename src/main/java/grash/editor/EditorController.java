@@ -49,6 +49,10 @@ public class EditorController implements GrashEventListener {
         return selectionController;
     }
 
+    public double getCurrentPreviewTime() {
+        return currentPreviewTime;
+    }
+
     @Override
     public void onEvent(GrashEvent event) {
         switch (event.getEventKey()) {

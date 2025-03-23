@@ -65,8 +65,31 @@ public class EditorSelectionController implements GrashEventListener {
 
         if(event.getKeyCode() == KeyCode.PERIOD) moveSelectionIndex(1);
         else if(event.getKeyCode() == KeyCode.COMMA) moveSelectionIndex(-1);
+        else if(event.getKeyCode() == KeyCode.MINUS) setSelectionToIndex(getIndexOfNearestThing());
     }
-    
+
+    private int getIndexOfNearestThing() {
+        if(currentEditorMapData.allThings.isEmpty()) return -1;
+
+        double time = editorController.getCurrentPreviewTime();
+
+        LevelMapThing closest = currentEditorMapData.allThings.stream()
+                .min((a, b) -> Double.compare(Math.abs(a.getTimeStart() - time),
+                        Math.abs(b.getTimeStart() - time)))
+                .orElse(null); // Falls die Liste leer ist, wird null zurückgegeben
+
+        System.out.println(currentEditorMapData.allThings.indexOf(closest));
+
+        return currentEditorMapData.allThings.indexOf(closest);
+    }
+
+    private void setSelectionToIndex(int index) {
+        selectedLevelMapThingIndex = index;
+        selectedLevelMapThing = currentEditorMapData.allThings.get(selectedLevelMapThingIndex);
+
+        editorController.selectionChanged();
+    }
+
     private void moveSelectionIndex(int amount) {
         selectedLevelMapThingIndex += amount;
         selectedLevelMapThingIndex = Math.max(0,
