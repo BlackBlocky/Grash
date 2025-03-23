@@ -5,6 +5,7 @@ import grash.action.objects.*;
 import grash.assets.Sprite;
 import grash.core.GameController;
 import grash.core.Main;
+import grash.editor.objects.EditorEffectIcon;
 import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
 import grash.event.events.input.GrashEvent_KeyDown;
@@ -137,7 +138,8 @@ public final class ActionPhaseRenderer implements GrashEventListener {
      * This Method is only used by the Editor. It Visualises things such as bpm etc.
      */
     public void renderEditorOverdraw(double secondsElapsedSinceStart, double bpm, double mapSpeed, double playerX,
-                                     ActionObject selectedObject) {
+                                     ActionObject selectedObject, EditorEffectIcon selectedEffect,
+                                     List<EditorEffectIcon> editorEffectIcons) {
         GraphicsContext g = gameCanvas.getGraphicsContext2D();
         Color drawColor = colorEffectData.getCurrentEffect().getColor().interpolate(
                 colorEffectData.getNextEffect().getColor(),
@@ -149,9 +151,14 @@ public final class ActionPhaseRenderer implements GrashEventListener {
 
         // Do the rendering
         drawBPM(g, secondsElapsedSinceStart, bpm, mapSpeed, drawColor, playerX);
+        if(editorEffectIcons != null) drawEditorEffectIcons(g, editorEffectIcons);
+
         if(selectedObject != null) drawEditorSelectionOutline(g,
                 selectedObject.getPosition().add(selectedObject.getDrawOffset()),
                 selectedObject.getScale());
+        if(selectedEffect != null) drawEditorSelectionOutline(g,
+                selectedEffect.getPos(),
+                new Vec2(1.0, 0.5));
 
         g.restore();
     }
@@ -199,6 +206,23 @@ public final class ActionPhaseRenderer implements GrashEventListener {
         g.setLineDashes(10, 8);
         g.setLineDashOffset(((double)System.currentTimeMillis() * 0.05) % 18.0);
         g.strokeRect(pixelDrawPos.x, pixelDrawPos.y, objectSizePixels.x, objectSizePixels.y);
+    }
+
+    private void drawEditorEffectIcons(GraphicsContext g, List<EditorEffectIcon> editorEffectIcons) {
+        for(EditorEffectIcon item : editorEffectIcons) {
+            // Draw line
+            Vec2 pixelPos = calculateGridPixelsPos(item.getPos());
+            double animationValue = ((double)System.currentTimeMillis() * 0.5 % 1000) / 1000;
+
+            g.setStroke(Color.BLACK);
+            g.setLineWidth(2);
+            g.setLineDashes(15, 5);
+            g.setLineDashOffset(-20.0 * animationValue);
+            g.strokeLine(pixelPos.x, pixelPos.y, pixelPos.x, ActionPhaseController.Y_UP * PIXEL_GRID_SIZE);
+
+            // Draw Sprite
+            drawSprite(g, item.getSprite(), item.getPos(), new Vec2(1.0, 0.5));
+        }
     }
 
     /**

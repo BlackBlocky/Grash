@@ -8,6 +8,7 @@ import grash.action.objects.ObstacleObject;
 import grash.action.objects.PlayerObject;
 import grash.action.renderer.ActionPhaseRenderer;
 import grash.core.GameController;
+import grash.editor.objects.EditorEffectIcon;
 import grash.level.map.*;
 import grash.math.Vec2;
 import javafx.scene.canvas.Canvas;
@@ -15,6 +16,7 @@ import javafx.scene.canvas.Canvas;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 public class EditorRenderingController {
@@ -62,8 +64,10 @@ public class EditorRenderingController {
     }
 
     private ActionObject currentSelectedActionObject; // set in getRelevantObstacles() or getRelevantNotes()
+    private EditorEffectIcon currentSelectedEditorEffectIcon; // set in getRelevantEffects()
     public void newFrame(EditorMapData editorMapData, double time) {
         currentSelectedActionObject = null;
+        currentSelectedEditorEffectIcon = null;
 
         setCurrentEffects(editorMapData, time);
         editorRenderer.updateCanvas(1/1000.0, time,
@@ -71,10 +75,14 @@ public class EditorRenderingController {
                 getRelevantNotes(editorMapData, time),
                 dummyPlayer);
 
+        List<EditorEffectIcon> relevantEffects = getRelevantEffects(editorMapData, time);
         editorRenderer.renderEditorOverdraw(time,
                 editorMapData.mapMetadata.getSongBPM(),
                 editorMapData.speed, ActionPhaseController.PLAYER_X,
-                currentSelectedActionObject);
+                currentSelectedActionObject,
+                currentSelectedEditorEffectIcon,
+                relevantEffects
+                );
     }
 
     private void setCurrentEffects(EditorMapData editorMapData, double time) {
@@ -179,6 +187,42 @@ public class EditorRenderingController {
                 levelMapNote,
                 time,
                 this.game
+        );
+    }
+
+    private List<EditorEffectIcon> getRelevantEffects(EditorMapData editorMapData, double time) {
+        ArrayList<EditorEffectIcon> relevantEffects = new ArrayList<>();
+
+        AtomicInteger i = new AtomicInteger();
+        Stream.of(editorMapData.colors, editorMapData.fovScales, editorMapData.rotates).
+                flatMap(List::stream).forEach(item -> {
+                    int currentI = i.getAndIncrement();
+                    if (isInRange(item.getTimeStart(), renderingRangeSeconds, time)) {
+                        EditorEffectIcon newEffectIcon =
+                                generateEditorEffectIcon(editorMapData, item, time, currentI);
+                        relevantEffects.add(newEffectIcon);
+
+                        if (editorController.getSelectionController().getSelectedLevelMapThing() == item) {
+                            currentSelectedEditorEffectIcon = newEffectIcon;
+                        }
+                    }
+                });
+
+        return relevantEffects;
+    }
+    private EditorEffectIcon generateEditorEffectIcon(EditorMapData editorMapData,
+                                                      LevelMapEffect levelMapEffect, double time, int index) {
+        return new EditorEffectIcon(
+                new Vec2(
+                        ActionPhaseObjectHandler.calculateObjectXStartPos(
+                                levelMapEffect.getTimeStart(),
+                                time,
+                                editorMapData.speed,
+                                ActionPhaseController.PLAYER_X
+                        ), EditorEffectIcon.getYPosByIndex(index)
+                ),
+                levelMapEffect.getMapEffectType(),
+                game
         );
     }
 
