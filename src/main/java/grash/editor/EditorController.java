@@ -7,9 +7,7 @@ import grash.event.events.core.GrashEvent_Tick;
 import grash.event.events.editor.GrashEvent_SetupEditor;
 import grash.event.events.input.GrashEvent_KeyDown;
 import grash.event.events.input.GrashEvent_KeyUp;
-import grash.level.map.LevelMapEffect;
-import grash.level.map.LevelMapElement;
-import grash.level.map.LevelMapNote;
+import grash.level.map.*;
 import javafx.scene.input.KeyCode;
 
 import java.util.Comparator;
@@ -28,12 +26,15 @@ public class EditorController implements GrashEventListener {
     private double currentPreviewTime;
     private double currentScrollValue;
 
+    private boolean isInShiftMode;
+
     public EditorController(GameController gameController) {
         this.game = gameController;
         this.renderingController = new EditorRenderingController(game, this);
         this.selectionController = new EditorSelectionController(game, this);
         this.editorState = EditorState.inactive;
         this.currentPreviewTime = 0.0;
+        this.isInShiftMode = false;
 
         game.getEventBus().registerListener(GrashEvent_SetupEditor.class, this);
         game.getEventBus().registerListener(GrashEvent_KeyDown.class, this);
@@ -81,6 +82,7 @@ public class EditorController implements GrashEventListener {
 
         this.currentPreviewTime = 0.0;
         this.currentScrollValue = 0.0;
+        this.isInShiftMode = false;
 
         selectionController.resetAndSetup(currentEditorMapData);
 
@@ -114,6 +116,20 @@ public class EditorController implements GrashEventListener {
 
         if(event.getKeyCode() == KeyCode.D) currentScrollValue = SCROLL_SPEED;
         if(event.getKeyCode() == KeyCode.A) currentScrollValue = -SCROLL_SPEED;
+        //Dackeldaniel ist realllll
+
+        if(event.getKeyCode() == KeyCode.SHIFT) this.isInShiftMode = true;
+
+        if(event.getKeyCode() == KeyCode.SPACE)
+            elementModifyAction(selectionController.getSelectedLevelMapThing(), EditorModifyAction.SwitchIsUp);
+        else if(event.getKeyCode() == KeyCode.LEFT)
+            elementModifyAction(selectionController.getSelectedLevelMapThing(), EditorModifyAction.MoveTimeLeft);
+        else if(event.getKeyCode() == KeyCode.RIGHT)
+            elementModifyAction(selectionController.getSelectedLevelMapThing(), EditorModifyAction.MoveTimeRight);
+        else if(event.getKeyCode() == KeyCode.DOWN)
+            elementModifyAction(selectionController.getSelectedLevelMapThing(), EditorModifyAction.MoveDown);
+        else if(event.getKeyCode() == KeyCode.UP)
+            elementModifyAction(selectionController.getSelectedLevelMapThing(), EditorModifyAction.MoveUp);
     }
 
     private void event_KeyUp(GrashEvent_KeyUp event) {
@@ -122,6 +138,8 @@ public class EditorController implements GrashEventListener {
         if((event.getKeyCode() == KeyCode.A && currentScrollValue != SCROLL_SPEED) ||
                 (event.getKeyCode() == KeyCode.D && currentScrollValue != -SCROLL_SPEED))
             currentScrollValue = 0.0;
+
+        if(event.getKeyCode() == KeyCode.SHIFT) this.isInShiftMode = false;
     }
 
     private void event_Tick(GrashEvent_Tick event) {
@@ -136,6 +154,50 @@ public class EditorController implements GrashEventListener {
             currentPreviewTime += currentScrollValue * deltaTime;
             updateMapPreviewRender(currentPreviewTime);
         }
+    }
+
+    private void elementModifyAction(LevelMapThing thing, EditorModifyAction modifyAction) {
+        // Do the Action
+        switch (modifyAction) {
+            case SwitchIsUp -> {
+                if(thing.getMapThingType() != MapThingType.Element) break;
+                LevelMapElement element = (LevelMapElement) thing;
+                element.setIsUp(!element.getIsUp());
+            }
+            case MoveTimeLeft -> {
+                if(thing.getMapThingType() == MapThingType.Element && isInShiftMode) {
+                    LevelMapElement element = (LevelMapElement) thing;
+                    element.setTimeEnd(element.getTimeEnd() - 0.02);
+                }
+                else thing.setTimeStart(thing.getTimeStart() - 0.02);
+            }
+            case MoveTimeRight -> {
+                if(thing.getMapThingType() == MapThingType.Element && isInShiftMode) {
+                    LevelMapElement element = (LevelMapElement) thing;
+                    element.setTimeEnd(element.getTimeEnd() + 0.02);
+                }
+                else thing.setTimeStart(thing.getTimeStart() + 0.02);
+            }
+            case MoveDown -> {
+                if(thing.getMapThingType() != MapThingType.Element) break;
+                LevelMapElement element = (LevelMapElement) thing;
+                element.setHeightNormalized(element.getHeightNormalized() + 0.05);
+            }
+            case MoveUp -> {
+                if(thing.getMapThingType() != MapThingType.Element) break;
+                LevelMapElement element = (LevelMapElement) thing;
+                element.setHeightNormalized(element.getHeightNormalized() - 0.05);
+            }
+        }
+
+        // Sort the connected Lists
+        switch (thing.getMapThingType()) {
+            case Element -> currentEditorMapData.sortAllElements();
+            case Note -> currentEditorMapData.sortAllNotes();
+            case Effect -> currentEditorMapData.sortAllEffects();
+        }
+
+        selectionController.reFindSelectionIndex();
     }
 
     private void updateMapPreviewRender(double time) {

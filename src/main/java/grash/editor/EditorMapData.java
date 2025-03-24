@@ -89,6 +89,35 @@ public class EditorMapData {
         this.allThings.sort(Comparator.comparingDouble(LevelMapThing::getTimeStart));
     }
 
+    protected void sortAllElements() {
+        spikes.sort(Comparator.comparingDouble(LevelMapElement::getTimeStart));
+        slides.sort(Comparator.comparingDouble(LevelMapElement::getTimeStart));
+        walls.sort(Comparator.comparingDouble(LevelMapElement::getTimeStart));
+        doubleJumps.sort(Comparator.comparingDouble(LevelMapElement::getTimeStart));
+        ropes.sort(Comparator.comparingDouble(LevelMapElement::getTimeStart));
+
+        reassembleAllThingsList();
+    }
+
+    protected void sortAllNotes() {
+        tapNotes.sort(Comparator.comparingDouble(LevelMapNote::getTimeStart));
+        growNotes.sort(Comparator.comparingDouble(LevelMapNote::getTimeStart));
+        slideNotes.sort(Comparator.comparingDouble(LevelMapNote::getTimeStart));
+
+        reassembleAllThingsList();
+    }
+
+    protected void sortAllEffects() {
+        colors.sort(Comparator.comparingDouble(LevelMapEffect::getTimeStart));
+        fovScales.sort(Comparator.comparingDouble(LevelMapEffect::getTimeStart));
+        rotates.sort(Comparator.comparingDouble(LevelMapEffect::getTimeStart));
+
+        bImages.sort(Comparator.comparingDouble(LevelMapEffect::getTimeStart));
+        lasershows.sort(Comparator.comparingDouble(LevelMapEffect::getTimeStart));
+
+        reassembleAllThingsList();
+    }
+
     private <T> T[] deepCopyArray(T[] original, java.util.function.Function<T, T> copyFunction) {
         if(original == null) return null;
 

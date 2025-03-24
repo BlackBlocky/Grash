@@ -105,7 +105,7 @@ public class EditorSelectionController implements GrashEventListener {
         selectedLevelMapThingIndex = -1;
     }
 
-    private void reFindSelectionIndex() {
+    public void reFindSelectionIndex() {
         if(selectedLevelMapThing == null) {
             setSelectionToNull();
             return;
