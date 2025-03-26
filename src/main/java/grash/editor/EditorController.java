@@ -27,6 +27,7 @@ public class EditorController implements GrashEventListener {
     private double currentScrollValue;
 
     private boolean isInShiftMode;
+    private boolean isInAltMode;
 
     public EditorController(GameController gameController) {
         this.game = gameController;
@@ -35,6 +36,7 @@ public class EditorController implements GrashEventListener {
         this.editorState = EditorState.inactive;
         this.currentPreviewTime = 0.0;
         this.isInShiftMode = false;
+        this.isInAltMode = false;
 
         game.getEventBus().registerListener(GrashEvent_SetupEditor.class, this);
         game.getEventBus().registerListener(GrashEvent_KeyDown.class, this);
@@ -83,6 +85,7 @@ public class EditorController implements GrashEventListener {
         this.currentPreviewTime = 0.0;
         this.currentScrollValue = 0.0;
         this.isInShiftMode = false;
+        this.isInAltMode = false;
 
         selectionController.resetAndSetup(currentEditorMapData);
 
@@ -119,6 +122,7 @@ public class EditorController implements GrashEventListener {
         //Dackeldaniel ist realllll
 
         if(event.getKeyCode() == KeyCode.SHIFT) this.isInShiftMode = true;
+        if(event.getKeyCode() == KeyCode.ALT) this.isInAltMode = true;
 
         if(event.getKeyCode() == KeyCode.SPACE)
             elementModifyAction(selectionController.getSelectedLevelMapThing(), EditorModifyAction.SwitchIsUp);
@@ -140,6 +144,7 @@ public class EditorController implements GrashEventListener {
             currentScrollValue = 0.0;
 
         if(event.getKeyCode() == KeyCode.SHIFT) this.isInShiftMode = false;
+        if(event.getKeyCode() == KeyCode.ALT) this.isInAltMode = false;
     }
 
     private void event_Tick(GrashEvent_Tick event) {
@@ -157,6 +162,9 @@ public class EditorController implements GrashEventListener {
     }
 
     private void elementModifyAction(LevelMapThing thing, EditorModifyAction modifyAction) {
+        double moveSpeedNow = 0.02;
+        if(isInAltMode) moveSpeedNow *= 0.25;
+
         // Do the Action
         switch (modifyAction) {
             case SwitchIsUp -> {
@@ -167,16 +175,16 @@ public class EditorController implements GrashEventListener {
             case MoveTimeLeft -> {
                 if(thing.getMapThingType() == MapThingType.Element && isInShiftMode) {
                     LevelMapElement element = (LevelMapElement) thing;
-                    element.setTimeEnd(element.getTimeEnd() - 0.02);
+                    element.setTimeEnd(element.getTimeEnd() - moveSpeedNow);
                 }
-                else thing.setTimeStart(thing.getTimeStart() - 0.02);
+                else thing.setTimeStart(thing.getTimeStart() - moveSpeedNow);
             }
             case MoveTimeRight -> {
                 if(thing.getMapThingType() == MapThingType.Element && isInShiftMode) {
                     LevelMapElement element = (LevelMapElement) thing;
-                    element.setTimeEnd(element.getTimeEnd() + 0.02);
+                    element.setTimeEnd(element.getTimeEnd() + moveSpeedNow);
                 }
-                else thing.setTimeStart(thing.getTimeStart() + 0.02);
+                else thing.setTimeStart(thing.getTimeStart() + moveSpeedNow);
             }
             case MoveDown -> {
                 if(thing.getMapThingType() != MapThingType.Element) break;
