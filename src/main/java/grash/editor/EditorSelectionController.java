@@ -3,6 +3,7 @@ package grash.editor;
 import grash.core.GameController;
 import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
+import grash.event.events.editor.GrashEvent_EditorCreatedMapThing;
 import grash.event.events.input.GrashEvent_KeyDown;
 import grash.level.map.LevelMapThing;
 import javafx.scene.input.KeyCode;
@@ -23,6 +24,7 @@ public class EditorSelectionController implements GrashEventListener {
         this.editorController = editorController;
 
         game.getEventBus().registerListener(GrashEvent_KeyDown.class, this);
+        game.getEventBus().registerListener(GrashEvent_EditorCreatedMapThing.class, this);
     }
 
     public void resetAndSetup(EditorMapData editorMapData) {
@@ -56,6 +58,11 @@ public class EditorSelectionController implements GrashEventListener {
         switch (event.getEventKey()) {
             case "KeyDown": {
                 onEvent_KeyDown((GrashEvent_KeyDown) event);
+                break;
+            }
+            case "EditorCreatedMapThing": {
+                onEvent_EditorCreatedMapThing((GrashEvent_EditorCreatedMapThing) event);
+                break;
             }
         }
     }
@@ -66,6 +73,11 @@ public class EditorSelectionController implements GrashEventListener {
         if(event.getKeyCode() == KeyCode.PERIOD) moveSelectionIndex(1);
         else if(event.getKeyCode() == KeyCode.COMMA) moveSelectionIndex(-1);
         else if(event.getKeyCode() == KeyCode.MINUS) setSelectionToIndex(getIndexOfNearestThing());
+    }
+
+    private void onEvent_EditorCreatedMapThing(GrashEvent_EditorCreatedMapThing event) {
+        selectedLevelMapThing = event.getCreatedThing();
+        reFindSelectionIndex();
     }
 
     private int getIndexOfNearestThing() {

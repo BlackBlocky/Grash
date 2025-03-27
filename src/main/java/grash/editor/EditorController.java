@@ -19,6 +19,7 @@ public class EditorController implements GrashEventListener {
     private final GameController game;
     private final EditorRenderingController renderingController;
     private final EditorSelectionController selectionController;
+    private final EditorInsertController insertController;
 
     private EditorMapData currentEditorMapData;
     private EditorState editorState;
@@ -33,6 +34,7 @@ public class EditorController implements GrashEventListener {
         this.game = gameController;
         this.renderingController = new EditorRenderingController(game, this);
         this.selectionController = new EditorSelectionController(game, this);
+        this.insertController = new EditorInsertController(game, this);
         this.editorState = EditorState.inactive;
         this.currentPreviewTime = 0.0;
         this.isInShiftMode = false;
@@ -90,6 +92,7 @@ public class EditorController implements GrashEventListener {
         selectionController.resetAndSetup(currentEditorMapData);
 
         renderingController.setup(currentEditorMapData);
+        insertController.reset(currentEditorMapData);
         updateMapPreviewRender(currentPreviewTime);
 
         editorState = EditorState.active;
@@ -119,7 +122,7 @@ public class EditorController implements GrashEventListener {
 
         if(event.getKeyCode() == KeyCode.D) currentScrollValue = SCROLL_SPEED;
         if(event.getKeyCode() == KeyCode.A) currentScrollValue = -SCROLL_SPEED;
-        //Dackeldaniel ist realllll
+        //DackelElijah ist realllll
 
         if(event.getKeyCode() == KeyCode.SHIFT) this.isInShiftMode = true;
         if(event.getKeyCode() == KeyCode.ALT) this.isInAltMode = true;
@@ -162,6 +165,8 @@ public class EditorController implements GrashEventListener {
     }
 
     private void elementModifyAction(LevelMapThing thing, EditorModifyAction modifyAction) {
+        if(thing == null) return;
+
         double moveSpeedNow = 0.02;
         if(isInAltMode) moveSpeedNow *= 0.25;
 
