@@ -7,10 +7,13 @@ import grash.event.events.editor.GrashEvent_EditorCreatedMapThing;
 import grash.event.events.input.GrashEvent_KeyDown;
 import grash.level.map.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class EditorInsertController implements GrashEventListener {
 
@@ -22,6 +25,8 @@ public class EditorInsertController implements GrashEventListener {
     private final Map<EditorInsertMode, Map<Integer, Enum<?>>> insertMap;
     private Map<EditorInsertMode, Map<Enum<?>, List<? extends LevelMapThing>>> mapThingsListMap;
     private Map<EditorInsertMode, Runnable> mapDataSortFunctionByInsertMode;
+
+    private final HashMap<EditorInsertMode, GridPane> infoPanelsHashMap;
 
     public EditorInsertController(GameController game, EditorController editorController) {
         this.game = game;
@@ -49,15 +54,28 @@ public class EditorInsertController implements GrashEventListener {
                 ))
         );
 
+        this.infoPanelsHashMap = new HashMap<>();
+
         game.getEventBus().registerListener(GrashEvent_KeyDown.class, this);
     }
 
     public void reset(EditorMapData editorMapData) {
         this.currentInsertMode = EditorInsertMode.None;
-        regenerateMapBasedOnMapData(editorMapData);
+        regenerateMapsBasedOnMapData(editorMapData);
+
+        infoPanelsHashMap.clear();
+        infoPanelsHashMap.put(
+                EditorInsertMode.Element, (GridPane) game.getPrimaryStage().getScene().lookup("#elementInfoPanel")
+        );
+        infoPanelsHashMap.put(
+                EditorInsertMode.Note, (GridPane) game.getPrimaryStage().getScene().lookup("#noteInfoPanel")
+        );
+        infoPanelsHashMap.put(
+                EditorInsertMode.Effect, (GridPane) game.getPrimaryStage().getScene().lookup("#effectInfoPanel")
+        );
     }
 
-    private void regenerateMapBasedOnMapData(EditorMapData editorMapData) {
+    private void regenerateMapsBasedOnMapData(EditorMapData editorMapData) {
         this.mapThingsListMap = Map.ofEntries(
                 Map.entry(EditorInsertMode.Element, Map.ofEntries(
                         Map.entry(MapElementType.Spike, editorMapData.spikes),
@@ -118,10 +136,22 @@ public class EditorInsertController implements GrashEventListener {
     private void switchInsertMode(EditorInsertMode newMode) {
         if(currentInsertMode != EditorInsertMode.None && currentInsertMode == newMode) {
             currentInsertMode = EditorInsertMode.None;
+            toggleInfoPanels(currentInsertMode);
             return;
         }
 
         currentInsertMode = newMode;
+        toggleInfoPanels(currentInsertMode);
+    }
+
+    private void toggleInfoPanels(EditorInsertMode insertMode) {
+        for(GridPane pane : infoPanelsHashMap.values()) {
+            pane.setVisible(false);
+        }
+
+        if(insertMode != EditorInsertMode.None) {
+            infoPanelsHashMap.get(insertMode).setVisible(true);
+        }
     }
 
     private void startInsertAction(int index) {

@@ -84,7 +84,7 @@
             <Label text="Add Effect" GridPane.columnIndex="4" GridPane.rowIndex="4" styleClass="key-info-text"/>
         </GridPane>
 
-        <GridPane fx:id="elementInfoPanel" hgap="10" styleClass="add-info-panel" AnchorPane.topAnchor="80" AnchorPane.leftAnchor="40">
+        <GridPane fx:id="elementInfoPanel" hgap="10" styleClass="add-info-panel" AnchorPane.topAnchor="80" AnchorPane.leftAnchor="40" visible="false">
             <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
                 <ImageView fitHeight="32" fitWidth="32">
                     <Image url="@../sprites/editor/keys/keyT.png"/>
@@ -114,6 +114,53 @@
                     <Image url="@../sprites/editor/keys/keyT.png"/>
                 </ImageView>
                 <Label text="- 5 -" />
+            </VBox>
+        </GridPane>
+
+        <GridPane fx:id="noteInfoPanel" hgap="10" styleClass="add-info-panel" AnchorPane.topAnchor="80" AnchorPane.leftAnchor="40" visible="false">
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
+                <ImageView fitHeight="32" fitWidth="32">
+                    <Image url="@../sprites/editor/keys/keyT.png"/>
+                </ImageView>
+                <Label text="- 1 -" />
+            </VBox>
+            <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
+                <ImageView fitHeight="32" fitWidth="32">
+                    <Image url="@../sprites/editor/keys/keyT.png"/>
+                </ImageView>
+                <Label text="- 2 -" />
+            </VBox>
+            <VBox GridPane.columnIndex="2" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
+                <ImageView fitHeight="32" fitWidth="32">
+                    <Image url="@../sprites/editor/keys/keyT.png"/>
+                </ImageView>
+                <Label text="- 3 -" />
+            </VBox>
+        </GridPane>
+        <GridPane fx:id="effectInfoPanel" hgap="10" styleClass="add-info-panel" AnchorPane.topAnchor="80" AnchorPane.leftAnchor="40" visible="false">
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
+                <ImageView fitHeight="32" fitWidth="32">
+                    <Image url="@../sprites/editor/keys/keyT.png"/>
+                </ImageView>
+                <Label text="- 1 -" />
+            </VBox>
+            <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
+                <ImageView fitHeight="32" fitWidth="32">
+                    <Image url="@../sprites/editor/keys/keyT.png"/>
+                </ImageView>
+                <Label text="- 2 -" />
+            </VBox>
+            <VBox GridPane.columnIndex="2" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
+                <ImageView fitHeight="32" fitWidth="32">
+                    <Image url="@../sprites/editor/keys/keyT.png"/>
+                </ImageView>
+                <Label text="- 3 -" />
+            </VBox>
+            <VBox GridPane.columnIndex="3" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
+                <ImageView fitHeight="32" fitWidth="32">
+                    <Image url="@../sprites/editor/keys/keyT.png"/>
+                </ImageView>
+                <Label text="- 4 -" />
             </VBox>
         </GridPane>
     </AnchorPane>
