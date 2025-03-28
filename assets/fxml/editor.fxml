@@ -10,10 +10,18 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.layout.AnchorPane?>
-<Pane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      stylesheets="@../css/editorStyle.css" styleClass="pane-style">
-    <Canvas fx:id="editorCanvas" width="1600" height="900"/>
-    <AnchorPane prefWidth="1600" prefHeight="900">
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            stylesheets="@../css/editorStyle.css" styleClass="pane-style">
+
+    <AnchorPane prefWidth="1600" prefHeight="900" AnchorPane.topAnchor="0">
+        <Canvas fx:id="editorCanvas" width="1600" height="900"/>
         <GridPane hgap="5" vgap="5" styleClass="keys-pane" AnchorPane.leftAnchor="20" AnchorPane.bottomAnchor="60">
             <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="0" GridPane.rowIndex="0">
                 <Image url="@../sprites/editor/keys/keyA.png"/>
@@ -75,5 +83,54 @@
             </ImageView>
             <Label text="Add Effect" GridPane.columnIndex="4" GridPane.rowIndex="4" styleClass="key-info-text"/>
         </GridPane>
+
+        <GridPane fx:id="elementInfoPanel" hgap="10" styleClass="add-info-panel" AnchorPane.topAnchor="80" AnchorPane.leftAnchor="40">
+            <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
+                <ImageView fitHeight="32" fitWidth="32">
+                    <Image url="@../sprites/editor/keys/keyT.png"/>
+                </ImageView>
+                <Label text="- 1 -" />
+            </VBox>
+            <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
+                <ImageView fitHeight="32" fitWidth="32">
+                    <Image url="@../sprites/editor/keys/keyT.png"/>
+                </ImageView>
+                <Label text="- 2 -" />
+            </VBox>
+            <VBox GridPane.columnIndex="2" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
+                <ImageView fitHeight="32" fitWidth="32">
+                    <Image url="@../sprites/editor/keys/keyT.png"/>
+                </ImageView>
+                <Label text="- 3 -" />
+            </VBox>
+            <VBox GridPane.columnIndex="3" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
+                <ImageView fitHeight="32" fitWidth="32">
+                    <Image url="@../sprites/editor/keys/keyT.png"/>
+                </ImageView>
+                <Label text="- 4 -" />
+            </VBox>
+            <VBox GridPane.columnIndex="4" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
+                <ImageView fitHeight="32" fitWidth="32">
+                    <Image url="@../sprites/editor/keys/keyT.png"/>
+                </ImageView>
+                <Label text="- 5 -" />
+            </VBox>
+        </GridPane>
     </AnchorPane>
-</Pane>
+
+    <MenuBar AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" styleClass="menuBar">
+        <Menu text="File">
+            <MenuItem text="Save" />
+            <MenuItem text="Save as ..." />
+            <SeparatorMenuItem/>
+            <MenuItem text="Exit" />
+        </Menu>
+        <Menu text="Edit">
+            <MenuItem text="Work in progress..." />
+        </Menu>
+        <Menu text="View">
+            <MenuItem text="Work in progress..." />
+        </Menu>
+    </MenuBar>
+
+</AnchorPane>

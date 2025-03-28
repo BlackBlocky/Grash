@@ -17,3 +17,40 @@
 .key-info-text {
     -fx-text-fill: white;
 }
+
+
+.add-info-panel {
+    -fx-background-color: rgba(0, 0, 0, 0.4);
+    -fx-background-radius: 15px;
+    -fx-padding: 15px;
+}
+
+.add-info-element {
+    -fx-border-color: white;
+    -fx-border-width: 2px;
+    -fx-border-style: solid;
+}
+
+.add-info-element .label {
+    -fx-text-fill: white;
+    -fx-font-size: 25px;
+}
+
+
+
+.menuBar {
+    -fx-background-color: rgba(0, 0, 0, 0.4);
+    -fx-font-size: 15px;
+}
+
+.menu .label {
+    -fx-text-fill: white !important;
+}
+
+.context-menu {
+    -fx-background-color: rgba(0, 0, 0, 0.4);
+}
+
+.menu-item .label {
+    -fx-text-fill: white !important;
+}
