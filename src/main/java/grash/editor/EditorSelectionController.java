@@ -4,6 +4,7 @@ import grash.core.GameController;
 import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
 import grash.event.events.editor.GrashEvent_EditorCreatedMapThing;
+import grash.event.events.editor.GrashEvent_SelectionChanged;
 import grash.event.events.input.GrashEvent_KeyDown;
 import grash.level.map.LevelMapThing;
 import javafx.scene.input.KeyCode;
@@ -50,7 +51,7 @@ public class EditorSelectionController implements GrashEventListener {
             setSelectionToNull();
         }
 
-        editorController.selectionChanged();
+        game.getEventBus().triggerEvent(new GrashEvent_SelectionChanged(selectedLevelMapThing));
     }
 
     @Override
@@ -69,6 +70,7 @@ public class EditorSelectionController implements GrashEventListener {
 
     private void onEvent_KeyDown(GrashEvent_KeyDown event) {
         if(editorController.getEditorState() == EditorState.inactive) return;
+        if(!editorController.getAllowKeyInput()) return;
 
         if(event.getKeyCode() == KeyCode.PERIOD) moveSelectionIndex(1);
         else if(event.getKeyCode() == KeyCode.COMMA) moveSelectionIndex(-1);
@@ -78,6 +80,8 @@ public class EditorSelectionController implements GrashEventListener {
     private void onEvent_EditorCreatedMapThing(GrashEvent_EditorCreatedMapThing event) {
         selectedLevelMapThing = event.getCreatedThing();
         reFindSelectionIndex();
+
+        game.getEventBus().triggerEvent(new GrashEvent_SelectionChanged(selectedLevelMapThing));
     }
 
     private int getIndexOfNearestThing() {
@@ -99,7 +103,7 @@ public class EditorSelectionController implements GrashEventListener {
         selectedLevelMapThingIndex = index;
         selectedLevelMapThing = currentEditorMapData.allThings.get(selectedLevelMapThingIndex);
 
-        editorController.selectionChanged();
+        game.getEventBus().triggerEvent(new GrashEvent_SelectionChanged(selectedLevelMapThing));
     }
 
     private void moveSelectionIndex(int amount) {
@@ -109,7 +113,7 @@ public class EditorSelectionController implements GrashEventListener {
         );
 
         selectedLevelMapThing = currentEditorMapData.allThings.get(selectedLevelMapThingIndex);
-        editorController.selectionChanged();
+        game.getEventBus().triggerEvent(new GrashEvent_SelectionChanged(selectedLevelMapThing));
     }
 
     private void setSelectionToNull() {

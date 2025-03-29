@@ -4,7 +4,7 @@ import grash.event.GrashEvent;
 import grash.level.map.LevelMapThing;
 
 /**
- * This Event is Triggered when the Map was loaded and all that Stuff, AND we want to edit it
+ * This Event is Triggered when a new Thing in the Editor was created
  * <br>Triggered by:
  * {@link grash.editor.EditorInsertController}
  *

@@ -17,6 +17,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.TextField?>
 <AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
             stylesheets="@../css/editorStyle.css" styleClass="pane-style">
 
@@ -163,6 +164,18 @@
                 <Label text="- 4 -" />
             </VBox>
         </GridPane>
+
+        <GridPane fx:id="defaultEditPane" vgap="10" hgap="10" AnchorPane.rightAnchor="50" AnchorPane.topAnchor="50" styleClass="edit-input-field">
+            <Label text="Current Time" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="timeField" promptText="Enter Value" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <Label text="Swipe Speed" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="swipeField" promptText="Enter Value" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Label text="Move Speed" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <TextField fx:id="moveField" promptText="Enter Value" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        </GridPane>
+
+        <GridPane fx:id="editPane" vgap="10" hgap="10" AnchorPane.rightAnchor="50" AnchorPane.bottomAnchor="60" styleClass="edit-input-field" />
+
     </AnchorPane>
 
     <MenuBar AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" styleClass="menuBar">

@@ -115,6 +115,9 @@ public class EditorInsertController implements GrashEventListener {
     }
 
     private void onEvent_KeyDown(GrashEvent_KeyDown event) {
+        if(editorController.getEditorState() == EditorState.inactive) return;
+        if(!editorController.getAllowKeyInput()) return;
+
         switch (event.getKeyCode()) {
             case KeyCode.E -> switchInsertMode(EditorInsertMode.Element);
             case KeyCode.R -> switchInsertMode(EditorInsertMode.Note);

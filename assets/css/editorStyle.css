@@ -38,6 +38,22 @@
 
 
 
+.edit-input-field {
+    -fx-background-color: rgba(0, 0, 0, 0.4);
+    -fx-padding: 5px;
+}
+
+.edit-input-field .text-field {
+    -fx-font-size: 15px;
+}
+
+.edit-input-field .label {
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+}
+
+
+
 .menuBar {
     -fx-background-color: rgba(0, 0, 0, 0.4);
     -fx-font-size: 15px;

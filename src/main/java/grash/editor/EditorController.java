@@ -4,6 +4,7 @@ import grash.core.GameController;
 import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
 import grash.event.events.core.GrashEvent_Tick;
+import grash.event.events.editor.GrashEvent_ContentModified;
 import grash.event.events.editor.GrashEvent_SetupEditor;
 import grash.event.events.input.GrashEvent_KeyDown;
 import grash.event.events.input.GrashEvent_KeyUp;
@@ -20,6 +21,7 @@ public class EditorController implements GrashEventListener {
     private final EditorRenderingController renderingController;
     private final EditorSelectionController selectionController;
     private final EditorInsertController insertController;
+    private final EditorEditController editController;
 
     private EditorMapData currentEditorMapData;
     private EditorState editorState;
@@ -35,6 +37,7 @@ public class EditorController implements GrashEventListener {
         this.renderingController = new EditorRenderingController(game, this);
         this.selectionController = new EditorSelectionController(game, this);
         this.insertController = new EditorInsertController(game, this);
+        this.editController = new EditorEditController(game, this);
         this.editorState = EditorState.inactive;
         this.currentPreviewTime = 0.0;
         this.isInShiftMode = false;
@@ -56,6 +59,10 @@ public class EditorController implements GrashEventListener {
 
     public double getCurrentPreviewTime() {
         return currentPreviewTime;
+    }
+
+    public boolean getAllowKeyInput() {
+        return !editController.isEditing();
     }
 
     @Override
@@ -93,6 +100,7 @@ public class EditorController implements GrashEventListener {
 
         renderingController.setup(currentEditorMapData);
         insertController.reset(currentEditorMapData);
+        editController.setup();
         updateMapPreviewRender(currentPreviewTime);
 
         editorState = EditorState.active;
@@ -119,6 +127,7 @@ public class EditorController implements GrashEventListener {
 
     private void event_KeyDown(GrashEvent_KeyDown event) {
         if(editorState == EditorState.inactive) return;
+        if(!getAllowKeyInput()) return;
 
         if(event.getKeyCode() == KeyCode.D) currentScrollValue = SCROLL_SPEED;
         if(event.getKeyCode() == KeyCode.A) currentScrollValue = -SCROLL_SPEED;
@@ -141,6 +150,7 @@ public class EditorController implements GrashEventListener {
 
     private void event_KeyUp(GrashEvent_KeyUp event) {
         if(editorState == EditorState.inactive) return;
+        if(!getAllowKeyInput()) return;
 
         if((event.getKeyCode() == KeyCode.A && currentScrollValue != SCROLL_SPEED) ||
                 (event.getKeyCode() == KeyCode.D && currentScrollValue != -SCROLL_SPEED))
@@ -211,13 +221,12 @@ public class EditorController implements GrashEventListener {
         }
 
         selectionController.reFindSelectionIndex();
+
+        // Call the Event
+        game.getEventBus().triggerEvent(new GrashEvent_ContentModified(thing));
     }
 
     private void updateMapPreviewRender(double time) {
         renderingController.newFrame(this.currentEditorMapData, time);
-    }
-
-    public void selectionChanged() {
-        updateMapPreviewRender(currentPreviewTime);
     }
 }
