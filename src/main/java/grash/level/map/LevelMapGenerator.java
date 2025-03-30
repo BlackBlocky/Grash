@@ -91,7 +91,7 @@ public final class LevelMapGenerator implements GrashEventListener {
             convertedSpikes[i] = new LevelMapElement(MapElementType.Spike);
             convertedSpikes[i].setIsUp(Boolean.parseBoolean(spikesString[i][0]));
             convertedSpikes[i].setTimeStart(Double.parseDouble(spikesString[i][1]));
-            convertedSpikes[i].setTimeEnd(Double.parseDouble(spikesString[i][2]));
+            //convertedSpikes[i].setTimeEnd(Double.parseDouble(spikesString[i][2])); // Removed because unnecessarily
         }
 
         return convertedSpikes;

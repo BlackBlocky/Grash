@@ -25,6 +25,7 @@ public class EditorController implements GrashEventListener {
     private final EditorSelectionController selectionController;
     private final EditorInsertController insertController;
     private final EditorEditController editController;
+    private final EditorSaveController saveController;
 
     private EditorMapData currentEditorMapData;
     private EditorState editorState;
@@ -48,6 +49,7 @@ public class EditorController implements GrashEventListener {
         this.selectionController = new EditorSelectionController(game, this);
         this.insertController = new EditorInsertController(game, this);
         this.editController = new EditorEditController(game, this);
+        this.saveController = new EditorSaveController(game, this);
         this.editorState = EditorState.inactive;
         this.currentPreviewTime = 0.0;
         this.isInShiftMode = false;
@@ -139,7 +141,7 @@ public class EditorController implements GrashEventListener {
         updateMapPreviewRender(currentPreviewTime);
 
         this.playModeMusicPlayer = new MediaPlayer(currentEditorMapData.mapMetadata.getSongMetadata());
-
+        saveController.saveEditorMapData(currentEditorMapData);
         editorState = EditorState.active;
     }
 
