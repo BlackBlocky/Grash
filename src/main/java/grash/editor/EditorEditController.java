@@ -110,6 +110,7 @@ public class EditorEditController implements GrashEventListener {
             }
             case Effect -> {
                 LevelMapEffect effect = (LevelMapEffect) targetObject;
+                if(effect.getColor() == null) effect.setColor(Color.BLACK); // Make sure the Color is not null
                 createEditPanelHeader(effect.getMapEffectType().toString());
                 createField("thingStartTime", "Time", doubleFilter, Double.toString(effect.getTimeStart()), 1);
                 createField("effectColorR", "R", doubleFilter, Double.toString(effect.getColor().getRed() * 255), 2);
