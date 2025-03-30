@@ -78,11 +78,11 @@ public final class ActionPhaseRenderer implements GrashEventListener {
 
     private void onEvent_KeyDown(GrashEvent_KeyDown event) {
         switch (event.getKeyCode()) {
-            case DIGIT0: {
+            case F12: {
                 debug_renderGrid = !debug_renderGrid;
                 break;
             }
-            case DIGIT9: {
+            case F11: {
                 debug_renderHitbox = !debug_renderHitbox;
                 break;
             }
