@@ -15,7 +15,7 @@ import java.util.Comparator;
 
 public class EditorController implements GrashEventListener {
 
-    private static final double SCROLL_SPEED = 2.0;
+    private static final double SCROLL_SPEED = 1.0;
 
     private final GameController game;
     private final EditorRenderingController renderingController;
@@ -28,6 +28,9 @@ public class EditorController implements GrashEventListener {
 
     private double currentPreviewTime;
     private double currentScrollValue;
+
+    private double setting_scrollSpeed;
+    private double setting_moveSpeed;
 
     private boolean isInShiftMode;
     private boolean isInAltMode;
@@ -42,6 +45,9 @@ public class EditorController implements GrashEventListener {
         this.currentPreviewTime = 0.0;
         this.isInShiftMode = false;
         this.isInAltMode = false;
+
+        this.setting_scrollSpeed = 2.0;
+        this.setting_moveSpeed = 0.02;
 
         game.getEventBus().registerListener(GrashEvent_SetupEditor.class, this);
         game.getEventBus().registerListener(GrashEvent_KeyDown.class, this);
@@ -63,6 +69,24 @@ public class EditorController implements GrashEventListener {
 
     public boolean getAllowKeyInput() {
         return !editController.isEditing();
+    }
+
+    public void setCurrentPreviewTime(double currentPreviewTime) {
+        this.currentPreviewTime = currentPreviewTime;
+    }
+
+    public void setSetting_scrollSpeed(double setting_scrollSpeed) {
+        this.setting_scrollSpeed = setting_scrollSpeed;
+    }
+    public void setSetting_moveSpeed(double setting_moveSpeed) {
+        this.setting_moveSpeed = setting_moveSpeed;
+    }
+
+    public double getSetting_scrollSpeed() {
+        return setting_scrollSpeed;
+    }
+    public double getSetting_moveSpeed() {
+        return setting_moveSpeed;
     }
 
     @Override
@@ -169,15 +193,17 @@ public class EditorController implements GrashEventListener {
 
     private void moveView(double deltaTime) {
         if(currentScrollValue != 0.0) {
-            currentPreviewTime += currentScrollValue * deltaTime;
+            currentPreviewTime += currentScrollValue * setting_scrollSpeed * deltaTime;
             updateMapPreviewRender(currentPreviewTime);
+
+            editController.refreshDefaultEditFields(currentPreviewTime);
         }
     }
 
     private void elementModifyAction(LevelMapThing thing, EditorModifyAction modifyAction) {
         if(thing == null) return;
 
-        double moveSpeedNow = 0.02;
+        double moveSpeedNow = this.setting_moveSpeed;
         if(isInAltMode) moveSpeedNow *= 0.25;
 
         // Do the Action
@@ -204,12 +230,12 @@ public class EditorController implements GrashEventListener {
             case MoveDown -> {
                 if(thing.getMapThingType() != MapThingType.Element) break;
                 LevelMapElement element = (LevelMapElement) thing;
-                element.setHeightNormalized(element.getHeightNormalized() + 0.05);
+                element.setHeightNormalized(element.getHeightNormalized() + this.setting_moveSpeed);
             }
             case MoveUp -> {
                 if(thing.getMapThingType() != MapThingType.Element) break;
                 LevelMapElement element = (LevelMapElement) thing;
-                element.setHeightNormalized(element.getHeightNormalized() - 0.05);
+                element.setHeightNormalized(element.getHeightNormalized() - this.setting_moveSpeed);
             }
         }
 

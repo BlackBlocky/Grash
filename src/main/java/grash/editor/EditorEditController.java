@@ -6,10 +6,7 @@ import grash.event.GrashEventListener;
 import grash.event.events.editor.GrashEvent_ContentModified;
 import grash.event.events.editor.GrashEvent_SelectionChanged;
 import grash.event.events.input.GrashEvent_KeyDown;
-import grash.level.map.LevelMapEffect;
-import grash.level.map.LevelMapElement;
-import grash.level.map.LevelMapNote;
-import grash.level.map.LevelMapThing;
+import grash.level.map.*;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -21,8 +18,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 public class EditorEditController implements GrashEventListener {
@@ -121,21 +121,29 @@ public class EditorEditController implements GrashEventListener {
         }
     }
 
+    public void refreshDefaultEditFields(double currentTime) {
+        TextField timeField = (TextField) game.getPrimaryStage().getScene().lookup("#timeField");
+        timeField.setText(Double.toString(currentTime));
+    }
+
     private void generateDefaultEditFields() {
         TextField timeField = (TextField) game.getPrimaryStage().getScene().lookup("#timeField");
         timeField.setOnAction(e -> {handleNewInput("time", timeField.getText());});
         timeField.setTextFormatter(new TextFormatter<>(doubleFilter));
         timeField.setDisable(true);
+        timeField.setText(Double.toString(editorController.getCurrentPreviewTime()));
 
         TextField swipeField = (TextField) game.getPrimaryStage().getScene().lookup("#swipeField");
         swipeField.setOnAction(e -> {handleNewInput("swipe", swipeField.getText());});
         swipeField.setTextFormatter(new TextFormatter<>(doubleFilter));
         swipeField.setDisable(true);
+        swipeField.setText(Double.toString(editorController.getSetting_scrollSpeed()));
 
         TextField moveField = (TextField) game.getPrimaryStage().getScene().lookup("#moveField");
         moveField.setOnAction(e -> {handleNewInput("move", moveField.getText());});
         moveField.setTextFormatter(new TextFormatter<>(doubleFilter));
         moveField.setDisable(true);
+        moveField.setText(Double.toString(editorController.getSetting_moveSpeed()));
 
         //editPane.requestFocus(); // Deselect any InputField
     }
@@ -176,6 +184,50 @@ public class EditorEditController implements GrashEventListener {
 
     private void handleNewInput(String type, String value) {
         System.out.println(type + " - " + value);
+        LevelMapThing selectedThing =
+                editorController.getSelectionController().getSelectedLevelMapThing();
+        if(selectedThing == null) return;
+
+        LevelMapElement element = null;
+        LevelMapNote note = null;
+        LevelMapEffect effect = null;
+
+        if(selectedThing instanceof LevelMapElement) element = (LevelMapElement) selectedThing;
+        else if(selectedThing instanceof LevelMapNote) note = (LevelMapNote) selectedThing;
+        else if(selectedThing instanceof LevelMapEffect) effect = (LevelMapEffect) selectedThing;
+
+        switch (type) {
+            case "time" -> editorController.setCurrentPreviewTime(Double.parseDouble(value));
+            case "swipe" -> editorController.setSetting_scrollSpeed(Double.parseDouble(value));
+            case "move" -> editorController.setSetting_moveSpeed(Double.parseDouble(value));
+
+            case "thingStartTime" -> selectedThing.setTimeStart(Double.parseDouble(value));
+
+            case "elementEndTime" -> element.setTimeEnd(Double.parseDouble(value));
+            case "elementHeight" -> element.setHeightNormalized(Double.parseDouble(value));
+            case "elementIsUp" -> element.setIsUp(Boolean.parseBoolean(value));
+
+            case "noteEndTime" -> note.setTimeEnd(Double.parseDouble(value));
+            case "noteYType" -> note.setYType((Byte.parseByte(value)));
+
+            case "effectColorR" -> effect.setColor(
+                    new Color(Double.parseDouble(value) / 255.0,
+                            effect.getColor().getGreen(),
+                            effect.getColor().getBlue(), 1.0)
+            );
+            case "effectColorG" -> effect.setColor(
+                    new Color(effect.getColor().getRed(),
+                            Double.parseDouble(value) / 255.0,
+                            effect.getColor().getBlue(), 1.0)
+            );
+            case "effectColorB" -> effect.setColor(
+                    new Color(effect.getColor().getRed(),
+                            effect.getColor().getGreen(),
+                            Double.parseDouble(value) / 255.0, 1.0)
+            );
+            case "effectValueDouble" -> effect.setValueDouble(Double.parseDouble(value));
+            case "effectValueInteger" -> effect.setValueInteger(Integer.parseInt(value));
+        }
     }
 
     private void setTextFieldsDisable(ObservableList<Node> nodes, boolean disable) {
