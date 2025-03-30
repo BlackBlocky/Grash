@@ -10,7 +10,10 @@ import grash.event.events.input.GrashEvent_KeyDown;
 import grash.event.events.input.GrashEvent_KeyUp;
 import grash.level.map.*;
 import javafx.scene.input.KeyCode;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
+import javax.swing.text.Style;
 import java.util.Comparator;
 
 public class EditorController implements GrashEventListener {
@@ -35,6 +38,10 @@ public class EditorController implements GrashEventListener {
     private boolean isInShiftMode;
     private boolean isInAltMode;
 
+    private double playModeStartTimeSeconds;
+    private long playModeStartTimeSystemTimeMillis;
+    private MediaPlayer playModeMusicPlayer;
+
     public EditorController(GameController gameController) {
         this.game = gameController;
         this.renderingController = new EditorRenderingController(game, this);
@@ -48,6 +55,10 @@ public class EditorController implements GrashEventListener {
 
         this.setting_scrollSpeed = 2.0;
         this.setting_moveSpeed = 0.02;
+
+        this.playModeStartTimeSeconds = -1.0;
+        this.playModeStartTimeSystemTimeMillis = -1L;
+        this.playModeMusicPlayer = null;
 
         game.getEventBus().registerListener(GrashEvent_SetupEditor.class, this);
         game.getEventBus().registerListener(GrashEvent_KeyDown.class, this);
@@ -127,6 +138,8 @@ public class EditorController implements GrashEventListener {
         editController.setup();
         updateMapPreviewRender(currentPreviewTime);
 
+        this.playModeMusicPlayer = new MediaPlayer(currentEditorMapData.mapMetadata.getSongMetadata());
+
         editorState = EditorState.active;
     }
 
@@ -170,6 +183,8 @@ public class EditorController implements GrashEventListener {
             elementModifyAction(selectionController.getSelectedLevelMapThing(), EditorModifyAction.MoveDown);
         else if(event.getKeyCode() == KeyCode.UP)
             elementModifyAction(selectionController.getSelectedLevelMapThing(), EditorModifyAction.MoveUp);
+
+        if(event.getKeyCode() == KeyCode.P) togglePlayMode();
     }
 
     private void event_KeyUp(GrashEvent_KeyUp event) {
@@ -187,7 +202,8 @@ public class EditorController implements GrashEventListener {
     private void event_Tick(GrashEvent_Tick event) {
         if(editorState == EditorState.inactive) return;
 
-        moveView(event.getDeltaTime());
+        if(editorState == EditorState.active) moveView(event.getDeltaTime());
+        else if(editorState == EditorState.play) playModeUpdate();
         updateMapPreviewRender(currentPreviewTime);
     }
 
@@ -198,6 +214,36 @@ public class EditorController implements GrashEventListener {
 
             editController.refreshDefaultEditFields(currentPreviewTime);
         }
+    }
+
+    private void togglePlayMode() {
+        if(editorState == EditorState.active) {
+            this.currentPreviewTime = Math.max(currentPreviewTime, 0.0);
+
+            this.playModeStartTimeSeconds = currentPreviewTime;
+            this.playModeStartTimeSystemTimeMillis = System.currentTimeMillis();
+
+            this.playModeMusicPlayer.setStartTime(Duration.seconds(currentPreviewTime));
+            this.playModeMusicPlayer.play();
+            this.editorState = EditorState.play;
+        }
+        else if(editorState == EditorState.play) {
+            this.playModeMusicPlayer.stop();
+            this.editorState = EditorState.active;
+        }
+    }
+
+    private void playModeUpdate() {
+        // Wait until the Music player is actually playing
+        if(playModeMusicPlayer.getStatus() != MediaPlayer.Status.PLAYING ||
+                playModeMusicPlayer.getCurrentTime().toSeconds() == playModeStartTimeSeconds) return;
+
+        // Set the Preview time to the current time calculated by the play mode
+        double secondsSincePlayStart =
+                (double)(System.currentTimeMillis() - playModeStartTimeSystemTimeMillis) / 1000.0;
+        currentPreviewTime = playModeStartTimeSeconds + secondsSincePlayStart;
+
+        editController.refreshDefaultEditFields(currentPreviewTime);
     }
 
     private void elementModifyAction(LevelMapThing thing, EditorModifyAction modifyAction) {
