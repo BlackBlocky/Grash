@@ -1,6 +1,7 @@
 package grash.editor;
 
 import grash.core.GameController;
+import grash.core.WindowState;
 import grash.event.GrashEvent;
 import grash.event.GrashEventListener;
 import grash.event.events.core.GrashEvent_Tick;
@@ -8,12 +9,16 @@ import grash.event.events.editor.GrashEvent_ContentModified;
 import grash.event.events.editor.GrashEvent_SetupEditor;
 import grash.event.events.input.GrashEvent_KeyDown;
 import grash.event.events.input.GrashEvent_KeyUp;
+import grash.event.events.scene.GrashEvent_SwitchScene;
 import grash.level.map.*;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 
-import javax.swing.text.Style;
 import java.util.Comparator;
 
 public class EditorController implements GrashEventListener {
@@ -141,8 +146,46 @@ public class EditorController implements GrashEventListener {
         updateMapPreviewRender(currentPreviewTime);
 
         this.playModeMusicPlayer = new MediaPlayer(currentEditorMapData.mapMetadata.getSongMetadata());
-        saveController.saveEditorMapData(currentEditorMapData);
+        //saveController.saveEditorMapData(currentEditorMapData);
+
+        setupMenuBar();
+
         editorState = EditorState.active;
+    }
+
+    private void setupMenuBar() {
+        // Get the MenuBar
+        MenuBar menuBar = (MenuBar) ((Pane)game.getPrimaryStage().getScene().lookup("#mainPane")).getChildren().stream()
+                .filter(node -> node instanceof MenuBar)
+                .findFirst()
+                .orElse(null);
+        if(menuBar == null) return;
+
+        // Setup all "Buttons"
+        MenuItem saveButton = findMenuItem(menuBar, "menuSaveButton");
+        saveButton.setOnAction(e -> {
+            if(saveController.saveEditorMapData(currentEditorMapData)) {
+                System.out.println("Level saved successful.");
+            } else {
+                System.out.println("Level failed saving!!");
+            }
+        });
+        MenuItem exitButton = findMenuItem(menuBar, "menuExitButton");
+        exitButton.setOnAction(e -> { exitEditor(); });
+    }
+
+    private MenuItem findMenuItem(MenuBar menuBar, String id) {
+        for(Menu menu : menuBar.getMenus()) {
+            for(MenuItem item : menu.getItems()) {
+                if(item.getId() != null && item.getId().equals(id)) return item;
+            }
+        }
+        return null;
+    }
+
+    private void exitEditor() {
+        this.editorState = EditorState.inactive;
+        game.getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.EditorSelector));
     }
 
     private void sortAllArraysByTime(EditorMapData editorMapData) {

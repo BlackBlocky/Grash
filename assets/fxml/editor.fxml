@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.control.TextField?>
 <AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            stylesheets="@../css/editorStyle.css" styleClass="pane-style">
+            stylesheets="@../css/editorStyle.css" styleClass="pane-style" fx:id="mainPane">
 
     <AnchorPane prefWidth="1600" prefHeight="900" AnchorPane.topAnchor="0">
         <Canvas fx:id="editorCanvas" width="1600" height="900"/>
@@ -180,10 +180,10 @@
 
     <MenuBar AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" styleClass="menuBar">
         <Menu text="File">
-            <MenuItem text="Save" />
+            <MenuItem fx:id="menuSaveButton" text="Save" />
             <MenuItem text="Save as ..." />
             <SeparatorMenuItem/>
-            <MenuItem text="Exit" />
+            <MenuItem fx:id="menuExitButton" text="Exit" />
         </Menu>
         <Menu text="Edit">
             <MenuItem text="Work in progress..." />

@@ -6,6 +6,9 @@ import grash.level.map.LevelMapElement;
 import grash.level.map.LevelMapNote;
 import grash.level.map.LevelMapThing;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.function.Function;
 
@@ -36,15 +39,21 @@ public class EditorSaveController {
         String generatedML = "";
         try {
             generatedML = generateMapML(editorMapData);
+            createOrOverwriteFile(path + "/" + mapName + ".grashMap", generatedML);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
 
-        System.out.println(path + " - " + mapName);
-        System.out.println(generatedML);
-
         return true;
+    }
+
+    private void createOrOverwriteFile(String filePath, String mlContent) throws IOException {
+        File file = new File(filePath);
+
+        FileWriter writer = new FileWriter(file, false);
+        writer.append(mlContent);
+        writer.close();
     }
 
     private static String generateMapML(final EditorMapData editorMapData) {
