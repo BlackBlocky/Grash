@@ -21,6 +21,7 @@ import grash.level.LevelMapTimelineStack;
 import grash.level.map.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -51,6 +52,8 @@ public final class ActionPhaseController implements GrashEventListener {
 
     private Label guiScoreText;
     private Label guiAccuracyText;
+
+    private ProgressBar levelProgressBar;
 
     public static final double PRE_GENERATED_DISTANCE = 25;
     public static final double DESTROY_DISTANCE = -3;
@@ -273,6 +276,8 @@ public final class ActionPhaseController implements GrashEventListener {
                 getActionPhaseValues().getCurrentObstacleObjects(),
                 getActionPhaseValues().getCurrentNoteObjects(),
                 actionPhaseValues.getPlayerObject());
+
+        updateLevelProgressBar();
     }
 
     /**
@@ -385,6 +390,7 @@ public final class ActionPhaseController implements GrashEventListener {
     private void setupGUI() {
         guiScoreText = (Label) game.getPrimaryStage().getScene().lookup("#scoreText");
         guiAccuracyText = (Label) game.getPrimaryStage().getScene().lookup("#accuracyText");
+        levelProgressBar = (ProgressBar) game.getPrimaryStage().getScene().lookup("#levelProgressBar");
     }
 
     private void updateGUI() {
@@ -437,5 +443,14 @@ public final class ActionPhaseController implements GrashEventListener {
             if(nextFovScale == null) nextFovScale = currentFOVScale;
             actionPhaseRenderer.updateFovScales(currentFOVScale, nextFovScale);
         }
+    }
+
+    private void updateLevelProgressBar() {
+        if(mapSong == null) return;
+
+        double currentProgressSecond = mapSong.getCurrentTime().toSeconds();
+        double maxSeconds = mapSong.getTotalDuration().toSeconds();
+
+        levelProgressBar.setProgress(currentProgressSecond / maxSeconds);
     }
 }

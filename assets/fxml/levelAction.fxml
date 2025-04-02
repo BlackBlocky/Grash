@@ -13,5 +13,6 @@
     <Label fx:id="accuracyText" text="100.00%" layoutX="1450" layoutY="65" styleClass="accuracy-text"/>
 
     <ProgressBar fx:id="levelProgressBar" progress="0.5" styleClass="level-progress-bar" layoutX="35" layoutY="835"/>
-    <ProgressBar fx:id="healthBar" progress="0.5" styleClass="health-bar" layoutX="35" layoutY="33"/>
+    <!-- Removed the Health Bar for now because im not sure if i want it :D -->
+    <ProgressBar fx:id="healthBar" progress="0.5" styleClass="health-bar" layoutX="35" layoutY="33" visible="false"/>
 </AnchorPane>
