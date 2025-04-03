@@ -47,3 +47,14 @@
     -fx-font-weight: bold;
     -fx-background-radius: 50px;
 }
+
+.go-back-button {
+    -fx-background-color: #FFB347;
+    -fx-text-fill: white;
+    -fx-font-size: 15px;
+
+    -fx-background-radius: 50;
+    -fx-border-color: white;
+    -fx-border-radius: 50;
+    -fx-border-width: 2px;
+}

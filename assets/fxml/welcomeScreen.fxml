@@ -8,4 +8,5 @@
         alignment="TOP_CENTER" stylesheets="@../css/welcomeScreenStyle.css" styleClass="vbox-style">
     <Text text="Grash" fx:id="titleText" styleClass="title-text" />
     <Button text="Start Game" fx:id="startButton" styleClass="start-button" />
+    <Button text="Edit Mode" fx:id="editorButton" styleClass="start-button" translateY="20"/>
 </VBox>

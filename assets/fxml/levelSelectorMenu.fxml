@@ -20,4 +20,5 @@
             </VBox>
         </HBox>
     </ScrollPane>
+    <Button text="Go Back" fx:id="goBackButton" styleClass="go-back-button" prefWidth="200" translateY="10"/>
 </VBox>

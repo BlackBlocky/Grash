@@ -53,14 +53,23 @@ public final class WelcomeScreenController extends ScreenController {
         stopBackgroundAnimationIfPossible();
 
         Button startButton = (Button) game.getPrimaryStage().getScene().lookup("#startButton");
+        Button editButton = (Button) game.getPrimaryStage().getScene().lookup("#editorButton");
 
+        setupButtonAnimation(startButton);
+        setupButtonAnimation(editButton);
+
+        startButton.setOnMousePressed(event -> startGameButton_Handler());
+        editButton.setOnMousePressed(event -> startEditorButton());
+    }
+
+    private void setupButtonAnimation(Button b) {
         double animSpeed = 0.05;
         ScaleTransition scaleTransition = new ScaleTransition();
-        scaleTransition.setNode(startButton);
+        scaleTransition.setNode(b);
         scaleTransition.setCycleCount(1);
         scaleTransition.setDuration(Duration.seconds(animSpeed));
 
-        startButton.setOnMouseEntered(event -> {
+        b.setOnMouseEntered(event -> {
             scaleTransition.stop();
 
             scaleTransition.setFromX(1.0);
@@ -69,7 +78,7 @@ public final class WelcomeScreenController extends ScreenController {
             scaleTransition.setToY(1.1);
             scaleTransition.play();
         });
-        startButton.setOnMouseExited(event -> {
+        b.setOnMouseExited(event -> {
             scaleTransition.stop();
 
             scaleTransition.setFromX(1.1);
@@ -78,8 +87,6 @@ public final class WelcomeScreenController extends ScreenController {
             scaleTransition.setToY(1.0);
             scaleTransition.play();
         });
-
-        startButton.setOnMousePressed(event -> startGameButton_Handler());
     }
 
     /**
@@ -134,7 +141,11 @@ public final class WelcomeScreenController extends ScreenController {
     }
 
     public void startGameButton_Handler() {
-        System.out.println("Start Game!");
+        //System.out.println("Start Game!");
         game.getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.LevelSelectorMenu));
+    }
+
+    private void startEditorButton() {
+        game.getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.EditorSelector));
     }
 }
