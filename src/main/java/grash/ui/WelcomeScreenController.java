@@ -1,6 +1,7 @@
 package grash.ui;
 
 import grash.core.GameController;
+import grash.core.Main;
 import grash.core.WindowState;
 import grash.event.GrashEvent;
 import grash.event.events.level.GrashEvent_LoadLevel;
@@ -14,6 +15,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.*;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public final class WelcomeScreenController extends ScreenController {
@@ -32,6 +34,7 @@ public final class WelcomeScreenController extends ScreenController {
     public void init() {
         setupStartButton();
         setupBackground();
+        setupVersionText();
     }
 
     @Override
@@ -44,6 +47,11 @@ public final class WelcomeScreenController extends ScreenController {
             currentBackgroundAnimationTimer.stop();
             currentBackgroundAnimationTimer = null;
         }
+    }
+
+    private void setupVersionText() {
+        Text versionText = (Text) game.getPrimaryStage().getScene().lookup("#versionText");
+        versionText.setText("Version \"" + Main.GAME_VERSION + "\"");
     }
 
     /**

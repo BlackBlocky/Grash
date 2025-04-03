@@ -1,6 +1,12 @@
+@font-face {
+    font-family: VT323;
+    src: url('../fonts/VT323/VT323-Regular.ttf');
+}
+
 .vbox-style {
     -fx-background-color: linear-gradient(to bottom right, #751d8b, #011655);
     -fx-padding: 200 0 0 0;
+    -fx-font-family: "VT323";
 }
 
 .start-button {
@@ -21,4 +27,10 @@
     -fx-fill: #FFB347;
     -fx-font-size: 230px;
     -fx-font-weight: bold;
+    -fx-font-family: "Arial";
+}
+
+.bottom-info-text {
+    -fx-fill: white;
+    -fx-font-size: 18px;
 }
