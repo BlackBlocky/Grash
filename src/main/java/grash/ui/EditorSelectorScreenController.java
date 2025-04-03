@@ -2,6 +2,7 @@ package grash.ui;
 
 import grash.core.GameController;
 import grash.core.WindowState;
+import grash.event.events.level.GrashEvent_LoadLevel;
 import grash.event.events.scene.GrashEvent_SwitchScene;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -153,7 +154,8 @@ public class EditorSelectorScreenController extends ScreenController{
         if(mapsList.getSelectionModel().isEmpty()) return;
 
         String selectedMapKey = mapsList.getSelectionModel().getSelectedItem().getText();
-        System.out.println(selectedMapKey);
+
+        game.getEventBus().triggerEvent(new GrashEvent_LoadLevel(selectedMapKey));
     }
 
     private boolean checkIfEverythingInFormulaIsFilled() {
