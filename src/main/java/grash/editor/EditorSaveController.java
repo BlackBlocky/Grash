@@ -1,6 +1,7 @@
 package grash.editor;
 
 import grash.core.GameController;
+import grash.core.Main;
 import grash.level.map.LevelMapEffect;
 import grash.level.map.LevelMapElement;
 import grash.level.map.LevelMapNote;
@@ -13,8 +14,6 @@ import java.util.List;
 import java.util.function.Function;
 
 public class EditorSaveController {
-
-    public static final String ML_FORMAT_VERSION = "v1";
 
     private final GameController game;
     private final EditorController editorController;
@@ -61,7 +60,7 @@ public class EditorSaveController {
 
         // Create all Lines
         // Metadata
-        builder.append(generateOneParamMLLine("loader", ML_FORMAT_VERSION)).append("\n");
+        builder.append(generateOneParamMLLine("loader", Main.MAP_LOADER_VERSION)).append("\n");
         builder.append(generateOneParamMLLine("mapname", editorMapData.mapMetadata.getMapName())).append("\n");
         builder.append(generateOneParamMLLine("difficulty", editorMapData.mapMetadata.getMapDifficulty())).append("\n");
         builder.append(generateOneParamMLLine("mapauthor", editorMapData.mapMetadata.getMapAuthor())).append("\n");
@@ -159,7 +158,7 @@ public class EditorSaveController {
     private static String getEffectDouble(LevelMapThing t) { return Double.toString(((LevelMapEffect) t).getValueDouble()); }
     private static String getEffectInteger(LevelMapThing t) { return Integer.toString(((LevelMapEffect) t).getValueInteger()); }
 
-    private static String generateOneParamMLLine(final String prefix, final String value) {
+    public static String generateOneParamMLLine(final String prefix, final String value) {
         return "[" + prefix + "]{(" + value + ")}";
     }
 
