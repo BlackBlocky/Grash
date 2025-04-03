@@ -4,6 +4,7 @@ import grash.core.GameController;
 import grash.core.Main;
 import grash.core.WindowState;
 import grash.editor.EditorSaveController;
+import grash.event.events.core.GrashEvent_ReloadMaps;
 import grash.event.events.level.GrashEvent_LoadLevel;
 import grash.event.events.scene.GrashEvent_SwitchScene;
 import javafx.scene.Node;
@@ -180,8 +181,6 @@ public class EditorSelectorScreenController extends ScreenController{
             return;
         }
 
-        System.out.println();
-
         try {
             new File(Main.WORKING_DIRECTORY + "/assets/maps/" + folderName).mkdir();
             newMapFile.createNewFile();
@@ -194,6 +193,9 @@ public class EditorSelectorScreenController extends ScreenController{
             System.out.println("An Error happened creating the new Map!");
             e.printStackTrace();
         }
+
+        game.getEventBus().triggerEvent(new GrashEvent_ReloadMaps());
+        game.getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.EditorSelector));
     }
     private void button_loadSelectedMap() {
         if(mapsList.getSelectionModel().isEmpty()) return;
