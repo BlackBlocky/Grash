@@ -86,11 +86,28 @@ public class EditorRenderingController {
     }
 
     private void setCurrentEffects(EditorMapData editorMapData, double time) {
+        // TODO Make this code less ugly (maybe with an action<> param and preGenerated effects in Data)
         int nextColorEffectIndex = getIndexOfNextEffectAtTime(time, editorMapData.colors);
         if(nextColorEffectIndex > 0) { // Cancels out -1 and 0
             editorRenderer.updateColors(
                     editorMapData.colors.get(nextColorEffectIndex - 1),
                     editorMapData.colors.get(nextColorEffectIndex));
+        }
+        else if(nextColorEffectIndex == 0) { // startColor and first
+            LevelMapEffect startColor = new LevelMapEffect(MapEffectType.Color);
+            startColor.setTimeStart(0.0);
+            startColor.setColor(editorMapData.startColor);
+            editorRenderer.updateColors(
+                    startColor,
+                    editorMapData.colors.getFirst());
+        }
+        else if(nextColorEffectIndex == -1) { // There is now next Effect left
+            if(!editorMapData.colors.isEmpty()) {
+                editorRenderer.updateColors(
+                        editorMapData.colors.getLast(),
+                        editorMapData.colors.getLast()
+                );
+            }
         }
 
         int nextRotationEffectIndex = getIndexOfNextEffectAtTime(time, editorMapData.rotates);
@@ -99,6 +116,23 @@ public class EditorRenderingController {
                     editorMapData.rotates.get(nextRotationEffectIndex -1),
                     editorMapData.rotates.get(nextRotationEffectIndex));
         }
+        else if(nextRotationEffectIndex == 0) { // startRotation and first
+            LevelMapEffect startRotation = new LevelMapEffect(MapEffectType.Rotate);
+            startRotation.setTimeStart(0.0);
+            startRotation.setValueDouble(editorMapData.startRotation);
+            editorRenderer.updateRotations(
+                    startRotation,
+                    editorMapData.rotates.getFirst()
+            );
+        }
+        else if(nextRotationEffectIndex == -1) { // There is now next Effect left
+            if(!editorMapData.rotates.isEmpty()) {
+                editorRenderer.updateRotations(
+                        editorMapData.rotates.getLast(),
+                        editorMapData.rotates.getLast()
+                );
+            }
+        }
 
         int nextFovScaleEffectIndex = getIndexOfNextEffectAtTime(time, editorMapData.fovScales);
         if(nextFovScaleEffectIndex > 0) {
@@ -106,6 +140,23 @@ public class EditorRenderingController {
                     editorMapData.fovScales.get(nextFovScaleEffectIndex -1),
                     editorMapData.fovScales.get(nextFovScaleEffectIndex)
             );
+        }
+        else if(nextFovScaleEffectIndex == 0) { // startFOVScale and first
+            LevelMapEffect startFOVScale = new LevelMapEffect(MapEffectType.FOVScale);
+            startFOVScale.setTimeStart(0.0);
+            startFOVScale.setValueDouble(editorMapData.startFOVScale);
+            editorRenderer.updateFovScales(
+                    startFOVScale,
+                    editorMapData.fovScales.getFirst()
+            );
+        }
+        else if(nextFovScaleEffectIndex == -1) { // There is now next Effect left
+            if(!editorMapData.fovScales.isEmpty()) {
+                editorRenderer.updateFovScales(
+                        editorMapData.fovScales.getLast(),
+                        editorMapData.fovScales.getLast()
+                );
+            }
         }
     }
 
