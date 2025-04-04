@@ -16,8 +16,6 @@ import grash.event.events.action.GrashEvent_StartActionPhase;
 import grash.event.events.core.GrashEvent_Tick;
 import grash.event.events.input.GrashEvent_KeyDown;
 import grash.event.events.scene.GrashEvent_SwitchScene;
-import grash.level.LevelMapTimeline;
-import grash.level.LevelMapTimelineStack;
 import grash.level.map.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
@@ -25,7 +23,6 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -277,7 +274,7 @@ public final class ActionPhaseController implements GrashEventListener {
                 getActionPhaseValues().getCurrentNoteObjects(),
                 actionPhaseValues.getPlayerObject());
 
-        updateLevelProgressBar();
+        updateLevelProgressBarAndCheckIfLevelIsOver();
     }
 
     /**
@@ -445,12 +442,18 @@ public final class ActionPhaseController implements GrashEventListener {
         }
     }
 
-    private void updateLevelProgressBar() {
+    private void updateLevelProgressBarAndCheckIfLevelIsOver() {
         if(mapSong == null) return;
 
+        // Update Bar
         double currentProgressSecond = mapSong.getCurrentTime().toSeconds();
         double maxSeconds = mapSong.getTotalDuration().toSeconds();
 
         levelProgressBar.setProgress(currentProgressSecond / maxSeconds);
+
+        // Check if level is over
+        if(currentProgressSecond >= maxSeconds) {
+            game.getEventBus().triggerEvent(new GrashEvent_ExitActionPhase());
+        }
     }
 }
