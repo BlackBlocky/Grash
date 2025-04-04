@@ -3,7 +3,9 @@ package grash.ui;
 import grash.assets.MapMetadata;
 import grash.core.GameController;
 import grash.core.Main;
+import grash.core.WindowState;
 import grash.event.events.level.GrashEvent_LoadLevel;
+import grash.event.events.scene.GrashEvent_SwitchScene;
 import javafx.animation.AnimationTimer;
 import javafx.geometry.Pos;
 import javafx.scene.canvas.Canvas;
@@ -39,6 +41,7 @@ public class LevelSelectorMenuController extends ScreenController {
     public void init() {
         setupBackground();
         generateMapButtons();
+        setupButtons();
 
         startMusic();
     }
@@ -237,6 +240,13 @@ public class LevelSelectorMenuController extends ScreenController {
         mapElementContainer.getChildren().add(creatorInfo);
 
         return mapElementContainer;
+    }
+
+    private void setupButtons() {
+        Button exitButton = (Button) game.getPrimaryStage().getScene().lookup("#goBackButton");
+        exitButton.setOnMouseClicked(e -> {
+            game.getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.WelcomeScreen));
+        });
     }
 
 }

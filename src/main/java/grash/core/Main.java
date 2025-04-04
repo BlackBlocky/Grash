@@ -14,6 +14,9 @@ public final class Main extends Application {
     public static final double SCREEN_WIDTH = 1600;
     public static final double SCREEN_HEIGHT = 900;
 
+    public static final String GAME_VERSION = "0.1 Early Access";
+    public static final String MAP_LOADER_VERSION = "v1";
+
     public static void main(String[] args) {
         launch(args);
     }

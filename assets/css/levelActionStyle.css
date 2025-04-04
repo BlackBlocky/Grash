@@ -1,16 +1,21 @@
+@font-face {
+    font-family: VT323;
+    src: url('../fonts/VT323/VT323-Regular.ttf');
+}
+
 .pane-style {
-    
+    -fx-font-family: "VT323";
 }
 
 .score-text {
     -fx-text-fill: rgb(255, 255, 255);
-    -fx-font-size: 50px;
+    -fx-font-size: 70px;
     -fx-font-weight: bold;
 }
 
 .accuracy-text {
     -fx-text-fill: rgb(255, 255, 255);
-    -fx-font-size: 25px;
+    -fx-font-size: 30px;
     -fx-font-weight: bold;
 }
 

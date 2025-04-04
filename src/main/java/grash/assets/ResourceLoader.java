@@ -3,6 +3,7 @@ package grash.assets;
 import grash.core.GameController;
 import grash.event.*;
 import grash.event.events.core.GrashEvent_LoadResources;
+import grash.event.events.core.GrashEvent_ReloadMaps;
 import grash.event.events.level.GrashEvent_LevelLoaded;
 import grash.event.events.level.GrashEvent_LoadLevel;
 import javafx.scene.image.Image;
@@ -30,6 +31,7 @@ public final class ResourceLoader implements GrashEventListener {
 
         game.getEventBus().registerListener(GrashEvent_LoadResources.class, this);
         game.getEventBus().registerListener(GrashEvent_LoadLevel.class, this);
+        game.getEventBus().registerListener(GrashEvent_ReloadMaps.class, this);
     }
 
     public MapMetadata getMapMetadata(String mapKey) {
@@ -61,6 +63,10 @@ public final class ResourceLoader implements GrashEventListener {
                 onEvent_LoadLevel((GrashEvent_LoadLevel) event);
                 break;
             }
+            case "ReloadMaps": {
+                onEvent_ReloadMaps((GrashEvent_ReloadMaps) event);
+                break;
+            }
         }
     }
 
@@ -72,10 +78,19 @@ public final class ResourceLoader implements GrashEventListener {
         loadAllBaseSprites();
     }
 
+    private void onEvent_ReloadMaps(GrashEvent_ReloadMaps event) {
+        loadAllMapMetadatas();
+    }
+
     /**
      * Loading all the MapMetadata (Not the Actual Map) and adding everything loaded to the Resource-Data
      */
     private void loadAllMapMetadatas() {
+        // Reset
+        allMapKeys = null;
+        mapMetdatasMap.clear();
+
+        // Load all maps MetaData
         MapMetadata[] loadedMapMetadatas = loadAllMaps();
         ArrayList<String> allLoadedMapKeys = new ArrayList<>();
 

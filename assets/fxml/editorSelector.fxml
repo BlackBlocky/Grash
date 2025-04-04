@@ -23,7 +23,7 @@
             </HBox>
         </VBox>
     </VBox>
-    <VBox styleClass="creator-container" alignment="CENTER_RIGHT" fx:id="newMapPanel">
+    <VBox styleClass="creator-container" alignment="CENTER_RIGHT" fx:id="newMapPanel" visible="false">
         <Text text="Create new Map" styleClass="title-text" />
         <VBox styleClass="content-box" maxWidth="500" minWidth="500" maxHeight="600" minHeight="600">
             <VBox spacing="10">

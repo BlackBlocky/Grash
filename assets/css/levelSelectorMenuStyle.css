@@ -1,3 +1,12 @@
+@font-face {
+    font-family: VT323;
+    src: url('../fonts/VT323/VT323-Regular.ttf');
+}
+
+.vbox-style {
+    -fx-font-family: "VT323";
+}
+
 .title-text {
     -fx-fill: #FFB347;
     -fx-font-size: 70px;
@@ -46,4 +55,16 @@
     -fx-font-size: 35px;
     -fx-font-weight: bold;
     -fx-background-radius: 50px;
+    -fx-font-family: "Arial";
+}
+
+.go-back-button {
+    -fx-background-color: #FFB347;
+    -fx-text-fill: white;
+    -fx-font-size: 20px;
+
+    -fx-background-radius: 50;
+    -fx-border-color: white;
+    -fx-border-radius: 50;
+    -fx-border-width: 2px;
 }

@@ -1,7 +1,10 @@
 package grash.ui;
 
 import grash.core.GameController;
+import grash.core.Main;
 import grash.core.WindowState;
+import grash.editor.EditorSaveController;
+import grash.event.events.core.GrashEvent_ReloadMaps;
 import grash.event.events.level.GrashEvent_LoadLevel;
 import grash.event.events.scene.GrashEvent_SwitchScene;
 import javafx.scene.Node;
@@ -14,6 +17,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.util.converter.DoubleStringConverter;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.function.UnaryOperator;
@@ -148,7 +153,49 @@ public class EditorSelectorScreenController extends ScreenController{
         double mapSpeed = Double.parseDouble(mapSpeedField.getText());
         double growSpeed = Double.parseDouble(growSpeedField.getText());
 
-        System.out.println("hi");
+        StringBuilder builder = new StringBuilder();
+        builder.append(EditorSaveController.generateOneParamMLLine("loader", Main.MAP_LOADER_VERSION)).append("\n");
+        builder.append(EditorSaveController.generateOneParamMLLine("mapname", mapName)).append("\n");
+        builder.append(EditorSaveController.generateOneParamMLLine("difficulty", difficulty)).append("\n");
+        builder.append(EditorSaveController.generateOneParamMLLine("mapauthor", mapAuthor)).append("\n");
+        builder.append(EditorSaveController.generateOneParamMLLine("songname", songName)).append("\n");
+        builder.append(EditorSaveController.generateOneParamMLLine("songauthor", songAuthor)).append("\n");
+
+        builder.append(EditorSaveController.generateOneParamMLLine("mapversion", "1.0")).append("\n");
+        builder.append(EditorSaveController.generateOneParamMLLine("songbpm", Double.toString(songBpm))).append("\n");
+        builder.append(EditorSaveController.generateOneParamMLLine("speed", Double.toString(mapSpeed))).append("\n");
+        builder.append(EditorSaveController.generateOneParamMLLine("growspeed", Double.toString(growSpeed))).append("\n");
+
+        builder.append(EditorSaveController.generateOneParamMLLine("startcolor", "0, 0, 0")).append("\n");
+        builder.append(EditorSaveController.generateOneParamMLLine("startfovscale", "1.0")).append("\n");
+        builder.append(EditorSaveController.generateOneParamMLLine("startrotation", "0.0"));
+
+        // Create the new Map-File
+        String folderName = mapAuthor + "-" + mapName;
+        String fileName = mapName + ".grashMap";
+
+        File newMapFile = new File(Main.WORKING_DIRECTORY + "/assets/maps/" + folderName + "/" + fileName);
+
+        if(newMapFile.exists()) {
+            System.out.println("The Map: \"" + newMapFile.getAbsolutePath() + "\" already exists!");
+            return;
+        }
+
+        try {
+            new File(Main.WORKING_DIRECTORY + "/assets/maps/" + folderName).mkdir();
+            newMapFile.createNewFile();
+            FileWriter writer = new FileWriter(newMapFile, false);
+            writer.write(builder.toString());
+            writer.close();
+
+            System.out.println("Successfully created: " + newMapFile.getAbsolutePath());
+        } catch (Exception e) {
+            System.out.println("An Error happened creating the new Map!");
+            e.printStackTrace();
+        }
+
+        game.getEventBus().triggerEvent(new GrashEvent_ReloadMaps());
+        game.getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.EditorSelector));
     }
     private void button_loadSelectedMap() {
         if(mapsList.getSelectionModel().isEmpty()) return;

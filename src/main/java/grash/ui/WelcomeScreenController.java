@@ -1,6 +1,7 @@
 package grash.ui;
 
 import grash.core.GameController;
+import grash.core.Main;
 import grash.core.WindowState;
 import grash.event.GrashEvent;
 import grash.event.events.level.GrashEvent_LoadLevel;
@@ -14,6 +15,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.*;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public final class WelcomeScreenController extends ScreenController {
@@ -32,6 +34,7 @@ public final class WelcomeScreenController extends ScreenController {
     public void init() {
         setupStartButton();
         setupBackground();
+        setupVersionText();
     }
 
     @Override
@@ -46,6 +49,11 @@ public final class WelcomeScreenController extends ScreenController {
         }
     }
 
+    private void setupVersionText() {
+        Text versionText = (Text) game.getPrimaryStage().getScene().lookup("#versionText");
+        versionText.setText("Version \"" + Main.GAME_VERSION + "\"");
+    }
+
     /**
      * Adds the Animation to the Start Button if you hover with the mouse over it
      */
@@ -53,14 +61,23 @@ public final class WelcomeScreenController extends ScreenController {
         stopBackgroundAnimationIfPossible();
 
         Button startButton = (Button) game.getPrimaryStage().getScene().lookup("#startButton");
+        Button editButton = (Button) game.getPrimaryStage().getScene().lookup("#editorButton");
 
+        setupButtonAnimation(startButton);
+        setupButtonAnimation(editButton);
+
+        startButton.setOnMousePressed(event -> startGameButton_Handler());
+        editButton.setOnMousePressed(event -> startEditorButton());
+    }
+
+    private void setupButtonAnimation(Button b) {
         double animSpeed = 0.05;
         ScaleTransition scaleTransition = new ScaleTransition();
-        scaleTransition.setNode(startButton);
+        scaleTransition.setNode(b);
         scaleTransition.setCycleCount(1);
         scaleTransition.setDuration(Duration.seconds(animSpeed));
 
-        startButton.setOnMouseEntered(event -> {
+        b.setOnMouseEntered(event -> {
             scaleTransition.stop();
 
             scaleTransition.setFromX(1.0);
@@ -69,7 +86,7 @@ public final class WelcomeScreenController extends ScreenController {
             scaleTransition.setToY(1.1);
             scaleTransition.play();
         });
-        startButton.setOnMouseExited(event -> {
+        b.setOnMouseExited(event -> {
             scaleTransition.stop();
 
             scaleTransition.setFromX(1.1);
@@ -78,8 +95,6 @@ public final class WelcomeScreenController extends ScreenController {
             scaleTransition.setToY(1.0);
             scaleTransition.play();
         });
-
-        startButton.setOnMousePressed(event -> startGameButton_Handler());
     }
 
     /**
@@ -134,7 +149,11 @@ public final class WelcomeScreenController extends ScreenController {
     }
 
     public void startGameButton_Handler() {
-        System.out.println("Start Game!");
+        //System.out.println("Start Game!");
         game.getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.LevelSelectorMenu));
+    }
+
+    private void startEditorButton() {
+        game.getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.EditorSelector));
     }
 }
