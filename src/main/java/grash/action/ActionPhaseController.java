@@ -17,12 +17,15 @@ import grash.event.events.core.GrashEvent_Tick;
 import grash.event.events.input.GrashEvent_KeyDown;
 import grash.event.events.scene.GrashEvent_SwitchScene;
 import grash.level.map.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.input.KeyCode;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -249,6 +252,8 @@ public final class ActionPhaseController implements GrashEventListener {
             lastCustomTimeSeconds = actionPhaseValues.getCustomTime();
         }
 
+
+
         // Updating the Player before everything moves, because otherwise something could move into the player.
         actionPhaseLogicHandler.playerLogicHandler(actionPhaseValues.getPlayerObject(), secondsElapsedSinceStart,
                 actionPhaseValues.getActionPhaseMap().getSpeed(), event.getDeltaTime(), deltaTime);
@@ -268,13 +273,17 @@ public final class ActionPhaseController implements GrashEventListener {
         actionPhaseObjectHandler.processLevelMapTimeline(secondsElapsedSinceStart);
 
         // Updating the renderer
+        updateCanvas(secondsElapsedSinceStart, deltaTime);
+
+        updateLevelProgressBarAndCheckIfLevelIsOver();
+    }
+
+    private void updateCanvas(double secondsElapsedSinceStart, double deltaTime) {
         updateVisualEffectRendererValues(secondsElapsedSinceStart);
         actionPhaseRenderer.updateCanvas(deltaTime, secondsElapsedSinceStart,
                 getActionPhaseValues().getCurrentObstacleObjects(),
                 getActionPhaseValues().getCurrentNoteObjects(),
                 actionPhaseValues.getPlayerObject());
-
-        updateLevelProgressBarAndCheckIfLevelIsOver();
     }
 
     /**
@@ -412,9 +421,12 @@ public final class ActionPhaseController implements GrashEventListener {
             mapSong = null;
         }
 
-        LockSupport.parkNanos((long)(0.5 * 1_000_000_000.0));
-
-        game.getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.LevelSelectorMenu));
+        // TODO remove the limeline after (ist just for the current dead anim)
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.8), e -> {
+            //LockSupport.parkNanos((long)(0.5 * 1_000_000_000.0));
+            game.getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.LevelSelectorMenu));
+        }));
+        timeline.play();
     }
 
     private void updateVisualEffectRendererValues(double secondsElapsedSinceStart) {
