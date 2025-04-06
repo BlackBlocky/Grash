@@ -196,6 +196,10 @@ public final class ActionPhaseController implements GrashEventListener {
             else
                 actionPhaseValues.getCurrentNoteObjects().remove((NoteObject) next);
             queue.remove(next);
+
+            // TODO Make the scoring a bit better pls UwU
+            actionPhaseValues.addScore(10);
+            updateGUI();
         }
     }
 
