@@ -8,8 +8,8 @@
 <StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
            stylesheets="@../css/welcomeScreenStyle.css" styleClass="vbox-style">
     <VBox alignment="BOTTOM_LEFT" translateY="-5" translateX="5" >
-        <Text text="BlackBlocky - 2025" styleClass="bottom-info-text"/>
         <Text text="[Version Unknown]" styleClass="bottom-info-text" fx:id="versionText"/>
+        <Text text="Eliah Roos (aka BlackBlocky) - 2025" styleClass="bottom-info-text"/>
     </VBox>
 
     <VBox alignment="TOP_CENTER" >

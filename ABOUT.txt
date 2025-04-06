@@ -4,6 +4,9 @@ The Game Grash
 
 License: "All rights reserved."
 
+GitHub:  https://github.com/BlackBlocky/Grash
+Itch.io: https://blackblocky.itch.io/grash
+
 The entire game was created by Eliah Roos (aka BlackBlocky),
 including the code, graphics, music, UI design, level design, and more.
 
