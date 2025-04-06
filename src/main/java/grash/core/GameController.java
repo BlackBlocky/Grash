@@ -22,7 +22,10 @@ import grash.event.events.scene.GrashEvent_SwitchScene;
 import grash.input.KeyInputHandler;
 import grash.level.LevelController;
 import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public final class GameController implements GrashEventListener {
 
@@ -162,16 +165,20 @@ public final class GameController implements GrashEventListener {
     private void onEvent_SceneSwitched(GrashEvent_SceneSwitched event) {
         switch (event.getSwitchedWindowState()) {
             case Splashscreen: {
-                // Doing all the Initial Stuff
-                getEventBus().triggerEvent(new GrashEvent_LoadResources());
-                getEventBus().triggerEvent(new GrashEvent_InitializationDone());
+                // Waiting a bit for showing the SplashScreen (because it loads to fast lol)
+                Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(0.3), e -> {
+                    // Doing all the Initial Stuff
+                    getEventBus().triggerEvent(new GrashEvent_LoadResources());
+                    getEventBus().triggerEvent(new GrashEvent_InitializationDone());
 
-                gameLoop.start();
+                    gameLoop.start();
 
-                getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.WelcomeScreen));
-                //getEventBus().triggerEvent(new GrashEvent_LoadLevel("BlackBlocky::Progression::Progression::BlackBlocky::1.0::Normal"));
-                //getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.LevelSelectorMenu));
-                //getEventBus().triggerEvent(new GrashEvent_LoadLevel("Dev::Spikes::no_Song::no_one::final::Easy"));
+                    getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.WelcomeScreen));
+                    //getEventBus().triggerEvent(new GrashEvent_LoadLevel("BlackBlocky::Progression::Progression::BlackBlocky::1.0::Normal"));
+                    //getEventBus().triggerEvent(new GrashEvent_SwitchScene(WindowState.LevelSelectorMenu));
+                    //getEventBus().triggerEvent(new GrashEvent_LoadLevel("Dev::Spikes::no_Song::no_one::final::Easy"));
+                }));
+                timeline.play();
                 break;
             }
             case LevelAction: {
