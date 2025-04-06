@@ -1,0 +1,14 @@
+The Game Grash
+
+-------------------------------
+
+License: "All rights reserved."
+
+The entire game was created by Eliah Roos (aka BlackBlocky),
+including the code, graphics, music, UI design, level design, and more.
+
+The music was made using the tool BeepBox, with occasional additional editing done in Audacity.
+The textures were created with the help of Aseprite.
+
+The icon and splash screen were created using deepai.org.
+The voice in the tutorial level was also generated with DeepAI, and later edited using voicechanger.io.
