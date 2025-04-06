@@ -211,8 +211,8 @@ public final class ActionPhaseObjectHandler {
         spawnPos.x = calculateObjectXStartPos(levelMapElement.getTimeStart(), secondsElapsedSinceStart, mapSpeed, playerX);
         spawnPos.y = calculateHeightFromNormalizedValue(levelMapElement.getHeightNormalized());
 
-        Hitbox hitbox = new Hitbox(new Vec2(0.36, 0.36),
-                new Vec2(0, 0.32));
+        Hitbox hitbox = new Hitbox(new Vec2(0.5, 0.5),
+                new Vec2(-0.0625, 0.25));
 
         return new ObstacleObject(game, spawnPos,new Vec2(1, 1), Vec2.ZERO(), levelMapElement, hitbox);
     }
