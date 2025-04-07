@@ -1,39 +1,55 @@
-# Grash - Ein Rhythmus-Spiel
-## Grash kombiniert die zwei beliebten Rhythmus Spiele [Osu](https://osu.ppy.sh) und [Geometry Dash](https://store.steampowered.com/app/322170/Geometry_Dash/).
 
-### Spielkonzept
-Das Core-Mechanic von Grash soll Gravitationswechsel sein, und an drücken der Pfeiltasten passend zum Rhythmus/des Lieds.
-Die Level sollen folgendermaßen aufgebaut sein, dass man durchgehend verschiedene Hindernisse ausweichen muss, um nicht zu verlieren.
-Dazu muss man die ganze Zeit die Pfeiltasten passend zur Musik drücken, je nachdem, wie genau man das Timing trifft, desto besser ist der Score.
+[Englisch](README.md) - [Deutsch](README-German.md)
 
-###### Concept-Art
+# Grash, ein Rhythmusspiel  
+## Ein Spiel, das [Osu](https://osu.ppy.sh) und [Geometry Dash](https://store.steampowered.com/app/322170/Geometry_Dash/) kombiniert.
+
+### Spielkonzept  
+Die Kernmechanik von **Grash** ist eine Kombination aus den Leveln von Geometry Dash und dem Rhythmus-System von Osu.  
+Die Level sind so gestaltet, dass man ständig verschiedenen Hindernissen ausweichen muss, um nicht zu verlieren.  
+Um zu bestehen, muss man die Pfeiltasten im Takt der Musik drücken – je genauer das Timing, desto besser die Punktzahl.
+
+---
+
+### Roadmap  
+![Grash Roadmap](https://github.com/user-attachments/assets/f5920172-21b3-4b70-a025-e62b90545804)  
+^- Aktueller Stand: **„Polishing und Highscores“**
+
+---
+
+###### Das allererste Concept-Art zum Spiel:  
 ![ConceptArt-Grash](https://github.com/user-attachments/assets/abb5d64b-a7da-4c91-bcb5-a4a712cfb55d)
 
-> [!NOTE]
-> Auf den Concept-Art kann man links den Spieler erkennen (Platzhalter-Design), und Die Stacheln sind unter anderem die Hindernisse.
-> Die Kreise die man sieht, sind die Noten, die man treffen muss. Wenn z.B. so eine Note über einem ist, dann muss man die Pfeiltaste nach oben drücken.
+###### Und wie es jetzt aussieht:  
+![Screenshot aus Version 0.1](https://github.com/user-attachments/assets/e4a6f7a4-87b0-41b0-a362-a1ee1b9d184f)
 
-#
-### Roadmap
-![Grash Roadmap](https://github.com/user-attachments/assets/f5920172-21b3-4b70-a025-e62b90545804)
-^- Momentaner Stand: "Basis"
+---
 
-#
-### Technologie und Frameworks
-Das Spiel ist in [Java](https://www.java.com/de/) geschrieben und verwendet die [JavaFX](https://openjfx.io) Library.
-Der Architektur des Spiels wird mit einem Event-Bus basieren, ebenso soll alles im Spiel einen State haben, und je nach State unterschiedlichen Code ausführen.
+### Technologie und Frameworks  
+Das Spiel ist in [Java](https://www.java.com/de/) geschrieben und verwendet die [JavaFX](https://openjfx.io)-Bibliothek.  
+Die Architektur des Spiels basiert auf einem Event-Bus-System. Jedes Objekt im Spiel hat einen eigenen State und führt je nach Zustand anderen Code aus.
 
-#
-### Lizenz & Copyright
-- ##### Lizenz
-  Das Projekt ist Open-Source. Wenn man Interesse hat, die Assets wiederzuverwenden (Musik, Sprites, etc.) bitte mich vorher Kontaktieren!
-  Momentan entwickle ich das Projekt selber, und werde vorerst keine Pull-Requests annehmen, unter anderem unter dem Grund, dass ich das Spiel als Schulprojekt entwickle.
+---
 
-- ##### Copyright
-  Da alle Assets von mir selber erstellt wurden, liegt das Copyright bei mir.
-  Alle Inhalte vom Spiel können ohne Bedenken geteilt werden, die einzige Bedingung ist, dass man das Spiel nicht als sein eigenes ausgeben darf, ebenso möchte ich gerne irgendwo als Ersteller Erwähnt werden.
+### Der Level-Editor  
+Um neue Level für das Spiel zu erstellen, wurde ein Level-Editor entwickelt.  
+Der Editor ist in seinem aktuellen Zustand funktionsfähig, bietet aber noch viel Potenzial für Verbesserungen.
 
-#
-### About
-Das gesamte Spiel (Code, Assets, Story, etc.) wird von mir alleine erstellt und entwickelt. <br>
-Man kann mich über diese E-Mail erreichen: blackblockylp@gmail.com
+![Der Level-Editor aus Version 0.1](https://github.com/user-attachments/assets/7377e81e-e40f-417f-af06-2e04b289e672)
+
+---
+
+### Lizenz & Urheberrecht  
+- ##### Lizenz  
+  Das Projekt ist Open-Source. Wenn du daran interessiert bist, Assets (Musik, Sprites etc.) wiederzuverwenden, kontaktiere mich bitte vorher!  
+  Ich entwickle das Spiel derzeit allein. Wenn du Ideen hast oder mitwirken möchtest, melde dich gerne bei mir :D
+
+- ##### Urheberrecht  
+  Alle Assets wurden von mir selbst erstellt, das Urheberrecht liegt bei mir.  
+  Du darfst alle Inhalte des Spiels frei teilen, solange du das Spiel nicht als dein eigenes ausgibst. Ich freue mich außerdem über eine Nennung als Ersteller.
+
+---
+
+### Über das Projekt  
+Das gesamte Spiel (Code, Assets, Story, etc.) wird von mir allein erstellt und entwickelt. <br>  
+Du kannst mich per E-Mail erreichen: **blackblockylp@gmail.com**
