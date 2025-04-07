@@ -1,6 +1,8 @@
 
 [Englisch](README.md) - [Deutsch](README-German.md)
 
+[Spiel auf Itch.io herunterladen](https://blackblocky.itch.io/grash)
+
 # Grash, ein Rhythmusspiel  
 ## Ein Spiel, das [Osu](https://osu.ppy.sh) und [Geometry Dash](https://store.steampowered.com/app/322170/Geometry_Dash/) kombiniert.
 
