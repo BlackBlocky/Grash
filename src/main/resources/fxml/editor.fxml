@@ -25,62 +25,62 @@
         <Canvas fx:id="editorCanvas" width="1600" height="900"/>
         <GridPane hgap="5" vgap="5" styleClass="keys-pane" AnchorPane.leftAnchor="20" AnchorPane.bottomAnchor="60">
             <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                <Image url="@../../../assets/sprites/editor/keys/keyA.png"/>
+                <Image url="@/sprites/keys/keyA.png"/>
             </ImageView>
             <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                <Image url="@../../../assets/sprites/editor/keys/keyD.png"/>
+                <Image url="@/sprites/keys/keyD.png"/>
             </ImageView>
             <Label text="Scroll Left/Right" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="key-info-text"/>
 
             <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                <Image url="@../../../assets/sprites/editor/keys/keyLeft.png"/>
+                <Image url="@/sprites/keys/keyLeft.png"/>
             </ImageView>
             <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                <Image url="@../../../assets/sprites/editor/keys/keyRight.png"/>
+                <Image url="@/sprites/keys/keyRight.png"/>
             </ImageView>
             <Label text="Move Left/Right" GridPane.columnIndex="2" GridPane.rowIndex="1" styleClass="key-info-text"/>
 
             <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="0" GridPane.rowIndex="2">
-                <Image url="@../../../assets/sprites/editor/keys/keyUp.png"/>
+                <Image url="@/sprites/keys/keyUp.png"/>
             </ImageView>
             <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                <Image url="@../../../assets/sprites/editor/keys/keyDown.png"/>
+                <Image url="@/sprites/keys/keyDown.png"/>
             </ImageView>
             <Label text="Move Up/Down" GridPane.columnIndex="2" GridPane.rowIndex="2" styleClass="key-info-text"/>
 
             <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="0" GridPane.rowIndex="3">
-                <Image url="@../../../assets/sprites/editor/keys/keySpace.png"/>
+                <Image url="@/sprites/keys/keySpace.png"/>
             </ImageView>
             <Label text="Switch isUp" GridPane.columnIndex="2" GridPane.rowIndex="3" styleClass="key-info-text"/>
 
             <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="0" GridPane.rowIndex="4">
-                <Image url="@../../../assets/sprites/editor/keys/keyShift.png"/>
+                <Image url="@/sprites/keys/keyShift.png"/>
             </ImageView>
             <Label text="Switch Sides" GridPane.columnIndex="2" GridPane.rowIndex="4" styleClass="key-info-text"/>
 
 
             <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="3" GridPane.rowIndex="0">
-                <Image url="@../../../assets/sprites/editor/keys/keyDot.png"/>
+                <Image url="@/sprites/keys/keyDot.png"/>
             </ImageView>
             <Label text="Next" GridPane.columnIndex="4" GridPane.rowIndex="0" styleClass="key-info-text"/>
 
             <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                <Image url="@../../../assets/sprites/editor/keys/keyComma.png"/>
+                <Image url="@/sprites/keys/keyComma.png"/>
             </ImageView>
             <Label text="Last" GridPane.columnIndex="4" GridPane.rowIndex="1" styleClass="key-info-text"/>
 
             <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                <Image url="@../../../assets/sprites/editor/keys/keyE.png"/>
+                <Image url="@/sprites/keys/keyE.png"/>
             </ImageView>
             <Label text="Add Obstacle" GridPane.columnIndex="4" GridPane.rowIndex="2" styleClass="key-info-text"/>
 
             <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                <Image url="@../../../assets/sprites/editor/keys/keyR.png"/>
+                <Image url="@/sprites/keys/keyR.png"/>
             </ImageView>
             <Label text="Add Note" GridPane.columnIndex="4" GridPane.rowIndex="3" styleClass="key-info-text"/>
 
             <ImageView fitHeight="32" fitWidth="32" GridPane.columnIndex="3" GridPane.rowIndex="4">
-                <Image url="@../../../assets/sprites/editor/keys/keyT.png"/>
+                <Image url="@/sprites/keys/keyT.png"/>
             </ImageView>
             <Label text="Add Effect" GridPane.columnIndex="4" GridPane.rowIndex="4" styleClass="key-info-text"/>
         </GridPane>
@@ -88,31 +88,31 @@
         <GridPane fx:id="elementInfoPanel" hgap="10" styleClass="add-info-panel" AnchorPane.topAnchor="80" AnchorPane.leftAnchor="40" visible="false">
             <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
                 <ImageView fitHeight="32" fitWidth="32">
-                    <Image url="@../../../assets/sprites/editor/keys/keyT.png"/>
+                    <Image url="@/sprites/keys/keyT.png"/>
                 </ImageView>
                 <Label text="- 1 -" />
             </VBox>
             <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
                 <ImageView fitHeight="32" fitWidth="32">
-                    <Image url="@../../../assets/sprites/editor/keys/keyT.png"/>
+                    <Image url="@/sprites/keys/keyT.png"/>
                 </ImageView>
                 <Label text="- 2 -" />
             </VBox>
             <VBox GridPane.columnIndex="2" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
                 <ImageView fitHeight="32" fitWidth="32">
-                    <Image url="@../../../assets/sprites/editor/keys/keyT.png"/>
+                    <Image url="@/sprites/keys/keyT.png"/>
                 </ImageView>
                 <Label text="- 3 -" />
             </VBox>
             <VBox GridPane.columnIndex="3" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
                 <ImageView fitHeight="32" fitWidth="32">
-                    <Image url="@../../../assets/sprites/editor/keys/keyT.png"/>
+                    <Image url="@/sprites/keys/keyT.png"/>
                 </ImageView>
                 <Label text="- 4 -" />
             </VBox>
             <VBox GridPane.columnIndex="4" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
                 <ImageView fitHeight="32" fitWidth="32">
-                    <Image url="@../../../assets/sprites/editor/keys/keyT.png"/>
+                    <Image url="@/sprites/keys/keyT.png"/>
                 </ImageView>
                 <Label text="- 5 -" />
             </VBox>
@@ -121,19 +121,19 @@
         <GridPane fx:id="noteInfoPanel" hgap="10" styleClass="add-info-panel" AnchorPane.topAnchor="80" AnchorPane.leftAnchor="40" visible="false">
             <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
                 <ImageView fitHeight="32" fitWidth="32">
-                    <Image url="@../../../assets/sprites/editor/keys/keyT.png"/>
+                    <Image url="@/sprites/keys/keyT.png"/>
                 </ImageView>
                 <Label text="- 1 -" />
             </VBox>
             <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
                 <ImageView fitHeight="32" fitWidth="32">
-                    <Image url="@../../../assets/sprites/editor/keys/keyT.png"/>
+                    <Image url="@/sprites/keys/keyT.png"/>
                 </ImageView>
                 <Label text="- 2 -" />
             </VBox>
             <VBox GridPane.columnIndex="2" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
                 <ImageView fitHeight="32" fitWidth="32">
-                    <Image url="@../../../assets/sprites/editor/keys/keyT.png"/>
+                    <Image url="@/sprites/keys/keyT.png"/>
                 </ImageView>
                 <Label text="- 3 -" />
             </VBox>
@@ -141,25 +141,25 @@
         <GridPane fx:id="effectInfoPanel" hgap="10" styleClass="add-info-panel" AnchorPane.topAnchor="80" AnchorPane.leftAnchor="40" visible="false">
             <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
                 <ImageView fitHeight="32" fitWidth="32">
-                    <Image url="@../../../assets/sprites/editor/keys/keyT.png"/>
+                    <Image url="@/sprites/keys/keyT.png"/>
                 </ImageView>
                 <Label text="- 1 -" />
             </VBox>
             <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
                 <ImageView fitHeight="32" fitWidth="32">
-                    <Image url="@../../../assets/sprites/editor/keys/keyT.png"/>
+                    <Image url="@/sprites/keys/keyT.png"/>
                 </ImageView>
                 <Label text="- 2 -" />
             </VBox>
             <VBox GridPane.columnIndex="2" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
                 <ImageView fitHeight="32" fitWidth="32">
-                    <Image url="@../../../assets/sprites/editor/keys/keyT.png"/>
+                    <Image url="@/sprites/keys/keyT.png"/>
                 </ImageView>
                 <Label text="- 3 -" />
             </VBox>
             <VBox GridPane.columnIndex="3" GridPane.rowIndex="0" prefHeight="80" prefWidth="80" styleClass="add-info-element" alignment="CENTER">
                 <ImageView fitHeight="32" fitWidth="32">
-                    <Image url="@../../../assets/sprites/editor/keys/keyT.png"/>
+                    <Image url="@/sprites/keys/keyT.png"/>
                 </ImageView>
                 <Label text="- 4 -" />
             </VBox>

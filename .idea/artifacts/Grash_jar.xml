@@ -1,14 +1,8 @@
 <component name="ArtifactManager">
-  <artifact name="Grash:jar">
+  <artifact type="jar" name="Grash:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/Grash_jar</output-path>
-    <root id="root">
-      <element id="archive" name="Grash.jar">
-        <element id="directory" name="META-INF">
-          <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
-        </element>
-        <element id="module-output" name="Grash" />
-      </element>
-      <element id="library" level="project" name="JavaFX-23" />
+    <root id="archive" name="Grash.jar">
+      <element id="module-output" name="Grash" />
     </root>
   </artifact>
 </component>
