@@ -5,10 +5,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 
-<StackPane style="-fx-background-color: #000000;">
-    <ImageView fitWidth="500" fitHeight="500" preserveRatio="true">
-        <Image url="@../sprites/icons/GameLogo.jpeg"/>
-    </ImageView>
+<StackPane style="-fx-background-color: #000000;" xmlns:fx="http://javafx.com/fxml">
+    <ImageView fitWidth="500" fitHeight="500" preserveRatio="true" fx:id="gameLogo" />
 
     <!--<ProgressBar progress="-1.0" prefWidth="300" style="-fx-padding: 0 0 80 0;" StackPane.alignment="BOTTOM_CENTER"/>-->
     <!--<Label text="Loading..." style="-fx-text-fill: white; -fx-font-size: 40px; -fx-padding: 0 0 40 0;" StackPane.alignment="BOTTOM_CENTER"/>-->

@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.control.ScrollPane?>
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      alignment="CENTER" stylesheets="@../css/levelSelectorMenuStyle.css" styleClass="vbox-style">
+      alignment="CENTER" stylesheets="@/css/levelSelectorMenuStyle.css" styleClass="vbox-style">
     <Text text="Select a Level" fx:id="titleText" styleClass="title-text" />
     <ScrollPane styleClass="levels-list-scroll-pane" fitToWidth="true">
         <HBox alignment="CENTER" fx:id="levelsList" styleClass="levels-list">
