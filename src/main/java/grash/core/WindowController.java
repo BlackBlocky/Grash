@@ -9,13 +9,18 @@ import grash.ui.*;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.HashMap;
 
 public final class WindowController implements GrashEventListener {
@@ -131,7 +136,7 @@ public final class WindowController implements GrashEventListener {
 
         FXMLLoader loader = new FXMLLoader();
         try{
-            loader.setLocation(new URL("file:///" + game.getWorkingDirectory() + "/assets/fxml/initScene.fxml"));
+            loader.setLocation(getClass().getResource("/fxml/initScene.fxml"));
             StackPane vbox = loader.load();
             Scene initScene = new Scene(vbox);
             this.splashscreen.setScene(initScene);
@@ -140,6 +145,16 @@ public final class WindowController implements GrashEventListener {
         }
 
         this.splashscreen.show();
+
+        // Set the Splashscreen GameLogo Image
+        ImageView gameLogo = (ImageView) splashscreen.getScene().lookup("#gameLogo");
+        URL gameLogoImageURL = null;
+        try {
+            gameLogoImageURL = new File(game.getWorkingDirectory() + "/assets/sprites/icons/GameLogo.jpeg").toURI().toURL();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+        gameLogo.setImage(new Image(gameLogoImageURL.toString()));
     }
 
     private void switchToScene(GrashEvent_SwitchScene event) {
@@ -151,7 +166,7 @@ public final class WindowController implements GrashEventListener {
         try {
             ScreenController screenController = fxmlControllerByWindowState.get(event.getTargetWindowState());
             if(screenController != null) loader.setController(screenController.getClass());
-            loader.setLocation(new URL("file:///" + game.getWorkingDirectory() + "/assets/fxml/" + fxmlFileNamesByWindowState.get(event.getTargetWindowState())));
+            loader.setLocation(getClass().getResource("/fxml/" + fxmlFileNamesByWindowState.get(event.getTargetWindowState())));
             pane = loader.load();
         } catch (Exception e) {
             e.printStackTrace();

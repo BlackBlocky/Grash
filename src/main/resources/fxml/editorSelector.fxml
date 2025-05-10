@@ -9,7 +9,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <HBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      alignment="CENTER" stylesheets="@../css/editorSelectorStyle.css" styleClass="vbox-style" spacing="70">
+      alignment="CENTER" stylesheets="@/css/editorSelectorStyle.css" styleClass="vbox-style" spacing="70">
     <VBox styleClass="selector-container" alignment="CENTER_LEFT">
         <Text text="Select a level to Edit" fx:id="titleText" styleClass="title-text" />
         <VBox styleClass="content-box" maxWidth="900" minWidth="900" maxHeight="600" minHeight="600">

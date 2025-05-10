@@ -57,7 +57,7 @@ public final class ActionPhaseRenderer implements GrashEventListener {
         this.debug_renderHitbox = false;
 
         this.mainFont =
-                Font.loadFont("file:" + Main.WORKING_DIRECTORY + "\\assets\\fonts\\VT323\\VT323-Regular.ttf", 24);
+                Font.loadFont(getClass().getResource("/fonts/VT323/VT323-Regular.ttf").toString(), 24);
 
         colorEffectData = new RendererEffectData(startColorEffect);
         rotationEffectData = new RendererEffectData(startRotationEffect);
